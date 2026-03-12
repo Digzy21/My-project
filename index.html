@@ -2,12 +2,11 @@
 <html lang="ru">
 <head>
 
-<!-- Firebase -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
+<!-- Firebase Compat (global scope) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyBC9WRyPijARo2Pq6OurvVwDw1fze9rh2o",
     authDomain: "brain-d06d8.firebaseapp.com",
@@ -17,22 +16,20 @@
     appId: "1:869712650008:web:78de5b47f143c183f6886d"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+  const provider = new firebase.auth.GoogleAuthProvider();
 
   let currentUser = null;
   let userId = null;
 
-  // ---- AUTH ----
-  onAuthStateChanged(auth, async (user) => {
+  // ---- AUTH STATE ----
+  auth.onAuthStateChanged(async (user) => {
     currentUser = user;
     userId = user ? user.uid : null;
     updateAuthUI(user);
-    if(user) {
-      await loadFromCloud(user.uid);
-    }
+    if(user) await loadFromCloud(user.uid);
   });
 
   function updateAuthUI(user) {
@@ -40,119 +37,91 @@
     const info = document.getElementById('authInfo');
     if(!btn) return;
     if(user) {
-      btn.textContent = 'Вийти';
-      btn.style.background = 'rgba(255,77,109,0.15)';
-      btn.style.color = '#FF4D6D';
-      btn.style.borderColor = 'rgba(255,77,109,0.3)';
-      if(info) info.textContent = user.displayName || user.email;
+      btn.textContent = '☁️ ' + (user.displayName?.split(' ')[0] || 'Акаунт') + ' · Вийти';
+      btn.style.cssText = 'font-size:11px;font-weight:700;padding:5px 13px;border-radius:20px;border:1px solid rgba(255,77,109,0.3);background:rgba(255,77,109,0.1);color:#FF4D6D;cursor:pointer;font-family:DM Sans,sans-serif';
+      if(info) info.textContent = '☁️ Синхронізація увімкнена';
+      if(info) info.style.color = 'var(--g)';
     } else {
       btn.textContent = '☁️ Увійти через Google';
-      btn.style.background = 'rgba(0,255,178,0.1)';
-      btn.style.color = 'var(--g)';
-      btn.style.borderColor = 'rgba(0,255,178,0.25)';
-      if(info) info.textContent = 'Не авторизовано';
+      btn.style.cssText = 'font-size:11px;font-weight:700;padding:5px 13px;border-radius:20px;border:1px solid rgba(0,255,178,0.25);background:rgba(0,255,178,0.1);color:var(--g,#00FFB2);cursor:pointer;font-family:DM Sans,sans-serif';
+      if(info) info.textContent = 'Дані зберігаються тільки локально';
     }
   }
 
-  window.fbLogin = async function() {
+  function fbLogin() {
     if(currentUser) {
-      await signOut(auth);
-      showFBToast('Вийшли з акаунту');
+      auth.signOut().then(() => fbToast('Вийшли з акаунту'));
     } else {
-      try {
-        await signInWithPopup(auth, provider);
-        showFBToast('✅ Успішно увійшли!');
-      } catch(e) {
-        showFBToast('❌ ' + e.message);
-      }
+      auth.signInWithPopup(provider)
+        .then(() => fbToast('✅ Увійшли! Дані синхронізуються'))
+        .catch(e => fbToast('❌ ' + e.message));
     }
-  };
+  }
 
-  // ---- SAVE TO CLOUD ----
-  window.saveToCloud = async function(key, data) {
+  // ---- CLOUD SAVE/LOAD ----
+  async function saveToCloud(key, data) {
     if(!userId) return false;
     try {
-      await setDoc(doc(db, 'users', userId, 'data', key), { value: JSON.stringify(data), updated: Date.now() });
+      await db.collection('users').doc(userId).collection('data').doc(key).set({
+        value: JSON.stringify(data), updated: Date.now()
+      });
       return true;
     } catch(e) { console.error('Save error:', e); return false; }
-  };
+  }
 
-  window.loadFromCloud = async function(uid) {
-    const uId = uid || userId;
-    if(!uId) return;
+  async function loadFromCloud(uid) {
     try {
-      // Load API key
-      const apiDoc = await getDoc(doc(db, 'users', uId, 'data', 'apikey'));
-      if(apiDoc.exists()) {
+      // API key
+      const apiDoc = await db.collection('users').doc(uid).collection('data').doc('apikey').get();
+      if(apiDoc.exists) {
         const key = JSON.parse(apiDoc.data().value);
         localStorage.setItem('mozgai_apikey', key);
+        gApiKey = key;
         const el = document.getElementById('gApiKey');
         if(el) el.value = key;
-        showGStatus('✅ Ключ завантажено з хмари', true);
+        if(typeof showGStatus === 'function') showGStatus('✅ Ключ завантажено з хмари ☁️', true);
       }
 
-      // Load analytics
-      const anDoc = await getDoc(doc(db, 'users', uId, 'data', 'analytics'));
-      if(anDoc.exists()) {
-        window.anData = JSON.parse(anDoc.data().value);
-        renderAnalytics();
+      // Analytics
+      const anDoc = await db.collection('users').doc(uid).collection('data').doc('analytics').get();
+      if(anDoc.exists) {
+        anData = JSON.parse(anDoc.data().value);
+        if(typeof renderAnalytics === 'function') renderAnalytics();
       }
 
-      // Load chat history
-      const chatDoc = await getDoc(doc(db, 'users', uId, 'data', 'chatHistory'));
-      if(chatDoc.exists()) {
+      // Chat history
+      const chatDoc = await db.collection('users').doc(uid).collection('data').doc('chatHistory').get();
+      if(chatDoc.exists) {
         const saved = JSON.parse(chatDoc.data().value);
-        window.chatHistory = saved.history || [];
-        if(saved.messages) {
+        if(saved.history) chatHistory = saved.history;
+        if(saved.messages && document.getElementById('chatMessages')) {
           document.getElementById('chatMessages').innerHTML = saved.messages;
         }
       }
 
-      // Load custom prompts
-      const promptDoc = await getDoc(doc(db, 'users', uId, 'data', 'customPrompts'));
-      if(promptDoc.exists()) {
-        window.customPrompts = JSON.parse(promptDoc.data().value);
-        showFBToast('☁️ Дані завантажено з хмари');
-      }
-
+      fbToast('☁️ Дані завантажено з хмари');
     } catch(e) { console.error('Load error:', e); }
-  };
+  }
 
-  // ---- CLOUD SYNC WRAPPERS ----
-  // Override saveAnalytics to also sync
-  const origSaveAnalytics = window.saveAnalytics;
-  window.saveAnalyticsCloud = async function() {
-    if(window.saveAnalytics) window.saveAnalytics();
-    if(userId) {
-      await window.saveToCloud('analytics', window.anData || []);
-      showFBToast('☁️ Аналітику збережено');
-    }
-  };
+  // ---- PATCHED SAVE FUNCTIONS ----
+  function saveAnalyticsCloud() {
+    if(typeof saveAnalytics === 'function') saveAnalytics();
+    if(userId) saveToCloud('analytics', anData || []).then(() => fbToast('☁️ Аналітику збережено'));
+  }
 
-  // Save API key to cloud when saved
-  window.saveApiKeyCloud = async function() {
-    if(window.gSaveKey) window.gSaveKey();
-    if(userId) {
-      const key = localStorage.getItem('mozgai_apikey');
-      if(key) {
-        await window.saveToCloud('apikey', key);
-        showFBToast('☁️ Ключ збережено в хмарі');
-      }
-    }
-  };
+  function saveApiKeyCloud() {
+    if(typeof gSaveKey === 'function') gSaveKey();
+    const key = localStorage.getItem('mozgai_apikey');
+    if(userId && key) saveToCloud('apikey', key).then(() => fbToast('☁️ Ключ збережено в хмарі'));
+  }
 
-  // Save chat to cloud
-  window.saveChatToCloud = async function() {
+  function saveChatToCloud() {
     if(!userId) return;
     const messages = document.getElementById('chatMessages')?.innerHTML || '';
-    await window.saveToCloud('chatHistory', {
-      history: window.chatHistory || [],
-      messages: messages,
-      updated: Date.now()
-    });
-  };
+    saveToCloud('chatHistory', { history: chatHistory || [], messages, updated: Date.now() });
+  }
 
-  function showFBToast(msg) {
+  function fbToast(msg) {
     const t = document.getElementById('toast');
     if(!t) return;
     const orig = t.textContent;
@@ -160,13 +129,11 @@
     t.style.transform = 'translateX(-50%) translateY(0)';
     setTimeout(() => {
       t.style.transform = 'translateX(-50%) translateY(80px)';
-      setTimeout(() => t.textContent = orig, 400);
+      setTimeout(() => { t.textContent = orig; }, 400);
     }, 2500);
   }
 
   window._fbReady = true;
-  window._db = db;
-  window._auth = auth;
 </script>
 
 <meta charset="UTF-8">
