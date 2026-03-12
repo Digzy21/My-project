@@ -144,21 +144,61 @@
 :root{--bg:#08080F;--s:#111118;--b:rgba(255,255,255,0.07);--g:#00FFB2;--o:#FF6B35;--p:#A78BFA;--y:#FBBF24;--bl:#60A5FA;--t:#E8E8F0;--m:rgba(232,232,240,0.4)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--b);position:sticky;top:0;background:var(--bg);z-index:100}
-.logo{font-family:'Syne',sans-serif;font-weight:900;font-size:15px}.logo span{color:var(--g)}
-.nt{display:flex;gap:2px;overflow-x:auto}.nt::-webkit-scrollbar{display:none}
-.nb{background:none;border:none;cursor:pointer;padding:6px 10px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--m);border-radius:7px;transition:all 0.2s;white-space:nowrap}
-.nb.active{background:rgba(255,255,255,0.08);color:#fff;font-weight:700}
-.stats{padding:12px 16px 0}
-.xpc{background:var(--s);border:1px solid var(--b);border-radius:13px;padding:12px 15px;margin-bottom:7px}
-.xpr{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
-.lvl{font-family:'Syne',sans-serif;font-weight:900;font-size:11px;color:var(--g);background:rgba(0,255,178,0.1);border:1px solid rgba(0,255,178,0.2);padding:3px 9px;border-radius:20px}
-.xptrack{height:5px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden}
-.xpfill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--g),#00E5FF);transition:width 0.8s cubic-bezier(.34,1.56,.64,1)}
-.srow{display:flex;gap:5px;margin-bottom:4px}
-.sc{flex:1;background:var(--s);border:1px solid var(--b);border-radius:11px;padding:9px 11px;display:flex;align-items:center;gap:7px}
-.sv{font-family:'Syne',sans-serif;font-weight:900;font-size:16px;line-height:1}
-.sl{font-size:9px;color:var(--m);margin-top:1px}
+.nav{display:none}
+/* ===== SIDEBAR (desktop) ===== */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:rgba(8,8,15,0.98);border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;z-index:100;backdrop-filter:blur(20px);transition:transform 0.3s}
+.sb-logo{padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.sb-logo-txt{font-family:'Syne',sans-serif;font-weight:900;font-size:20px}
+.sb-logo-txt span{color:var(--g)}
+.sb-auth{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:8px}
+.sb-auth-info{font-size:11px;color:var(--m);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-auth-btn{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;border:1px solid rgba(0,255,178,0.25);background:rgba(0,255,178,0.08);color:var(--g);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0}
+.sb-sections{flex:1;overflow-y:auto;padding:10px 0}
+.sb-sections::-webkit-scrollbar{width:2px}.sb-sections::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08)}
+.sb-section{margin-bottom:4px}
+.sb-section-hd{padding:8px 18px 4px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.2);letter-spacing:1.5px;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;border:none;background:none;width:100%;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,0.5);border-radius:0;transition:all 0.15s;text-align:left;position:relative}
+.sb-item:hover{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.85)}
+.sb-item.active{background:rgba(0,255,178,0.08);color:var(--g)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--g);border-radius:0 3px 3px 0}
+.sb-item .sb-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.sb-item .sb-label{flex:1}
+.sb-item .sb-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;background:rgba(0,255,178,0.15);color:var(--g)}
+.sb-xp{padding:14px 16px;border-top:1px solid rgba(255,255,255,0.06);font-size:11px;color:var(--m)}
+.sb-xp-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin-top:6px;overflow:hidden}
+.sb-xp-fill{height:100%;background:var(--g);border-radius:2px;transition:width 0.5s ease}
+/* Main content offset on desktop */
+.main-wrap{margin-left:220px;min-height:100vh}
+/* BOTTOM NAV (mobile only, hidden on desktop) */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,15,0.97);border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100;backdrop-filter:blur(20px)}
+.bntab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 10px;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;min-width:52px;transition:all 0.2s;border-radius:12px}
+.bntab .bni{font-size:22px;line-height:1;transition:transform 0.2s}
+.bntab .bnl{font-size:10px;color:rgba(255,255,255,0.35);font-weight:600;transition:color 0.2s;white-space:nowrap}
+.bntab.active .bni{transform:scale(1.15)}
+.bntab.active .bnl{color:var(--g)}
+.subnav{position:fixed;bottom:calc(64px + env(safe-area-inset-bottom));left:0;right:0;background:rgba(10,10,18,0.98);border-top:1px solid rgba(255,255,255,0.06);padding:10px 12px;display:none;gap:6px;overflow-x:auto;z-index:99;backdrop-filter:blur(20px)}
+.subnav.open{display:flex}
+.subnav::-webkit-scrollbar{display:none}
+.sntab{flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all 0.2s}
+.sntab.active{background:rgba(0,255,178,0.12);border-color:rgba(0,255,178,0.3);color:var(--g)}
+/* TOP BAR (mobile only) */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--b);background:rgba(8,8,15,0.95);z-index:50;backdrop-filter:blur(10px)}
+.topbar-logo{font-family:'Syne',sans-serif;font-weight:900;font-size:18px}
+.topbar-logo span{color:var(--g)}
+.content-area{padding-bottom:calc(120px + env(safe-area-inset-bottom));padding-top:0}
+/* RESPONSIVE */
+@media(min-width:768px){
+  .bnav{display:none}
+  .subnav{display:none!important}
+  .topbar{display:none}
+  .main-wrap{margin-left:220px}
+  .content-area{padding-bottom:24px}
+  .sidebar{transform:translateX(0)}
+}
+@media(max-width:767px){
+  .sidebar{display:none}
+  .main-wrap{margin-left:0}
+}
 .page{display:none;padding:12px 16px 80px}.page.active{display:block}
 .ptitle{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;margin-bottom:3px}
 .psub{font-size:12px;color:var(--m);margin-bottom:16px;line-height:1.5}
@@ -256,33 +296,75 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-he
 </style>
 </head>
 <body>
-<div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(0,0,0,0.2)">
-  <div style="flex:1;font-size:11px;color:var(--m)" id="authInfo">Не авторизовано</div>
-  <button id="authBtn" onclick="fbLogin()" style="font-size:11px;font-weight:700;padding:5px 13px;border-radius:20px;border:1px solid rgba(0,255,178,0.25);background:rgba(0,255,178,0.1);color:var(--g);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s">☁️ Увійти через Google</button>
-</div>
 
-<div class="nav">
-  <div class="logo">мозг<span>·</span>ai</div>
-  <div class="nt">
-    <button class="nb active" onclick="showPage('quests',this)">⚔️</button>
-    <button class="nb" onclick="showPage('scenarios',this)">📝</button>
-    <button class="nb" onclick="showPage('ready',this)">🎬</button>
-    <button class="nb" onclick="showPage('topics',this)">🔥</button>
-    <button class="nb" onclick="showPage('tg',this)">✈️ TG</button>
-    <button class="nb" onclick="showPage('quiz',this)">🧠 Квіз</button>
-    <button class="nb" onclick="showPage('mono',this)">💰 UA</button>
-    <button class="nb" onclick="showPage('stock',this)">📦</button>
-    <button class="nb" onclick="showPage('covers',this)">🖼</button>
-    <button class="nb" onclick="showPage('storyboard',this)">🎬 Кадри</button>
-    <button class="nb" onclick="showPage('calendar',this)">🗓 План</button>
-    <button class="nb" onclick="showPage('translate',this)">🔄 UA→RU</button>
-    <button class="nb" onclick="showPage('hooks',this)">🎯 Хуки</button>
-    <button class="nb" onclick="showPage('analytics',this)">📊 Ріст</button>
-    <button class="nb" onclick="showPage('aichat',this)" style="color:var(--y);font-weight:700">💬 Чат</button>
-    <button class="nb" onclick="showPage('aianalysis',this)">🔬 Аналіз</button>
-    <button class="nb" onclick="showPage('generator',this)" style="color:var(--g);font-weight:700">🤖 AI</button>
+<!-- SIDEBAR (desktop) -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-txt">мозок<span>·</span>ai</div>
+    <div style="font-size:11px;color:var(--m);margin-top:2px">Контент-інструменти</div>
+  </div>
+  <div class="sb-auth">
+    <div class="sb-auth-info" id="authInfo">Не авторизовано</div>
+    <button class="sb-auth-btn" id="authBtn" onclick="fbLogin()">☁️ Увійти</button>
+  </div>
+  <div class="sb-sections">
+    <div class="sb-section">
+      <div class="sb-section-hd">Головна</div>
+      <button class="sb-item active" onclick="showPage('quests',this)"><span class="sb-icon">⚔️</span><span class="sb-label">Квести</span><span class="sb-badge" id="xpBadgeSb">XP</span></button>
+      <button class="sb-item" onclick="showPage('tg',this)"><span class="sb-icon">✈️</span><span class="sb-label">Telegram план</span></button>
+      <button class="sb-item" onclick="showPage('quiz',this)"><span class="sb-icon">🧠</span><span class="sb-label">Квіз</span></button>
+      <button class="sb-item" onclick="showPage('mono',this)"><span class="sb-icon">💰</span><span class="sb-label">Монетизація UA</span></button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-hd">AI Генерація</div>
+      <button class="sb-item" onclick="showPage('generator',this)"><span class="sb-icon">🤖</span><span class="sb-label">AI Генератор</span></button>
+      <button class="sb-item" onclick="showPage('hooks',this)"><span class="sb-icon">🎯</span><span class="sb-label">Хуки</span></button>
+      <button class="sb-item" onclick="showPage('translate',this)"><span class="sb-icon">🔄</span><span class="sb-label">UA → RU</span></button>
+      <button class="sb-item" onclick="showPage('aichat',this)"><span class="sb-icon">💬</span><span class="sb-label">AI Аналітик</span></button>
+      <button class="sb-item" onclick="showPage('aianalysis',this)"><span class="sb-icon">🔬</span><span class="sb-label">Аналіз тексту</span></button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-hd">Відео</div>
+      <button class="sb-item" onclick="showPage('ready',this)"><span class="sb-icon">🎬</span><span class="sb-label">Сценарії</span></button>
+      <button class="sb-item" onclick="showPage('topics',this)"><span class="sb-icon">🔥</span><span class="sb-label">Теми</span></button>
+      <button class="sb-item" onclick="showPage('storyboard',this)"><span class="sb-icon">📽</span><span class="sb-label">Розкадровка</span></button>
+      <button class="sb-item" onclick="showPage('scenarios',this)"><span class="sb-icon">📝</span><span class="sb-label">Шаблони</span></button>
+      <button class="sb-item" onclick="showPage('stock',this)"><span class="sb-icon">📦</span><span class="sb-label">Стоки</span></button>
+      <button class="sb-item" onclick="showPage('covers',this)"><span class="sb-icon">🖼</span><span class="sb-label">Обкладинки</span></button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-hd">Планування</div>
+      <button class="sb-item" onclick="showPage('calendar',this)"><span class="sb-icon">🗓</span><span class="sb-label">Контент-план</span></button>
+      <button class="sb-item" onclick="showPage('analytics',this)"><span class="sb-icon">📊</span><span class="sb-label">Ріст каналу</span></button>
+    </div>
+  </div>
+  <div class="sb-xp">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span id="lvlBadgeSb" style="font-size:11px;font-weight:700;color:var(--g)">⚡ Рівень 1</span>
+      <span id="xpLblSb" style="font-size:10px">0 XP</span>
+    </div>
+    <div class="sb-xp-bar"><div class="sb-xp-fill" id="xpFillSb" style="width:0%"></div></div>
   </div>
 </div>
+
+<!-- MOBILE TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">мозок<span>·</span>ai</div>
+  <button id="authBtn" onclick="fbLogin()" style="font-size:10px;font-weight:700;padding:5px 11px;border-radius:20px;border:1px solid rgba(0,255,178,0.25);background:rgba(0,255,178,0.08);color:var(--g);cursor:pointer;font-family:'DM Sans',sans-serif">☁️ Google</button>
+</div>
+
+<!-- SUB NAV (mobile) -->
+<div class="subnav" id="subnav"></div>
+
+<!-- BOTTOM NAV (mobile) -->
+<div class="bnav">
+  <button class="bntab active" id="bn-home" onclick="switchSection('home',this)"><span class="bni">🏠</span><span class="bnl">Головна</span></button>
+  <button class="bntab" id="bn-create" onclick="switchSection('create',this)"><span class="bni">🤖</span><span class="bnl">Створити</span></button>
+  <button class="bntab" id="bn-video" onclick="switchSection('video',this)"><span class="bni">🎬</span><span class="bnl">Відео</span></button>
+  <button class="bntab" id="bn-chat" onclick="switchSection('chat',this)"><span class="bni">💬</span><span class="bnl">AI Чат</span></button>
+  <button class="bntab" id="bn-data" onclick="switchSection('data',this)"><span class="bni">📊</span><span class="bnl">Дані</span></button>
+</div>
+
 
 <div class="stats">
   <div class="xpc">
@@ -1170,6 +1252,7 @@ AI-алгоритми магазинів знають коли ти втомле
   </div>
 </div>
 
+</div><!-- /main-wrap -->
 <div class="ovl" id="ovl" onclick="cPop()"></div>
 <div class="popup" id="popup">
   <div style="font-size:40px;margin-bottom:8px" id="pEmoji">🎉</div>
@@ -2419,6 +2502,125 @@ function copyNear(btn) {
     showToast();
     setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied');},2000);
   });
+}
+
+
+// ===== BOTTOM NAV SECTIONS =====
+const SECTIONS = {
+  home: [
+    {id:'quests', label:'⚔️ Квести'},
+    {id:'tg', label:'✈️ Telegram'},
+    {id:'quiz', label:'🧠 Квіз'},
+    {id:'mono', label:'💰 Монетизація'},
+    {id:'calendar', label:'🗓 Контент-план'},
+  ],
+  create: [
+    {id:'generator', label:'🤖 AI Генератор'},
+    {id:'hooks', label:'🎯 Хуки'},
+    {id:'translate', label:'🔄 UA→RU'},
+    {id:'scenarios', label:'📝 Шаблони'},
+  ],
+  video: [
+    {id:'ready', label:'🎬 Сценарії'},
+    {id:'topics', label:'🔥 Теми'},
+    {id:'storyboard', label:'📽 Розкадровка'},
+    {id:'stock', label:'📦 Стоки'},
+    {id:'covers', label:'🖼 Обкладинки'},
+  ],
+  chat: [
+    {id:'aichat', label:'💬 AI Аналітик'},
+    {id:'aianalysis', label:'🔬 Аналіз тексту'},
+  ],
+  data: [
+    {id:'analytics', label:'📊 Ріст каналу'},
+    {id:'calendar', label:'🗓 Контент-план'},
+  ]
+};
+
+let currentSection = 'home';
+
+function switchSection(section, btn) {
+  currentSection = section;
+
+  // Update bottom nav active state
+  document.querySelectorAll('.bntab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Build subnav
+  const subnav = document.getElementById('subnav');
+  const tabs = SECTIONS[section] || [];
+  subnav.innerHTML = tabs.map(t =>
+    `<button class="sntab" onclick="showPageFromSub('${t.id}',this)">${t.label}</button>`
+  ).join('');
+  subnav.classList.add('open');
+
+  // Auto-show first tab
+  if(tabs.length > 0) {
+    showPageFromSub(tabs[0].id, subnav.querySelector('.sntab'));
+  }
+}
+
+function showPageFromSub(pageId, btn) {
+  // Update subnav active
+  document.querySelectorAll('.sntab').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // Show page
+  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+  const page = document.getElementById('page-' + pageId);
+  if(page) page.style.display = 'block';
+}
+
+// Override old showPage to work with new nav
+function showPage(id, el) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+  const page = document.getElementById('page-' + id);
+  if(page) page.style.display = 'block';
+  // Update sidebar active
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  const sbItems = document.querySelectorAll('.sb-item');
+  sbItems.forEach(b => { if(b.getAttribute('onclick')?.includes("'"+id+"'")) b.classList.add('active'); });
+  // Mobile: update bottom nav + subnav
+  for(const [sec, tabs] of Object.entries(SECTIONS)) {
+    if(tabs.find(t => t.id === id)) {
+      document.querySelectorAll('.bntab').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById('bn-' + sec);
+      if(btn) btn.classList.add('active');
+      const subnav = document.getElementById('subnav');
+      if(subnav) {
+        subnav.innerHTML = tabs.map(t =>
+          `<button class="sntab${t.id===id?' active':''}" onclick="showPage('${t.id}',this)">${t.label}</button>`
+        ).join('');
+        subnav.classList.add('open');
+      }
+      break;
+    }
+  }
+  syncXPSidebar();
+}
+
+// Init: show home section
+document.addEventListener('DOMContentLoaded', () => {
+  switchSection('home', document.getElementById('bn-home'));
+});
+
+
+// Sync XP to sidebar
+function syncXPSidebar() {
+  const lvlBadge = document.getElementById('lvlBadgeSb');
+  const xpLbl = document.getElementById('xpLblSb');
+  const fill = document.getElementById('xpFillSb');
+  const badge = document.getElementById('xpBadgeSb');
+  if(!lvlBadge) return;
+  const levels = [{n:'Новачок',m:0},{n:'Учень',m:200},{n:'Практик',m:500},{n:'Майстер',m:1000},{n:'Легенда',m:2000}];
+  const li = levels.findIndex((l,i)=>S.xp<(levels[i+1]?.m||Infinity));
+  const lv = levels[Math.max(0,li)];
+  const nx = levels[li+1];
+  const pct = nx ? Math.round((S.xp-lv.m)/(nx.m-lv.m)*100) : 100;
+  lvlBadge.textContent = '⚡ ' + lv.n;
+  xpLbl.textContent = S.xp + ' XP';
+  if(fill) fill.style.width = pct + '%';
+  if(badge) badge.textContent = S.xp + ' XP';
 }
 
 </script>
