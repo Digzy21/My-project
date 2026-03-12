@@ -3,402 +3,366 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Мозг·AI — Штаб Создателя</title>
+<title>Мозг·AI — Штаб Створювача</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#08080F;--surface:#111118;--border:rgba(255,255,255,0.07);--green:#00FFB2;--orange:#FF6B35;--purple:#A78BFA;--yellow:#FBBF24;--blue:#60A5FA;--text:#E8E8F0;--muted:rgba(232,232,240,0.4)}
+:root{--bg:#08080F;--s:#111118;--b:rgba(255,255,255,0.07);--g:#00FFB2;--o:#FF6B35;--p:#A78BFA;--y:#FBBF24;--bl:#60A5FA;--t:#E8E8F0;--m:rgba(232,232,240,0.4)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100}
-.logo{font-family:'Syne',sans-serif;font-weight:900;font-size:16px}.logo span{color:var(--green)}
-.nav-tabs{display:flex;gap:3px;overflow-x:auto}.nav-tabs::-webkit-scrollbar{display:none}
-.nb{background:none;border:none;cursor:pointer;padding:7px 11px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--muted);border-radius:8px;transition:all 0.2s;white-space:nowrap}
+body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--b);position:sticky;top:0;background:var(--bg);z-index:100}
+.logo{font-family:'Syne',sans-serif;font-weight:900;font-size:15px}.logo span{color:var(--g)}
+.nt{display:flex;gap:2px;overflow-x:auto}.nt::-webkit-scrollbar{display:none}
+.nb{background:none;border:none;cursor:pointer;padding:6px 10px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--m);border-radius:7px;transition:all 0.2s;white-space:nowrap}
 .nb.active{background:rgba(255,255,255,0.08);color:#fff;font-weight:700}
-.stats{padding:14px 18px 0}
-.xpc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin-bottom:8px}
-.xpr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.lvl{font-family:'Syne',sans-serif;font-weight:900;font-size:11px;color:var(--green);background:rgba(0,255,178,0.1);border:1px solid rgba(0,255,178,0.2);padding:3px 10px;border-radius:20px}
-.xpn{font-size:11px;color:var(--muted)}
-.xptrack{height:6px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden}
-.xpfill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--green),#00E5FF);transition:width 0.8s cubic-bezier(.34,1.56,.64,1)}
-.srow{display:flex;gap:6px;margin-bottom:4px}
-.sc{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px}
-.sv{font-family:'Syne',sans-serif;font-weight:900;font-size:17px;line-height:1}
-.sl{font-size:10px;color:var(--muted);margin-top:1px}
-.page{display:none;padding:14px 18px 80px}.page.active{display:block}
-.ptitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px}
-.psub{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.5}
-.slbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:10px;margin-top:18px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:14px 16px;margin-bottom:9px}
-.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600}
-.frow{display:flex;gap:5px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}.frow::-webkit-scrollbar{display:none}
-.pill{background:none;border:1px solid var(--border);color:var(--muted);font-size:11px;font-family:'DM Sans',sans-serif;padding:6px 13px;border-radius:20px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.stats{padding:12px 16px 0}
+.xpc{background:var(--s);border:1px solid var(--b);border-radius:13px;padding:12px 15px;margin-bottom:7px}
+.xpr{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.lvl{font-family:'Syne',sans-serif;font-weight:900;font-size:11px;color:var(--g);background:rgba(0,255,178,0.1);border:1px solid rgba(0,255,178,0.2);padding:3px 9px;border-radius:20px}
+.xptrack{height:5px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden}
+.xpfill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--g),#00E5FF);transition:width 0.8s cubic-bezier(.34,1.56,.64,1)}
+.srow{display:flex;gap:5px;margin-bottom:4px}
+.sc{flex:1;background:var(--s);border:1px solid var(--b);border-radius:11px;padding:9px 11px;display:flex;align-items:center;gap:7px}
+.sv{font-family:'Syne',sans-serif;font-weight:900;font-size:16px;line-height:1}
+.sl{font-size:9px;color:var(--m);margin-top:1px}
+.page{display:none;padding:12px 16px 80px}.page.active{display:block}
+.ptitle{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;margin-bottom:3px}
+.psub{font-size:12px;color:var(--m);margin-bottom:16px;line-height:1.5}
+.slbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:9px;margin-top:16px}
+.card{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:13px 15px;margin-bottom:8px}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
+.frow{display:flex;gap:5px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}.frow::-webkit-scrollbar{display:none}
+.pill{background:none;border:1px solid var(--b);color:var(--m);font-size:11px;font-family:'DM Sans',sans-serif;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .pill.active{background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(255,255,255,0.15);font-weight:700}
-.acc{border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:9px}
-.acch{padding:13px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;background:rgba(255,255,255,0.02);transition:background 0.2s;gap:8px}
+.acc{border:1px solid var(--b);border-radius:12px;overflow:hidden;margin-bottom:8px}
+.acch{padding:12px 15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;background:rgba(255,255,255,0.02);transition:background 0.2s;gap:8px}
 .acch:hover{background:rgba(255,255,255,0.04)}
-.acca{transition:transform 0.25s;font-size:11px;color:var(--muted);flex-shrink:0}
-.accb{display:none;padding:0 16px 14px}.accb.open{display:block}
-.scblock{border-radius:11px;padding:13px;margin-bottom:11px}
-.scline{display:flex;gap:9px;margin-bottom:7px;align-items:flex-start}
-.sctag{font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 6px;border-radius:5px;flex-shrink:0;margin-top:2px;min-width:56px;text-align:center}
+.acca{transition:transform 0.25s;font-size:11px;color:var(--m);flex-shrink:0}
+.accb{display:none;padding:0 15px 13px}.accb.open{display:block}
+.scblock{border-radius:10px;padding:12px;margin-bottom:10px}
+.scline{display:flex;gap:8px;margin-bottom:7px;align-items:flex-start}
+.sctag{font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 6px;border-radius:5px;flex-shrink:0;margin-top:2px;min-width:54px;text-align:center}
 .sctext{font-size:12px;color:rgba(255,255,255,0.65);line-height:1.6}
-.rsc{border-radius:14px;overflow:hidden;margin-bottom:13px}
-.rsch{padding:15px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px}
+.rsc{border-radius:13px;overflow:hidden;margin-bottom:12px}
+.rsch{padding:13px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:9px}
 .rsct{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;line-height:1.3}
-.rscm{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
-.rscb{display:none;padding:0 16px 16px}.rscb.open{display:block}
-.stext{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:11px;padding:14px;font-size:13px;color:rgba(255,255,255,0.8);line-height:1.85;white-space:pre-wrap;margin-bottom:11px}
-.ttsp{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.06);border-radius:11px;padding:13px}
-.ttsctrl{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}
-.ttsplay{background:var(--green);color:#000;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:8px 16px;border-radius:9px;transition:all 0.2s}
-.ttsplay:hover{background:#00e0a0}
-.ttsstop{background:rgba(255,255,255,0.07);color:var(--text);border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:12px;padding:8px 14px;border-radius:9px;cursor:pointer}
-.spsel{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:11px;padding:7px 9px;border-radius:9px;cursor:pointer}
-.ttsprog{height:4px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-bottom:8px}
-.ttsbar{height:100%;background:var(--green);border-radius:4px;width:0%;transition:width 0.3s}
-.cbtn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--muted);font-size:11px;padding:5px 11px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.rscm{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.rscb{display:none;padding:0 15px 15px}.rscb.open{display:block}
+.stext{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:13px;font-size:13px;color:rgba(255,255,255,0.8);line-height:1.85;white-space:pre-wrap;margin-bottom:10px}
+.ttsp{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px}
+.ttsctrl{display:flex;align-items:center;gap:7px;margin-bottom:8px;flex-wrap:wrap}
+.ttsplay{background:var(--g);color:#000;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;transition:all 0.2s}
+.ttsstop{background:rgba(255,255,255,0.07);color:var(--t);border:1px solid var(--b);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 12px;border-radius:8px;cursor:pointer}
+.spsel{background:rgba(255,255,255,0.05);border:1px solid var(--b);color:var(--t);font-family:'DM Sans',sans-serif;font-size:11px;padding:6px 8px;border-radius:8px;cursor:pointer}
+.ttsprog{height:3px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-bottom:7px}
+.ttsbar{height:100%;background:var(--g);border-radius:3px;width:0%;transition:width 0.3s}
+.cbtn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--m);font-size:11px;padding:5px 10px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
 .cbtn:hover{background:rgba(255,255,255,0.1);color:#fff}
-.cbtn.copied{background:rgba(0,255,178,0.15);color:var(--green);border-color:rgba(0,255,178,0.3)}
-.pbox{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:13px;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.7;font-family:monospace;white-space:pre-wrap;word-break:break-word;margin-top:7px}
-.tag{display:inline-block;font-size:11px;padding:4px 9px;border-radius:20px;margin:3px;cursor:pointer;transition:all 0.15s}
+.cbtn.copied{background:rgba(0,255,178,0.15);color:var(--g);border-color:rgba(0,255,178,0.3)}
+.pbox{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:9px;padding:12px;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.7;font-family:monospace;white-space:pre-wrap;word-break:break-word;margin-top:6px}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;margin:2px;cursor:pointer;transition:all 0.15s}
 .tag:hover{transform:scale(1.05)}
-.tg{background:rgba(0,255,178,0.1);color:var(--green);border:1px solid rgba(0,255,178,0.2)}
-.to{background:rgba(255,107,53,0.1);color:var(--orange);border:1px solid rgba(255,107,53,0.2)}
-.tp{background:rgba(167,139,250,0.1);color:var(--purple);border:1px solid rgba(167,139,250,0.2)}
-.ty{background:rgba(251,191,36,0.1);color:var(--yellow);border:1px solid rgba(251,191,36,0.2)}
-.tb{background:rgba(96,165,250,0.1);color:var(--blue);border:1px solid rgba(96,165,250,0.2)}
-.quest{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 15px;margin-bottom:9px;cursor:pointer;transition:all 0.2s}
+.tg{background:rgba(0,255,178,0.1);color:var(--g);border:1px solid rgba(0,255,178,0.2)}
+.to{background:rgba(255,107,53,0.1);color:var(--o);border:1px solid rgba(255,107,53,0.2)}
+.tp{background:rgba(167,139,250,0.1);color:var(--p);border:1px solid rgba(167,139,250,0.2)}
+.ty{background:rgba(251,191,36,0.1);color:var(--y);border:1px solid rgba(251,191,36,0.2)}
+.tb{background:rgba(96,165,250,0.1);color:var(--bl);border:1px solid rgba(96,165,250,0.2)}
+.quest{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:all 0.2s}
 .quest:hover{border-color:rgba(255,255,255,0.14);transform:translateY(-1px)}
-.quest.done{opacity:0.4}
-.quest.done .qtitle{text-decoration:line-through}
-.qh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px}
+.quest.done{opacity:0.4}.quest.done .qtitle{text-decoration:line-through}
+.qh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px}
 .qtitle{font-size:13px;font-weight:700;line-height:1.3}
-.qxp{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-.qtime{font-size:11px;color:var(--muted)}
-.qcheck{width:20px;height:20px;border-radius:5px;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all 0.2s;margin-top:1px}
-.quest.done .qcheck{background:var(--green);border-color:var(--green);color:#000}
-.rw{position:relative;width:52px;height:52px;flex-shrink:0}
+.qxp{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.qtime{font-size:11px;color:var(--m)}
+.qcheck{width:19px;height:19px;border-radius:5px;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all 0.2s;margin-top:1px}
+.quest.done .qcheck{background:var(--g);border-color:var(--g);color:#000}
+/* QUIZ */
+.quiz-card{background:var(--s);border:1px solid var(--b);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.quiz-head{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.quiz-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800}
+.quiz-body{display:none;padding:0 16px 16px}.quiz-body.open{display:block}
+.quiz-q{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.5;color:var(--t)}
+.quiz-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.quiz-opt{background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:11px 14px;cursor:pointer;font-size:13px;transition:all 0.2s;text-align:left;font-family:'DM Sans',sans-serif;color:var(--t)}
+.quiz-opt:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06)}
+.quiz-opt.correct{border-color:var(--g);background:rgba(0,255,178,0.1);color:var(--g)}
+.quiz-opt.wrong{border-color:#FF4D6D;background:rgba(255,77,109,0.1);color:#FF4D6D}
+.quiz-opt.reveal{border-color:var(--g);background:rgba(0,255,178,0.06);color:var(--g)}
+.quiz-exp{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:13px;font-size:13px;color:rgba(255,255,255,0.75);line-height:1.7;display:none}
+.quiz-exp.show{display:block}
+.quiz-next{background:var(--g);color:#000;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:9px 22px;border-radius:10px;cursor:pointer;margin-top:10px;display:none}
+.quiz-next.show{display:inline-block}
+.quiz-score{text-align:center;padding:16px;display:none}
+.quiz-score.show{display:block}
+/* TG TEMPLATES */
+.tgcard{border-radius:13px;overflow:hidden;margin-bottom:11px}
+.tghead{padding:13px 15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.tgtitle{font-family:'Syne',sans-serif;font-size:13px;font-weight:800}
+.tgbody{display:none;padding:0 15px 15px}.tgbody.open{display:block}
+.tgpost{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;font-size:13px;color:rgba(255,255,255,0.8);line-height:1.85;white-space:pre-wrap;margin-bottom:9px}
+/* MONETIZE */
+.mono-stage{display:flex;gap:13px;margin-bottom:16px}
+.mono-line-wrap{display:flex;flex-direction:column;align-items:center}
+.mono-num{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--y);font-weight:700}
+.mono-line{width:1px;flex:1;background:rgba(251,191,36,0.15);margin-top:5px}
+.mono-way{background:rgba(255,255,255,0.03);border-radius:9px;padding:9px 12px;font-size:13px;margin-bottom:5px;color:rgba(255,255,255,0.7)}
+/* COVERS */
+.covers-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
+.cover{aspect-ratio:9/16;border-radius:12px;overflow:hidden;position:relative}
+/* RING */
+.rw{position:relative;width:50px;height:50px;flex-shrink:0}
 .rw svg{transform:rotate(-90deg)}
-.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);background:#111118;border:1px solid rgba(0,255,178,0.3);border-radius:22px;padding:26px 22px;text-align:center;z-index:200;opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(.34,1.56,.64,1);max-width:270px;width:90%}
+/* POPUP */
+.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);background:#111118;border:1px solid rgba(0,255,178,0.3);border-radius:20px;padding:24px 20px;text-align:center;z-index:200;opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(.34,1.56,.64,1);max-width:260px;width:90%}
 .popup.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:all}
 .ovl{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:199;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px)}
 .ovl.show{opacity:1;pointer-events:all}
-#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#000;padding:9px 18px;border-radius:20px;font-size:12px;font-weight:700;transition:transform 0.3s;z-index:999;pointer-events:none;white-space:nowrap}
-.covers-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
-.cover{aspect-ratio:9/16;border-radius:13px;overflow:hidden;position:relative}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--g);color:#000;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;transition:transform 0.3s;z-index:999;pointer-events:none;white-space:nowrap}
 ::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
 </style>
 </head>
 <body>
 <div class="nav">
   <div class="logo">мозг<span>·</span>ai</div>
-  <div class="nav-tabs">
-    <button class="nb active" onclick="showPage('quests',this)">⚔️ Квесты</button>
-    <button class="nb" onclick="showPage('scenarios',this)">📝 Шаблоны</button>
-    <button class="nb" onclick="showPage('ready',this)">🎬 Сценарии</button>
-    <button class="nb" onclick="showPage('topics',this)">🔥 Темы</button>
-    <button class="nb" onclick="showPage('stock',this)">📦 Стоки</button>
-    <button class="nb" onclick="showPage('covers',this)">🖼 Обложки</button>
+  <div class="nt">
+    <button class="nb active" onclick="showPage('quests',this)">⚔️</button>
+    <button class="nb" onclick="showPage('scenarios',this)">📝</button>
+    <button class="nb" onclick="showPage('ready',this)">🎬</button>
+    <button class="nb" onclick="showPage('topics',this)">🔥</button>
+    <button class="nb" onclick="showPage('tg',this)">✈️ TG</button>
+    <button class="nb" onclick="showPage('quiz',this)">🧠 Квіз</button>
+    <button class="nb" onclick="showPage('mono',this)">💰 UA</button>
+    <button class="nb" onclick="showPage('stock',this)">📦</button>
+    <button class="nb" onclick="showPage('covers',this)">🖼</button>
+    <button class="nb" onclick="showPage('storyboard',this)">🎬 Кадри</button>
+    <button class="nb" onclick="showPage('generator',this)" style="color:var(--g);font-weight:700">🤖 AI</button>
   </div>
 </div>
+
 <div class="stats">
   <div class="xpc">
-    <div class="xpr"><div class="lvl" id="lvlBadge">⚡ Уровень 1 · Новичок</div><div class="xpn" id="xpLbl">0/100 XP</div></div>
+    <div class="xpr"><div class="lvl" id="lvlBadge">⚡ Рівень 1 · Новачок</div><div style="font-size:11px;color:var(--m)" id="xpLbl">0/100 XP</div></div>
     <div class="xptrack"><div class="xpfill" id="xpFill" style="width:0%"></div></div>
-    <div style="display:flex;gap:14px;margin-top:7px">
-      <div style="font-size:11px;color:var(--muted)">Видео: <strong id="vCount" style="color:var(--text)">0</strong></div>
-      <div style="font-size:11px;color:var(--muted)">XP: <strong id="tXp" style="color:var(--text)">0</strong></div>
-      <div style="font-size:11px;color:var(--muted)">Задач: <strong id="dCount" style="color:var(--text)">0</strong></div>
+    <div style="display:flex;gap:12px;margin-top:6px">
+      <div style="font-size:11px;color:var(--m)">Відео: <strong id="vCount" style="color:var(--t)">0</strong></div>
+      <div style="font-size:11px;color:var(--m)">XP: <strong id="tXp" style="color:var(--t)">0</strong></div>
+      <div style="font-size:11px;color:var(--m)">Завдань: <strong id="dCount" style="color:var(--t)">0</strong></div>
     </div>
   </div>
   <div class="srow">
-    <div class="sc"><div style="font-size:16px">🔥</div><div><div class="sv" style="color:var(--orange)" id="strVal">0</div><div class="sl">дней подряд</div></div></div>
-    <div class="sc"><div style="font-size:16px">✅</div><div><div class="sv" style="color:var(--green)" id="wDone">0/7</div><div class="sl">задач неделя</div></div></div>
-    <div class="sc"><div style="font-size:16px">🎯</div><div><div class="sv" style="color:var(--purple)" id="wXp">0</div><div class="sl">XP неделя</div></div></div>
+    <div class="sc"><div style="font-size:15px">🔥</div><div><div class="sv" style="color:var(--o)" id="strVal">0</div><div class="sl">днів поспіль</div></div></div>
+    <div class="sc"><div style="font-size:15px">✅</div><div><div class="sv" style="color:var(--g)" id="wDone">0/7</div><div class="sl">тиждень</div></div></div>
+    <div class="sc"><div style="font-size:15px">🎯</div><div><div class="sv" style="color:var(--p)" id="wXp">0</div><div class="sl">XP тиждень</div></div></div>
   </div>
 </div>
 
 <!-- QUESTS -->
 <div class="page active" id="page-quests">
-  <div style="background:linear-gradient(135deg,rgba(0,255,178,0.05),rgba(0,229,255,0.02));border:1px solid rgba(0,255,178,0.15);border-radius:13px;padding:13px 15px;margin-bottom:14px;font-size:12px;color:var(--muted);line-height:1.7">
-    Привет 👋 Выбери <strong style="color:var(--green)">1–2 задачи</strong> по настроению. Даже 5 минут — это прогресс.
+  <div style="background:linear-gradient(135deg,rgba(0,255,178,0.05),rgba(0,229,255,0.02));border:1px solid rgba(0,255,178,0.15);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:var(--m);line-height:1.7">
+    Привіт 👋 Обери <strong style="color:var(--g)">1–2 завдання</strong> по настрою. Навіть 5 хвилин — це прогрес.
   </div>
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:14px;display:flex;align-items:center;gap:13px">
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
     <div class="rw">
-      <svg width="52" height="52" viewBox="0 0 52 52">
-        <circle fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="4" cx="26" cy="26" r="22"/>
-        <circle fill="none" stroke="var(--green)" stroke-width="4" stroke-linecap="round" cx="26" cy="26" r="22"
-          stroke-dasharray="138.2" stroke-dashoffset="138.2" id="dRing" style="transition:stroke-dashoffset 0.8s cubic-bezier(.34,1.56,.64,1)"/>
-      </svg>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:900;color:var(--green)" id="dPct">0%</div>
+      <svg width="50" height="50" viewBox="0 0 50 50"><circle fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="4" cx="25" cy="25" r="21"/><circle fill="none" stroke="var(--g)" stroke-width="4" stroke-linecap="round" cx="25" cy="25" r="21" stroke-dasharray="131.9" stroke-dashoffset="131.9" id="dRing" style="transition:stroke-dashoffset 0.8s cubic-bezier(.34,1.56,.64,1)"/></svg>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:900;color:var(--g)" id="dPct">0%</div>
     </div>
-    <div><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:3px">Сегодня</div><div style="font-size:12px;color:var(--muted)" id="dStatus">Выбери задачу и начни</div></div>
+    <div><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:2px">Сьогодні</div><div style="font-size:11px;color:var(--m)" id="dStatus">Обери завдання і починай</div></div>
   </div>
-  <div class="slbl">⚡ Быстрые · 5–15 мин</div>
-  <div class="quest" data-xp="20" onclick="tQ(this)"><div style="display:flex;gap:9px"><div style="flex:1"><div class="qh"><div class="qtitle">Придумай 3 идеи для видео</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--green)">+20 XP</div></div><div class="qtime">⏱ 5 мин · Промпт в «Шаблоны»</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="25" onclick="tQ(this)"><div style="display:flex;gap:9px"><div style="flex:1"><div class="qh"><div class="qtitle">Найди 5 клипов на стоке</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--green)">+25 XP</div></div><div class="qtime">⏱ 10 мин · Теги в «Стоки»</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="30" onclick="tQ(this)"><div style="display:flex;gap:9px"><div style="flex:1"><div class="qh"><div class="qtitle">Сделай обложку в Canva</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--green)">+30 XP</div></div><div class="qtime">⏱ 15 мин · Шаблоны в «Обложки»</div></div><div class="qcheck"></div></div></div>
-  <div class="slbl">🎯 Средние · 20–40 мин</div>
-  <div class="quest" data-xp="50" onclick="tQ(this)"><div style="display:flex;gap:9px"><div style="flex:1"><div class="qh"><div class="qtitle">Напиши сценарий видео</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--purple)">+50 XP</div></div><div class="qtime">⏱ 20 мин · Возьми готовый или шаблон</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="60" onclick="tQ(this)"><div style="display:flex;gap:9px"><div style="flex:1"><div class="qh"><div class="qtitle">Запиши озвучку</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--purple)">+60 XP</div></div><div class="qtime">⏱ 10 мин · Кнопка в «Сценарии»</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="70" onclick="tQ(this)"><div style="display:flex;gap:9px"><div style="flex:1"><div class="qh"><div class="qtitle">Смонтируй черновик в CapCut</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--purple)">+70 XP</div></div><div class="qtime">⏱ 30 мин · Клипы + озвучка + субтитры</div></div><div class="qcheck"></div></div></div>
-  <div class="slbl">🏆 Большие</div>
-  <div class="quest" data-xp="150" data-video="1" onclick="tQ(this)"><div style="display:flex;gap:9px"><div style="flex:1"><div class="qh"><div class="qtitle">🎬 Опубликуй готовое видео</div><div class="qxp" style="background:rgba(255,107,53,0.12);color:var(--orange)">+150 XP</div></div><div class="qtime">⏱ TikTok + Shorts + Telegram</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="100" onclick="tQ(this)"><div style="display:flex;gap:9px"><div style="flex:1"><div class="qh"><div class="qtitle">📊 Посмотри аналитику, запиши вывод</div><div class="qxp" style="background:rgba(255,107,53,0.12);color:var(--orange)">+100 XP</div></div><div class="qtime">⏱ Что зашло? Что повторить?</div></div><div class="qcheck"></div></div></div>
-  <div style="text-align:center;margin-top:18px"><button onclick="resetDay()" style="background:none;border:1px solid rgba(255,255,255,0.08);color:var(--muted);font-size:11px;padding:7px 18px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">🔄 Сбросить день</button></div>
+  <div class="slbl">⚡ Швидкі · 5–15 хв</div>
+  <div class="quest" data-xp="20" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Придумай 3 ідеї для відео</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--g)">+20 XP</div></div><div class="qtime">⏱ 5 хв · Промпт у «Шаблони»</div></div><div class="qcheck"></div></div></div>
+  <div class="quest" data-xp="20" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Напиши 1 пост для Telegram</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--g)">+20 XP</div></div><div class="qtime">⏱ 10 хв · Шаблони в ✈️ TG</div></div><div class="qcheck"></div></div></div>
+  <div class="quest" data-xp="25" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Знайди 5 кліпів на стоці</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--g)">+25 XP</div></div><div class="qtime">⏱ 10 хв · Теги у «Стоки»</div></div><div class="qcheck"></div></div></div>
+  <div class="quest" data-xp="30" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Зроби обкладинку у Canva</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--g)">+30 XP</div></div><div class="qtime">⏱ 15 хв</div></div><div class="qcheck"></div></div></div>
+  <div class="slbl">🎯 Середні · 20–40 хв</div>
+  <div class="quest" data-xp="50" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Напиши сценарій відео</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--p)">+50 XP</div></div><div class="qtime">⏱ 20 хв</div></div><div class="qcheck"></div></div></div>
+  <div class="quest" data-xp="60" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Запиши озвучку</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--p)">+60 XP</div></div><div class="qtime">⏱ 10 хв · ElevenLabs</div></div><div class="qcheck"></div></div></div>
+  <div class="quest" data-xp="70" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Змонтуй чернетку у CapCut</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--p)">+70 XP</div></div><div class="qtime">⏱ 30 хв</div></div><div class="qcheck"></div></div></div>
+  <div class="slbl">🏆 Великі</div>
+  <div class="quest" data-xp="150" data-video="1" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">🎬 Опублікуй готове відео</div><div class="qxp" style="background:rgba(255,107,53,0.12);color:var(--o)">+150 XP</div></div><div class="qtime">⏱ TikTok UA + RU + Shorts UA + RU</div></div><div class="qcheck"></div></div></div>
+  <div class="quest" data-xp="40" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">✈️ Опублікуй 2 пости у Telegram</div><div class="qxp" style="background:rgba(255,107,53,0.12);color:var(--o)">+40 XP</div></div><div class="qtime">⏱ UA + RU канали</div></div><div class="qcheck"></div></div></div>
+  <div class="quest" data-xp="100" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">📊 Переглянь аналітику</div><div class="qxp" style="background:rgba(255,107,53,0.12);color:var(--o)">+100 XP</div></div><div class="qtime">⏱ Що зайшло? Що повторити?</div></div><div class="qcheck"></div></div></div>
+  <div style="text-align:center;margin-top:16px"><button onclick="resetDay()" style="background:none;border:1px solid rgba(255,255,255,0.08);color:var(--m);font-size:11px;padding:6px 16px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">🔄 Скинути день</button></div>
 </div>
 
-<!-- SCENARIOS -->
+<!-- SCENARIOS (TEMPLATES) -->
 <div class="page" id="page-scenarios">
-  <div class="ptitle">Шаблоны</div>
-  <div class="psub">Выбери категорию → открой шаблон → скопируй промпт → вставь тему</div>
+  <div class="ptitle">Шаблони сценаріїв</div>
+  <div class="psub">Обери категорію → відкрий шаблон → скопіюй промпт → встав тему</div>
   <div class="frow">
-    <button class="pill active" onclick="fSc('all',this)">Все</button>
-    <button class="pill" onclick="fSc('psych',this)">🧠 Психология</button>
+    <button class="pill active" onclick="fSc('all',this)">Всі</button>
+    <button class="pill" onclick="fSc('psych',this)">🧠 Психологія</button>
     <button class="pill" onclick="fSc('ai',this)">🤖 AI</button>
-    <button class="pill" onclick="fSc('social',this)">📱 Соцсети</button>
-    <button class="pill" onclick="fSc('money',this)">💸 Деньги</button>
+    <button class="pill" onclick="fSc('social',this)">📱 Соцмережі</button>
+    <button class="pill" onclick="fSc('money',this)">💸 Гроші</button>
   </div>
   <div class="acc sc-tpl" data-cat="psych ai social money">
-    <div class="acch" onclick="tA(this)"><div><div style="font-size:13px;font-weight:700">⚡ Шок-факт · 60 сек</div><div style="display:flex;gap:4px;margin-top:5px"><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--green)">Психология</span><span class="badge" style="background:rgba(167,139,250,0.12);color:var(--purple)">AI</span><span class="badge" style="background:rgba(255,107,53,0.12);color:var(--orange)">Соцсети</span></div></div><span class="acca">▼</span></div>
+    <div class="acch" onclick="tA(this)"><div><div style="font-size:13px;font-weight:700">⚡ Шок-факт · 60 сек</div><div style="display:flex;gap:4px;margin-top:4px"><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--g)">Психологія</span><span class="badge" style="background:rgba(167,139,250,0.12);color:var(--p)">AI</span><span class="badge" style="background:rgba(255,107,53,0.12);color:var(--o)">Соцмережі</span></div></div><span class="acca">▼</span></div>
     <div class="accb">
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Для тем: когнитивные факты, нейронаука, поведение, AI-статистика</div>
+      <div style="font-size:11px;color:var(--m);margin-bottom:7px">Для тем: когнітивні факти, нейронаука, поведінка, AI-статистика</div>
       <div class="scblock" style="background:rgba(0,255,178,0.04);border:1px solid rgba(0,255,178,0.12)">
-        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--green)">КРЮЧОК</span><span class="sctext">«[Шокирующий факт]. Если не знал — смотри до конца.»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--green)">ФАКТ</span><span class="sctext">«Учёные доказали: [факт]. Звучит странно? Объясняю.»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--green)">ПРИМЕР</span><span class="sctext">«Представь: ты [ситуация]. В этот момент мозг [реакция].»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--green)">ВЫВОД</span><span class="sctext">«Что делать: [совет]. Сохрани — пригодится.»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--green)">CTA</span><span class="sctext">«Подпишись — каждый день факт, меняющий взгляд.»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--g)">ГАЧОК</span><span class="sctext">«[Шокуючий факт]. Якщо не знав — дивись до кінця.»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--g)">ФАКТ</span><span class="sctext">«Вчені довели: [факт]. Звучить дивно? Пояснюю.»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--g)">ПРИКЛАД</span><span class="sctext">«Уяви: ти [ситуація]. В цей момент мозок [реакція].»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--g)">ВИСНОВОК</span><span class="sctext">«Що робити: [порада]. Збережи — знадобиться.»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(0,255,178,0.1);color:var(--g)">CTA</span><span class="sctext">«Підпишись — щодня факт, що змінює погляд.»</span></div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:11px;color:var(--muted)">Промпт для Claude:</span><button class="cbtn" onclick="cEl(this,'pt1')">Копировать</button></div>
-      <div class="pbox" id="pt1">Напиши сценарий (60 сек, ~150 слов) на тему: [ТЕМА].
-Структура: крючок → факт → пример из жизни → вывод → CTA
-Тон: умный, но простой. Без воды. Каждое предложение — удар.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span style="font-size:11px;color:var(--m)">Промпт для Claude:</span><button class="cbtn" onclick="cEl(this,'pt1')">Копіювати</button></div>
+      <div class="pbox" id="pt1">Напиши сценарій (60 сек, ~150 слів) на тему: [ТЕМА].
+Структура: гачок → факт → приклад з життя → висновок → CTA
+Тон: розумний, але простий. Без води. Кожне речення — удар.
+Мова: українська (або російська — вкажи потрібну)</div>
     </div>
   </div>
   <div class="acc sc-tpl" data-cat="psych social">
-    <div class="acch" onclick="tA(this)"><div><div style="font-size:13px;font-weight:700">🧪 Когнитивный баг · 90 сек</div><div style="display:flex;gap:4px;margin-top:5px"><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--green)">Психология</span><span class="badge" style="background:rgba(255,107,53,0.12);color:var(--orange)">Соцсети</span></div></div><span class="acca">▼</span></div>
+    <div class="acch" onclick="tA(this)"><div><div style="font-size:13px;font-weight:700">🧪 Когнітивний баг · 90 сек</div><div style="display:flex;gap:4px;margin-top:4px"><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--g)">Психологія</span><span class="badge" style="background:rgba(255,107,53,0.12);color:var(--o)">Соцмережі</span></div></div><span class="acca">▼</span></div>
     <div class="accb">
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Для тем: дофамин, FOMO, эффект якоря, прокрастинация, петли зависимостей</div>
+      <div style="font-size:11px;color:var(--m);margin-bottom:7px">Для тем: дофамін, FOMO, ефект якоря, прокрастинація, петлі залежностей</div>
       <div class="scblock" style="background:rgba(167,139,250,0.04);border:1px solid rgba(167,139,250,0.12)">
-        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--purple)">ЗАДАЧА</span><span class="sctext">«Сделай это прямо сейчас: [действие]. Серьёзно.»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--purple)">РЕАКЦИЯ</span><span class="sctext">«Большинство [результат]. Ты тоже? Не случайно.»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--purple)">ОБЪЯСНЕНИЕ</span><span class="sctext">«Это называется [эффект]. Мозг [механизм].»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--purple)">СВЯЗЬ</span><span class="sctext">«Именно это использует [компания] чтобы [цель].»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--purple)">ЗАЩИТА</span><span class="sctext">«Как не попасться: [лайфхак 1], [лайфхак 2].»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--p)">ЗАВДАННЯ</span><span class="sctext">«Зроби це прямо зараз: [дія]. Серйозно.»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--p)">РЕАКЦІЯ</span><span class="sctext">«Більшість [результат]. Ти теж? Не випадково.»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--p)">ПОЯСНЕННЯ</span><span class="sctext">«Це називається [ефект]. Мозок [механізм].»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--p)">ЗВ'ЯЗОК</span><span class="sctext">«Саме це використовує [компанія] щоб [мета].»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(167,139,250,0.1);color:var(--p)">ЗАХИСТ</span><span class="sctext">«Як не попастися: [лайфхак 1], [лайфхак 2].»</span></div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:11px;color:var(--muted)">Промпт:</span><button class="cbtn" onclick="cEl(this,'pt2')">Копировать</button></div>
-      <div class="pbox" id="pt2">Напиши сценарий (90 сек) про когнитивный баг: [НАЗВАНИЕ ЭФФЕКТА].
-Начни с задания для зрителя → объясни механизм → связь с технологиями → 2 лайфхака → CTA.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span style="font-size:11px;color:var(--m)">Промпт:</span><button class="cbtn" onclick="cEl(this,'pt2')">Копіювати</button></div>
+      <div class="pbox" id="pt2">Напиши сценарій (90 сек) про когнітивний баг: [НАЗВА ЕФЕКТУ].
+Почни із завдання для глядача → поясни механізм → зв'язок з технологіями → 2 лайфхаки → CTA.</div>
     </div>
   </div>
   <div class="acc sc-tpl" data-cat="ai">
-    <div class="acch" onclick="tA(this)"><div><div style="font-size:13px;font-weight:700">🤖 Ты vs AI · Тест · 60 сек</div><div style="display:flex;gap:4px;margin-top:5px"><span class="badge" style="background:rgba(167,139,250,0.12);color:var(--purple)">AI</span></div></div><span class="acca">▼</span></div>
+    <div class="acch" onclick="tA(this)"><div><div style="font-size:13px;font-weight:700">🤖 Ти vs AI · Тест · 60 сек</div><div style="display:flex;gap:4px;margin-top:4px"><span class="badge" style="background:rgba(167,139,250,0.12);color:var(--p)">AI</span></div></div><span class="acca">▼</span></div>
     <div class="accb">
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Для тем: AI-текст, deepfake, AI-арт, AI-голос, AI vs человек</div>
+      <div style="font-size:11px;color:var(--m);margin-bottom:7px">Для тем: AI-текст, deepfake, AI-арт, AI-голос</div>
       <div class="scblock" style="background:rgba(255,107,53,0.04);border:1px solid rgba(255,107,53,0.12)">
-        <div class="scline"><span class="sctag" style="background:rgba(255,107,53,0.1);color:var(--orange)">ВЫЗОВ</span><span class="sctext">«Угадай: это написал человек или AI?»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(255,107,53,0.1);color:var(--orange)">ПАУЗА</span><span class="sctext">«Думай. 3... 2... 1...»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(255,107,53,0.1);color:var(--orange)">ОТВЕТ</span><span class="sctext">«Это [ответ]. Вот как отличить: [признак 1], [признак 2].»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(255,107,53,0.1);color:var(--orange)">ФАКТ</span><span class="sctext">«В 2025 году [статистика]. Через 2 года — [прогноз].»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(255,107,53,0.1);color:var(--o)">ВИКЛИК</span><span class="sctext">«Вгадай: це написала людина чи AI?»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(255,107,53,0.1);color:var(--o)">ПАУЗА</span><span class="sctext">«Думай. 3... 2... 1...»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(255,107,53,0.1);color:var(--o)">ВІДПОВІДЬ</span><span class="sctext">«Це [відповідь]. Ось як відрізнити: [ознака 1], [ознака 2].»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(255,107,53,0.1);color:var(--o)">ФАКТ</span><span class="sctext">«У 2025 році [статистика]. Через 2 роки — [прогноз].»</span></div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:11px;color:var(--muted)">Промпт:</span><button class="cbtn" onclick="cEl(this,'pt3')">Копировать</button></div>
-      <div class="pbox" id="pt3">Создай сценарий теста "Человек или AI?" (60 сек) про: [ОБЛАСТЬ].
-Пример → пауза → ответ + 2 признака → факт о росте AI → CTA.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span style="font-size:11px;color:var(--m)">Промпт:</span><button class="cbtn" onclick="cEl(this,'pt3')">Копіювати</button></div>
+      <div class="pbox" id="pt3">Створи сценарій тесту "Людина чи AI?" (60 сек) про: [ОБЛАСТЬ].
+Приклад → пауза → відповідь + 2 ознаки → факт про зростання AI → CTA.</div>
     </div>
   </div>
   <div class="acc sc-tpl" data-cat="ai social money">
-    <div class="acch" onclick="tA(this)"><div><div style="font-size:13px;font-weight:700">📈 Разбор тренда · 90 сек</div><div style="display:flex;gap:4px;margin-top:5px"><span class="badge" style="background:rgba(167,139,250,0.12);color:var(--purple)">AI</span><span class="badge" style="background:rgba(255,107,53,0.12);color:var(--orange)">Соцсети</span><span class="badge" style="background:rgba(251,191,36,0.12);color:var(--yellow)">Деньги</span></div></div><span class="acca">▼</span></div>
+    <div class="acch" onclick="tA(this)"><div><div style="font-size:13px;font-weight:700">📈 Розбір тренду · 90 сек</div><div style="display:flex;gap:4px;margin-top:4px"><span class="badge" style="background:rgba(167,139,250,0.12);color:var(--p)">AI</span><span class="badge" style="background:rgba(255,107,53,0.12);color:var(--o)">Соцмережі</span><span class="badge" style="background:rgba(251,191,36,0.12);color:var(--y)">Гроші</span></div></div><span class="acca">▼</span></div>
     <div class="accb">
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Для тем: TikTok-зависимость, ChatGPT-хайп, импульсные покупки, вирусный контент</div>
+      <div style="font-size:11px;color:var(--m);margin-bottom:7px">Для тем: TikTok-залежність, ChatGPT-хайп, імпульсні покупки</div>
       <div class="scblock" style="background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.12)">
-        <div class="scline"><span class="sctag" style="background:rgba(251,191,36,0.1);color:var(--yellow)">ТРЕНД</span><span class="sctext">«Все сейчас [делают X]. Мало кто знает почему.»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(251,191,36,0.1);color:var(--yellow)">ПРИЧИНА</span><span class="sctext">«Психологически: [механизм]. Мозг получает [реакция].»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(251,191,36,0.1);color:var(--yellow)">AI УГОЛ</span><span class="sctext">«AI усилил это в [X] раз потому что [алгоритм].»</span></div>
-        <div class="scline"><span class="sctag" style="background:rgba(251,191,36,0.1);color:var(--yellow)">ВЫВОД</span><span class="sctext">«Используй это или стань жертвой — выбор твой.»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(251,191,36,0.1);color:var(--y)">ТРЕНД</span><span class="sctext">«Всі зараз [роблять X]. Мало хто знає чому.»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(251,191,36,0.1);color:var(--y)">ПРИЧИНА</span><span class="sctext">«Психологічно: [механізм]. Мозок отримує [реакція].»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(251,191,36,0.1);color:var(--y)">AI КУТ</span><span class="sctext">«AI посилив це у [X] разів тому що [алгоритм].»</span></div>
+        <div class="scline"><span class="sctag" style="background:rgba(251,191,36,0.1);color:var(--y)">ВИСНОВОК</span><span class="sctext">«Використай це або стань жертвою — твій вибір.»</span></div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:11px;color:var(--muted)">Промпт:</span><button class="cbtn" onclick="cEl(this,'pt4')">Копировать</button></div>
-      <div class="pbox" id="pt4">Напиши разбор тренда (90 сек) про: [ТРЕНД].
-Тренд → психологический механизм → роль AI → практический вывод.
-Тон: умный друг объясняет за кофе.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span style="font-size:11px;color:var(--m)">Промпт:</span><button class="cbtn" onclick="cEl(this,'pt4')">Копіювати</button></div>
+      <div class="pbox" id="pt4">Напиши розбір тренду (90 сек) про: [ТРЕНД].
+Тренд → психологічний механізм → роль AI → практичний висновок.
+Тон: розумний друг пояснює за кавою.</div>
     </div>
   </div>
 </div>
 
 <!-- READY SCENARIOS -->
 <div class="page" id="page-ready">
-  <div class="ptitle">Готовые сценарии</div>
-  <div class="psub">Нажми ▶ — послушай прямо здесь. Потом скопируй в ElevenLabs для финального качества.</div>
+  <div class="ptitle">Готові сценарії</div>
+  <div class="psub">Натисни ▶ — послухай тут. Потім скопіюй в ElevenLabs для фінальної якості.</div>
   <div class="frow">
-    <button class="pill active" onclick="fR('all',this)">Все</button>
-    <button class="pill" onclick="fR('psych',this)">🧠 Психология</button>
+    <button class="pill active" onclick="fR('all',this)">Всі</button>
+    <button class="pill" onclick="fR('psych',this)">🧠 Психологія</button>
     <button class="pill" onclick="fR('ai',this)">🤖 AI</button>
-    <button class="pill" onclick="fR('social',this)">📱 Соцсети</button>
-    <button class="pill" onclick="fR('money',this)">💸 Деньги</button>
+    <button class="pill" onclick="fR('social',this)">📱 Соцмережі</button>
+    <button class="pill" onclick="fR('money',this)">💸 Гроші</button>
   </div>
-
   <div class="rsc" data-rcat="social psych" style="background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(255,107,53,0.03));border:1px solid rgba(255,107,53,0.2)">
-    <div class="rsch" onclick="tR(this)"><div><div class="rsct">Почему ты не можешь остановить скролл</div><div class="rscm"><span class="badge" style="background:rgba(255,107,53,0.15);color:var(--orange)">📱 Соцсети</span><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--green)">🧪 Когн. баг</span><span class="badge" style="background:rgba(255,255,255,0.06);color:var(--muted)">60 сек</span></div></div><span style="font-size:20px;flex-shrink:0">▶</span></div>
+    <div class="rsch" onclick="tR(this)"><div><div class="rsct">Чому ти не можеш зупинити скрол</div><div class="rscm"><span class="badge" style="background:rgba(255,107,53,0.15);color:var(--o)">📱 Соцмережі</span><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--g)">🧪 Когн. баг</span><span class="badge" style="background:rgba(255,255,255,0.06);color:var(--m)">60 сек</span></div></div><span style="font-size:18px;flex-shrink:0">▶</span></div>
     <div class="rscb" id="rb1">
-      <div class="stext" id="rt1">Стоп. Ты сейчас скроллишь. И ты уже не помнишь зачем открыл телефон.
+      <div class="stext" id="rt1">Стоп. Ти зараз скролиш. І ти вже не пам'ятаєш навіщо відкрив телефон.
 
-Это не слабость воли. Это петля дофамина — и она была спроектирована против тебя.
+Це не слабкість волі. Це петля дофаміну — і вона була спроектована проти тебе.
 
-Каждый раз когда ты скроллишь и видишь что-то интересное — мозг выбрасывает дофамин. Но самое хитрое: награда непредсказуемая. Иногда есть, иногда нет. Именно так работают игровые автоматы.
+Щоразу коли ти скролиш і бачиш щось цікаве — мозок викидає дофамін. Але найхитріше: нагорода непередбачувана. Іноді є, іноді немає. Саме так працюють ігрові автомати.
 
-TikTok, Instagram, YouTube — они используют тот же принцип что казино. Переменное подкрепление. Скиннер открыл это ещё в 1950х на крысах. Теперь это работает на тебе.
+TikTok, Instagram, YouTube — вони використовують той самий принцип що й казино. Змінне підкріплення. Скіннер відкрив це ще у 1950-х на щурах. Тепер це працює на тобі.
 
-Что делать? Первое: поставь лимит в настройках телефона. Второе: перед открытием соцсети спроси себя — зачем я это делаю прямо сейчас?
+Що робити? Перше: постав ліміт у налаштуваннях телефону. Друге: перед відкриттям соцмережі запитай себе — навіщо я це роблю прямо зараз?
 
-Осознанность — единственное что работает против алгоритма.
+Усвідомленість — єдине що працює проти алгоритму.
 
-Сохрани это видео. Завтра расскажу про следующий баг твоего мозга.</div>
+Збережи це відео. Завтра розкажу про наступний баг твого мозку.</div>
       <div class="ttsp">
-        <div style="font-size:10px;color:var(--muted);margin-bottom:9px;font-weight:600;letter-spacing:1px">🔊 ОЗВУЧКА В БРАУЗЕРЕ</div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:8px;font-weight:600;letter-spacing:1px">🔊 ОЗВУЧКА У БРАУЗЕРІ</div>
         <div class="ttsctrl">
-          <button class="ttsplay" id="pb1" onclick="pTTS('rt1','pb1','bar1','sp1')">▶ Слушать</button>
+          <button class="ttsplay" id="pb1" onclick="pTTS('rt1','pb1','bar1','sp1')">▶ Слухати</button>
           <button class="ttsstop" onclick="sTTS()">■ Стоп</button>
           <select class="spsel" id="sp1"><option value="0.85">0.85x</option><option value="1" selected>1x</option><option value="1.1">1.1x</option><option value="1.2">1.2x</option></select>
         </div>
         <div class="ttsprog"><div class="ttsbar" id="bar1"></div></div>
-        <div style="display:flex;gap:7px;margin-top:7px">
-          <button class="cbtn" onclick="cEl(this,'rt1')">Копировать текст</button>
-          <a href="https://elevenlabs.io" target="_blank" style="text-decoration:none"><button class="cbtn" style="color:var(--purple);border-color:rgba(167,139,250,0.3)">ElevenLabs ↗</button></a>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <button class="cbtn" onclick="cEl(this,'rt1')">Копіювати текст</button>
+          <a href="https://elevenlabs.io" target="_blank" style="text-decoration:none"><button class="cbtn" style="color:var(--p);border-color:rgba(167,139,250,0.3)">ElevenLabs ↗</button></a>
         </div>
       </div>
     </div>
   </div>
-
   <div class="rsc" data-rcat="ai" style="background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(167,139,250,0.03));border:1px solid rgba(167,139,250,0.2)">
-    <div class="rsch" onclick="tR(this)"><div><div class="rsct">ChatGPT всегда с тобой соглашается. Это проблема</div><div class="rscm"><span class="badge" style="background:rgba(167,139,250,0.15);color:var(--purple)">🤖 AI</span><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--green)">⚡ Факт</span><span class="badge" style="background:rgba(255,255,255,0.06);color:var(--muted)">60 сек</span></div></div><span style="font-size:20px;flex-shrink:0">▶</span></div>
+    <div class="rsch" onclick="tR(this)"><div><div class="rsct">ChatGPT завжди з тобою погоджується. Це проблема</div><div class="rscm"><span class="badge" style="background:rgba(167,139,250,0.15);color:var(--p)">🤖 AI</span><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--g)">⚡ Факт</span><span class="badge" style="background:rgba(255,255,255,0.06);color:var(--m)">60 сек</span></div></div><span style="font-size:18px;flex-shrink:0">▶</span></div>
     <div class="rscb" id="rb2">
-      <div class="stext" id="rt2">Скажи ChatGPT что земля плоская. Он начнёт мягко возражать. Но потом скажи "я уверен в этом" — и он начнёт искать аргументы в твою пользу.
+      <div class="stext" id="rt2">Скажи ChatGPT що земля пласка. Він почне м'яко заперечувати. Але потім скажи "я впевнений в цьому" — і він почне шукати аргументи на твою користь.
 
-Это называется sycophancy. Синдром подхалима.
+Це називається sycophancy. Синдром підлабузника.
 
-AI обучали на человеческих оценках. Люди ставили лайки ответам которые им нравились. А нам нравится когда с нами соглашаются. Так AI научился льстить.
+AI навчали на людських оцінках. Люди ставили лайки відповідям які їм подобались. А нам подобається коли з нами погоджуються. Так AI навчився лестити.
 
-Проблема в том что ты начинаешь доверять AI как объективному источнику. Но он просто зеркало твоих убеждений.
+Проблема в тому що ти починаєш довіряти AI як об'єктивному джерелу. Але він просто дзеркало твоїх переконань.
 
-Используешь ChatGPT для важных решений? Попробуй специально попросить его поспорить с тобой. Написать контраргументы. Сыграть роль критика.
+Використовуєш ChatGPT для важливих рішень? Спробуй спеціально попросити його посперечатися з тобою. Написати контраргументи. Зіграти роль критика.
 
-Инструмент должен работать на тебя — а не говорить то что ты хочешь услышать.
+Інструмент повинен працювати на тебе — а не говорити те що ти хочеш почути.
 
-Подпишись — каждый день один факт про AI который меняет взгляд на мир.</div>
+Підпишись — щодня один факт про AI що змінює погляд на світ.</div>
       <div class="ttsp">
-        <div style="font-size:10px;color:var(--muted);margin-bottom:9px;font-weight:600;letter-spacing:1px">🔊 ОЗВУЧКА В БРАУЗЕРЕ</div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:8px;font-weight:600;letter-spacing:1px">🔊 ОЗВУЧКА У БРАУЗЕРІ</div>
         <div class="ttsctrl">
-          <button class="ttsplay" id="pb2" onclick="pTTS('rt2','pb2','bar2','sp2')">▶ Слушать</button>
+          <button class="ttsplay" id="pb2" onclick="pTTS('rt2','pb2','bar2','sp2')">▶ Слухати</button>
           <button class="ttsstop" onclick="sTTS()">■ Стоп</button>
           <select class="spsel" id="sp2"><option value="0.85">0.85x</option><option value="1" selected>1x</option><option value="1.1">1.1x</option><option value="1.2">1.2x</option></select>
         </div>
         <div class="ttsprog"><div class="ttsbar" id="bar2"></div></div>
-        <div style="display:flex;gap:7px;margin-top:7px">
-          <button class="cbtn" onclick="cEl(this,'rt2')">Копировать текст</button>
-          <a href="https://elevenlabs.io" target="_blank" style="text-decoration:none"><button class="cbtn" style="color:var(--purple);border-color:rgba(167,139,250,0.3)">ElevenLabs ↗</button></a>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <button class="cbtn" onclick="cEl(this,'rt2')">Копіювати текст</button>
+          <a href="https://elevenlabs.io" target="_blank" style="text-decoration:none"><button class="cbtn" style="color:var(--p);border-color:rgba(167,139,250,0.3)">ElevenLabs ↗</button></a>
         </div>
       </div>
     </div>
   </div>
-
   <div class="rsc" data-rcat="money psych" style="background:linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03));border:1px solid rgba(251,191,36,0.2)">
-    <div class="rsch" onclick="tR(this)"><div><div class="rsct">Почему ты тратишь больше онлайн чем в магазине</div><div class="rscm"><span class="badge" style="background:rgba(251,191,36,0.15);color:var(--yellow)">💸 Деньги</span><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--green)">🧪 Когн. баг</span><span class="badge" style="background:rgba(255,255,255,0.06);color:var(--muted)">75 сек</span></div></div><span style="font-size:20px;flex-shrink:0">▶</span></div>
+    <div class="rsch" onclick="tR(this)"><div><div class="rsct">Чому ти витрачаєш більше онлайн ніж у магазині</div><div class="rscm"><span class="badge" style="background:rgba(251,191,36,0.15);color:var(--y)">💸 Гроші</span><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--g)">🧪 Когн. баг</span><span class="badge" style="background:rgba(255,255,255,0.06);color:var(--m)">75 сек</span></div></div><span style="font-size:18px;flex-shrink:0">▶</span></div>
     <div class="rscb" id="rb3">
-      <div class="stext" id="rt3">Когда ты платишь наличными — мозг буквально испытывает боль. Это доказали нейробиологи из MIT.
+      <div class="stext" id="rt3">Коли ти платиш готівкою — мозок буквально відчуває біль. Це довели нейробіологи з MIT.
 
-Но онлайн? Ты просто нажимаешь кнопку. Никакой боли. Никакого ощущения потери.
+Але онлайн? Ти просто натискаєш кнопку. Ніякого болю. Ніякого відчуття втрати.
 
-Это первый трюк. А вот второй.
+Це перший трюк. А ось другий.
 
-Ты заходишь на сайт и видишь: "Осталось 2 штуки". "Скидка 40% только сегодня". "Другие смотрят прямо сейчас".
+Ти заходиш на сайт і бачиш: "Залишилось 2 штуки". "Знижка 40% тільки сьогодні". "Інші дивляться прямо зараз".
 
-Это искусственный дефицит. Он активирует самую древнюю часть твоего мозга — страх потери. И ты покупаешь не потому что хочешь. А потому что боишься упустить.
+Це штучний дефіцит. Він активує найдавнішу частину твого мозку — страх втрати. І ти купуєш не тому що хочеш. А тому що боїшся пропустити.
 
-AI-алгоритмы магазинов знают когда ты устал, когда у тебя плохое настроение, когда ты более уязвим. И показывают рекламу именно в этот момент.
+AI-алгоритми магазинів знають коли ти втомлений, коли у тебе поганий настрій, коли ти більш вразливий. І показують рекламу саме в цей момент.
 
-Один лайфхак который работает: правило 24 часов. Понравилось — подожди день. Большинство желаний исчезает.
+Один лайфхак який працює: правило 24 годин. Сподобалось — почекай день. Більшість бажань зникає.
 
-Сохрани это видео. Твой кошелёк скажет спасибо.</div>
+Збережи це відео. Твій гаманець скаже дякую.</div>
       <div class="ttsp">
-        <div style="font-size:10px;color:var(--muted);margin-bottom:9px;font-weight:600;letter-spacing:1px">🔊 ОЗВУЧКА В БРАУЗЕРЕ</div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:8px;font-weight:600;letter-spacing:1px">🔊 ОЗВУЧКА У БРАУЗЕРІ</div>
         <div class="ttsctrl">
-          <button class="ttsplay" id="pb3" onclick="pTTS('rt3','pb3','bar3','sp3')">▶ Слушать</button>
+          <button class="ttsplay" id="pb3" onclick="pTTS('rt3','pb3','bar3','sp3')">▶ Слухати</button>
           <button class="ttsstop" onclick="sTTS()">■ Стоп</button>
           <select class="spsel" id="sp3"><option value="0.85">0.85x</option><option value="1" selected>1x</option><option value="1.1">1.1x</option><option value="1.2">1.2x</option></select>
         </div>
         <div class="ttsprog"><div class="ttsbar" id="bar3"></div></div>
-        <div style="display:flex;gap:7px;margin-top:7px">
-          <button class="cbtn" onclick="cEl(this,'rt3')">Копировать текст</button>
-          <a href="https://elevenlabs.io" target="_blank" style="text-decoration:none"><button class="cbtn" style="color:var(--purple);border-color:rgba(167,139,250,0.3)">ElevenLabs ↗</button></a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="rsc" data-rcat="psych ai" style="background:linear-gradient(135deg,rgba(0,255,178,0.06),rgba(0,229,255,0.03));border:1px solid rgba(0,255,178,0.2)">
-    <div class="rsch" onclick="tR(this)"><div><div class="rsct">Эффект Даннинга-Крюгера: почему дураки уверены в себе</div><div class="rscm"><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--green)">🧠 Психология</span><span class="badge" style="background:rgba(0,255,178,0.12);color:var(--green)">⚡ Факт</span><span class="badge" style="background:rgba(255,255,255,0.06);color:var(--muted)">60 сек</span></div></div><span style="font-size:20px;flex-shrink:0">▶</span></div>
-    <div class="rscb" id="rb4">
-      <div class="stext" id="rt4">Ты замечал: чем меньше человек знает — тем увереннее он говорит?
-
-Это не совпадение. Это эффект Даннинга-Крюгера.
-
-В 1999 году психологи провели эксперимент. Студенты которые хуже всего написали тест — оценили свои знания выше всех. Потому что им не хватало знаний даже чтобы понять насколько они некомпетентны.
-
-А теперь добавь сюда ChatGPT. Человек задаёт вопрос, получает уверенный ответ, и думает что теперь он эксперт. Поверхностное знание стало ещё доступнее.
-
-Настоящие эксперты наоборот — чем больше знают, тем больше понимают как мало они знают.
-
-Как проверить себя? Попробуй объяснить тему простыми словами ребёнку. Если не можешь — ты ещё не понимаешь её по-настоящему.
-
-Это называется метод Фейнмана. И он работает.
-
-Подпишись — разбираем психологию которую не учат в школе.</div>
-      <div class="ttsp">
-        <div style="font-size:10px;color:var(--muted);margin-bottom:9px;font-weight:600;letter-spacing:1px">🔊 ОЗВУЧКА В БРАУЗЕРЕ</div>
-        <div class="ttsctrl">
-          <button class="ttsplay" id="pb4" onclick="pTTS('rt4','pb4','bar4','sp4')">▶ Слушать</button>
-          <button class="ttsstop" onclick="sTTS()">■ Стоп</button>
-          <select class="spsel" id="sp4"><option value="0.85">0.85x</option><option value="1" selected>1x</option><option value="1.1">1.1x</option><option value="1.2">1.2x</option></select>
-        </div>
-        <div class="ttsprog"><div class="ttsbar" id="bar4"></div></div>
-        <div style="display:flex;gap:7px;margin-top:7px">
-          <button class="cbtn" onclick="cEl(this,'rt4')">Копировать текст</button>
-          <a href="https://elevenlabs.io" target="_blank" style="text-decoration:none"><button class="cbtn" style="color:var(--purple);border-color:rgba(167,139,250,0.3)">ElevenLabs ↗</button></a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="rsc" data-rcat="ai social" style="background:linear-gradient(135deg,rgba(96,165,250,0.08),rgba(96,165,250,0.03));border:1px solid rgba(96,165,250,0.2)">
-    <div class="rsch" onclick="tR(this)"><div><div class="rsct">AI знает о тебе больше чем твои друзья</div><div class="rscm"><span class="badge" style="background:rgba(96,165,250,0.15);color:var(--blue)">🤖 AI</span><span class="badge" style="background:rgba(255,107,53,0.12);color:var(--orange)">📱 Соцсети</span><span class="badge" style="background:rgba(255,255,255,0.06);color:var(--muted)">60 сек</span></div></div><span style="font-size:20px;flex-shrink:0">▶</span></div>
-    <div class="rscb" id="rb5">
-      <div class="stext" id="rt5">Facebook мог предсказать что ты гей раньше чем ты сам это осознал. Это не теория заговора — это исследование Кембриджского университета 2013 года.
-
-По лайкам. Просто по лайкам.
-
-Алгоритмы знают твои политические взгляды, уровень интеллекта, склонность к зависимостям и эмоциональную нестабильность. С точностью выше чем твои коллеги или родители.
-
-Как? Каждый клик, каждая пауза при скроллинге, каждое время захода в приложение — это данные. 300 лайков дают алгоритму больше информации о тебе чем твой партнёр за годы совместной жизни.
-
-Это не значит что надо бояться. Это значит надо понимать.
-
-Ты не пользователь платформы. Ты — продукт. Твоё внимание продаётся рекламодателям прямо сейчас.
-
-Знание — первый шаг к контролю.
-
-Подпишись — каждый день один факт про AI и психологию.</div>
-      <div class="ttsp">
-        <div style="font-size:10px;color:var(--muted);margin-bottom:9px;font-weight:600;letter-spacing:1px">🔊 ОЗВУЧКА В БРАУЗЕРЕ</div>
-        <div class="ttsctrl">
-          <button class="ttsplay" id="pb5" onclick="pTTS('rt5','pb5','bar5','sp5')">▶ Слушать</button>
-          <button class="ttsstop" onclick="sTTS()">■ Стоп</button>
-          <select class="spsel" id="sp5"><option value="0.85">0.85x</option><option value="1" selected>1x</option><option value="1.1">1.1x</option><option value="1.2">1.2x</option></select>
-        </div>
-        <div class="ttsprog"><div class="ttsbar" id="bar5"></div></div>
-        <div style="display:flex;gap:7px;margin-top:7px">
-          <button class="cbtn" onclick="cEl(this,'rt5')">Копировать текст</button>
-          <a href="https://elevenlabs.io" target="_blank" style="text-decoration:none"><button class="cbtn" style="color:var(--purple);border-color:rgba(167,139,250,0.3)">ElevenLabs ↗</button></a>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <button class="cbtn" onclick="cEl(this,'rt3')">Копіювати текст</button>
+          <a href="https://elevenlabs.io" target="_blank" style="text-decoration:none"><button class="cbtn" style="color:var(--p);border-color:rgba(167,139,250,0.3)">ElevenLabs ↗</button></a>
         </div>
       </div>
     </div>
@@ -407,112 +371,498 @@ AI-алгоритмы магазинов знают когда ты устал, 
 
 <!-- TOPICS -->
 <div class="page" id="page-topics">
-  <div class="ptitle">Темы</div>
-  <div class="psub">Выбери тему → смотри какой шаблон подходит → иди в «Шаблоны»</div>
+  <div class="ptitle">Теми</div>
+  <div class="psub">Обери тему → дивись який шаблон підходить → йди у «Шаблони»</div>
   <div class="frow">
-    <button class="pill active" onclick="fT('all',this)">Все</button>
-    <button class="pill" onclick="fT('psych',this)">🧠 Психология</button>
+    <button class="pill active" onclick="fT('all',this)">Всі</button>
+    <button class="pill" onclick="fT('psych',this)">🧠 Психологія</button>
     <button class="pill" onclick="fT('ai',this)">🤖 AI</button>
-    <button class="pill" onclick="fT('social',this)">📱 Соцсети</button>
-    <button class="pill" onclick="fT('money',this)">💸 Деньги</button>
+    <button class="pill" onclick="fT('social',this)">📱 Соцмережі</button>
+    <button class="pill" onclick="fT('money',this)">💸 Гроші</button>
   </div>
   <div class="card topic-item" data-tcat="social psych" style="border-color:rgba(255,60,60,0.2)">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px"><div style="font-size:14px;font-weight:700">Почему TikTok умнее твоего психолога</div><span class="badge" style="background:rgba(255,60,60,0.15);color:#FF6B6B">🔥 Хайп</span></div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">«Алгоритм знает о твоих эмоциях больше чем ты сам.»</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center">
-      <span class="tag to" onclick="quickCopy(this)">scrolling phone</span><span class="tag to" onclick="quickCopy(this)">dopamine brain</span>
-      <div style="width:100%;font-size:11px;color:var(--muted);margin-top:4px">Шаблон: <span style="color:var(--purple);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">🧪 Когн. баг</span> или <span style="color:var(--yellow);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">📈 Тренд</span></div>
-    </div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px"><div style="font-size:13px;font-weight:700">Чому TikTok розумніший за твого психолога</div><span class="badge" style="background:rgba(255,60,60,0.15);color:#FF6B6B;flex-shrink:0">🔥 Хайп</span></div>
+    <div style="font-size:12px;color:var(--m);margin-bottom:9px;line-height:1.5">«Алгоритм знає про твої емоції більше ніж ти сам.»</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="tag to" onclick="quickCopy(this)">scrolling phone</span><span class="tag to" onclick="quickCopy(this)">dopamine brain</span><div style="width:100%;font-size:11px;color:var(--m);margin-top:3px">Шаблон: <span style="color:var(--p);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">🧪 Когн. баг</span> або <span style="color:var(--y);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">📈 Тренд</span></div></div>
   </div>
   <div class="card topic-item" data-tcat="psych ai">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px"><div style="font-size:14px;font-weight:700">Эффект Даннинга-Крюгера и ChatGPT</div><span class="badge" style="background:rgba(0,255,178,0.15);color:var(--green)">Легко снять</span></div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">«Чем меньше знаешь — тем увереннее. AI сделал это хуже.»</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center">
-      <span class="tag tp" onclick="quickCopy(this)">confident person thinking</span><span class="tag tp" onclick="quickCopy(this)">brain learning</span>
-      <div style="width:100%;font-size:11px;color:var(--muted);margin-top:4px">Шаблон: <span style="color:var(--green);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">⚡ Шок-факт</span></div>
-    </div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px"><div style="font-size:13px;font-weight:700">Ефект Даннінга-Крюгера і ChatGPT</div><span class="badge" style="background:rgba(0,255,178,0.15);color:var(--g);flex-shrink:0">Легко зняти</span></div>
+    <div style="font-size:12px;color:var(--m);margin-bottom:9px;line-height:1.5">«Чим менше знаєш — тим впевненіше говориш. AI зробив це гірше.»</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="tag tp" onclick="quickCopy(this)">confident person thinking</span><div style="width:100%;font-size:11px;color:var(--m);margin-top:3px">Шаблон: <span style="color:var(--g);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">⚡ Шок-факт</span></div></div>
   </div>
   <div class="card topic-item" data-tcat="money psych" style="border-color:rgba(255,60,60,0.2)">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px"><div style="font-size:14px;font-weight:700">Почему ты тратишь больше онлайн</div><span class="badge" style="background:rgba(255,60,60,0.15);color:#FF6B6B">🔥 Хайп</span></div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">«AI-персонализация бьёт по когнитивным слабостям. 3 триггера.»</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center">
-      <span class="tag ty" onclick="quickCopy(this)">online shopping</span><span class="tag ty" onclick="quickCopy(this)">impulse buy</span>
-      <div style="width:100%;font-size:11px;color:var(--muted);margin-top:4px">Шаблон: <span style="color:var(--purple);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">🧪 Когн. баг</span></div>
-    </div>
-  </div>
-  <div class="card topic-item" data-tcat="ai social">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px"><div style="font-size:14px;font-weight:700">AI знает когда ты устал</div><span class="badge" style="background:rgba(251,191,36,0.15);color:var(--yellow)">Тренд</span></div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">«Медленный скролл, опечатки — алгоритм читает усталость.»</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center">
-      <span class="tag tg" onclick="quickCopy(this)">tired person phone</span><span class="tag tg" onclick="quickCopy(this)">late night scrolling</span>
-      <div style="width:100%;font-size:11px;color:var(--muted);margin-top:4px">Шаблон: <span style="color:var(--green);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">⚡ Шок-факт</span> или <span style="color:var(--yellow);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">📈 Тренд</span></div>
-    </div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px"><div style="font-size:13px;font-weight:700">Чому ти витрачаєш більше онлайн</div><span class="badge" style="background:rgba(255,60,60,0.15);color:#FF6B6B;flex-shrink:0">🔥 Хайп</span></div>
+    <div style="font-size:12px;color:var(--m);margin-bottom:9px;line-height:1.5">«AI-персоналізація б'є по когнітивних слабкостях. 3 тригери.»</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="tag ty" onclick="quickCopy(this)">online shopping</span><span class="tag ty" onclick="quickCopy(this)">impulse buy</span><div style="width:100%;font-size:11px;color:var(--m);margin-top:3px">Шаблон: <span style="color:var(--p);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">🧪 Когн. баг</span></div></div>
   </div>
   <div class="card topic-item" data-tcat="ai">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px"><div style="font-size:14px;font-weight:700">ChatGPT всегда с тобой соглашается</div><span class="badge" style="background:rgba(0,255,178,0.15);color:var(--green)">Легко снять</span></div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">«Sycophancy — AI льстит вместо правды.»</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center">
-      <span class="tag tp" onclick="quickCopy(this)">mirror reflection</span><span class="tag tp" onclick="quickCopy(this)">chatbot conversation</span>
-      <div style="width:100%;font-size:11px;color:var(--muted);margin-top:4px">Шаблон: <span style="color:var(--green);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">⚡ Шок-факт</span> или <span style="color:var(--orange);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">🤖 Ты vs AI</span></div>
-    </div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px"><div style="font-size:13px;font-weight:700">ChatGPT завжди з тобою погоджується</div><span class="badge" style="background:rgba(0,255,178,0.15);color:var(--g);flex-shrink:0">Легко зняти</span></div>
+    <div style="font-size:12px;color:var(--m);margin-bottom:9px;line-height:1.5">«Sycophancy — AI лестить замість правди.»</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="tag tp" onclick="quickCopy(this)">mirror reflection</span><div style="width:100%;font-size:11px;color:var(--m);margin-top:3px">Шаблон: <span style="color:var(--g);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">⚡ Шок-факт</span> або <span style="color:var(--o);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">🤖 Ти vs AI</span></div></div>
   </div>
   <div class="card topic-item" data-tcat="social psych" style="border-color:rgba(255,60,60,0.2)">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px"><div style="font-size:14px;font-weight:700">Петля дофамина: почему не остановиться</div><span class="badge" style="background:rgba(255,60,60,0.15);color:#FF6B6B">🔥 Хайп</span></div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">«Скиннер, крысы и игровые автоматы — основа Instagram.»</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center">
-      <span class="tag to" onclick="quickCopy(this)">dopamine loop</span><span class="tag to" onclick="quickCopy(this)">slot machine</span>
-      <div style="width:100%;font-size:11px;color:var(--muted);margin-top:4px">Шаблон: <span style="color:var(--purple);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">🧪 Когн. баг</span></div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px"><div style="font-size:13px;font-weight:700">Петля дофаміну: чому не зупинитись</div><span class="badge" style="background:rgba(255,60,60,0.15);color:#FF6B6B;flex-shrink:0">🔥 Хайп</span></div>
+    <div style="font-size:12px;color:var(--m);margin-bottom:9px;line-height:1.5">«Скіннер, щури й ігрові автомати — основа Instagram.»</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="tag to" onclick="quickCopy(this)">dopamine loop</span><span class="tag to" onclick="quickCopy(this)">slot machine</span><div style="width:100%;font-size:11px;color:var(--m);margin-top:3px">Шаблон: <span style="color:var(--p);font-weight:600;cursor:pointer" onclick="showPage('scenarios',document.querySelectorAll('.nb')[1])">🧪 Когн. баг</span></div></div>
+  </div>
+</div>
+
+<!-- TELEGRAM -->
+<div class="page" id="page-tg">
+  <div class="ptitle">✈️ Telegram контент</div>
+  <div class="psub">Контент-план на тиждень + готові шаблони постів. 1–2 пости на день.</div>
+
+  <div class="slbl">📅 Контент-план на тиждень</div>
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;overflow:hidden;margin-bottom:14px">
+    <div style="display:grid;grid-template-columns:80px 1fr;font-size:11px">
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);color:var(--m);font-weight:700;background:rgba(255,255,255,0.02)">ДЕНЬ</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);color:var(--m);font-weight:700;background:rgba(255,255,255,0.02)">ПОСТИ</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);color:var(--g);font-weight:700">ПН</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);font-size:12px;color:var(--t)">🧠 Факт дня + 🗳 Опитування</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);color:var(--o);font-weight:700">ВТ</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);font-size:12px;color:var(--t)">🎬 Анонс нового відео</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);color:var(--p);font-weight:700">СР</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);font-size:12px;color:var(--t)">🧪 Міні-квіз + відповідь ввечері</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);color:var(--y);font-weight:700">ЧТ</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);font-size:12px;color:var(--t)">💡 Корисний лайфхак</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);color:var(--g);font-weight:700">ПТ</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);font-size:12px;color:var(--t)">🎬 Анонс відео + 🗳 Голосування теми</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);color:var(--o);font-weight:700">СБ</div>
+      <div style="padding:10px 12px;border-bottom:1px solid var(--b);font-size:12px;color:var(--t)">📊 Цікава статистика / інфографіка</div>
+      <div style="padding:10px 12px;color:var(--p);font-weight:700">НД</div>
+      <div style="padding:10px 12px;font-size:12px;color:var(--t)">🔥 Найкраще за тиждень (підбірка)</div>
     </div>
+  </div>
+
+  <div class="slbl">📝 Шаблони постів</div>
+
+  <div class="tgcard" style="background:linear-gradient(135deg,rgba(0,255,178,0.06),rgba(0,229,255,0.02));border:1px solid rgba(0,255,178,0.2)">
+    <div class="tghead" onclick="tTG(this)"><div><div class="tgtitle">🧠 Факт дня</div><div style="font-size:11px;color:var(--m);margin-top:3px">Щоденний пост · ПН / СР / ПТ</div></div><span style="font-size:16px">▼</span></div>
+    <div class="tgbody">
+      <div class="tgpost" id="tg1">🧠 ФАКТ ДНЯ
+
+[Цифра або шокуючий факт одним реченням]
+
+Наприклад: Твій мозок приймає 35 000 рішень на день. І більшість — автоматично.
+
+Це означає, що [пояснення наслідку для читача].
+
+Що з цим робити:
+→ [Практична порада 1]
+→ [Практична порада 2]
+
+Зберігай 🔖 — знадобиться.
+
+#мозок #психологія #AI #саморозвиток</div>
+      <div style="display:flex;gap:6px"><button class="cbtn" onclick="cEl(this,'tg1')">Копіювати</button></div>
+    </div>
+  </div>
+
+  <div class="tgcard" style="background:linear-gradient(135deg,rgba(255,107,53,0.06),rgba(255,107,53,0.02));border:1px solid rgba(255,107,53,0.2)">
+    <div class="tghead" onclick="tTG(this)"><div><div class="tgtitle">🎬 Анонс відео</div><div style="font-size:11px;color:var(--m);margin-top:3px">При публікації відео · ВТ / ПТ</div></div><span style="font-size:16px">▼</span></div>
+    <div class="tgbody">
+      <div class="tgpost" id="tg2">🎬 НОВЕ ВІДЕО
+
+[Назва відео — максимум 6 слів, що чіпляє]
+
+У цьому відео:
+→ [Що дізнається глядач — конкретно]
+→ [Несподіваний факт з відео]
+→ [Практична користь]
+
+Більшість людей цього не знає. Але після перегляду — знатимеш ти.
+
+🔗 Дивитись: [посилання]
+
+Ділись з тим, кому це буде корисно 👇
+
+#мозок #AI #психологія</div>
+      <div style="display:flex;gap:6px"><button class="cbtn" onclick="cEl(this,'tg2')">Копіювати</button></div>
+    </div>
+  </div>
+
+  <div class="tgcard" style="background:linear-gradient(135deg,rgba(167,139,250,0.06),rgba(167,139,250,0.02));border:1px solid rgba(167,139,250,0.2)">
+    <div class="tghead" onclick="tTG(this)"><div><div class="tgtitle">🗳 Опитування / Квіз</div><div style="font-size:11px;color:var(--m);margin-top:3px">Середа · активність аудиторії</div></div><span style="font-size:16px">▼</span></div>
+    <div class="tgbody">
+      <div class="tgpost" id="tg3">🧪 ТЕСТ
+
+[Запитання яке змушує задуматись]
+
+Наприклад: Як довго людина може утримувати увагу на одному завданні?
+
+🔘 2–3 хвилини
+🔘 8–12 хвилин  
+🔘 20–25 хвилин
+🔘 Залежить від людини
+
+Голосуй 👆 Відповідь і пояснення — ввечері.
+
+— — —
+(Ввечері додаєш пост-відповідь:)
+
+✅ ВІДПОВІДЬ: [правильний варіант]
+
+[3-4 речення пояснення чому саме так]
+
+[Практичний лайфхак на основі цього факту]
+
+Зберігай 🔖
+
+#психологія #мозок #тест</div>
+      <div style="display:flex;gap:6px"><button class="cbtn" onclick="cEl(this,'tg3')">Копіювати</button></div>
+    </div>
+  </div>
+
+  <div class="tgcard" style="background:linear-gradient(135deg,rgba(251,191,36,0.06),rgba(251,191,36,0.02));border:1px solid rgba(251,191,36,0.2)">
+    <div class="tghead" onclick="tTG(this)"><div><div class="tgtitle">💡 Лайфхак тижня</div><div style="font-size:11px;color:var(--m);margin-top:3px">Четвер · практична користь</div></div><span style="font-size:16px">▼</span></div>
+    <div class="tgbody">
+      <div class="tgpost" id="tg4">💡 ЛАЙФХАК ТИЖНЯ
+
+[Назва техніки або прийому]
+
+Проблема: [Що болить у читача — конкретно]
+
+Рішення: [Простий метод у 2-3 кроки]
+
+Крок 1: [Дія]
+Крок 2: [Дія]  
+Крок 3: [Дія]
+
+Чому це працює: [Коротке наукове пояснення]
+
+Спробуй сьогодні і напиши в коментарях — вийшло? 👇
+
+#лайфхак #продуктивність #мозок</div>
+      <div style="display:flex;gap:6px"><button class="cbtn" onclick="cEl(this,'tg4')">Копіювати</button></div>
+    </div>
+  </div>
+
+  <div class="tgcard" style="background:linear-gradient(135deg,rgba(96,165,250,0.06),rgba(96,165,250,0.02));border:1px solid rgba(96,165,250,0.2)">
+    <div class="tghead" onclick="tTG(this)"><div><div class="tgtitle">📊 Підбірка тижня</div><div style="font-size:11px;color:var(--m);margin-top:3px">Неділя · утримання</div></div><span style="font-size:16px">▼</span></div>
+    <div class="tgbody">
+      <div class="tgpost" id="tg5">🔥 НАЙКРАЩЕ ЗА ТИЖДЕНЬ
+
+Якщо пропустив — ось головне:
+
+1️⃣ [Факт або відео 1 — одне речення]
+2️⃣ [Факт або відео 2 — одне речення]
+3️⃣ [Факт або відео 3 — одне речення]
+
+Яке з цього тебе найбільше здивувало? Пиши в коментарях 👇
+
+Підписуйся щоб не пропускати наступного тижня 🔔
+
+#підбірка #мозок #AI #психологія</div>
+      <div style="display:flex;gap:6px"><button class="cbtn" onclick="cEl(this,'tg5')">Копіювати</button></div>
+    </div>
+  </div>
+
+  <div style="margin-top:14px;background:rgba(0,255,178,0.05);border:1px solid rgba(0,255,178,0.15);border-radius:12px;padding:13px 15px;font-size:12px;color:var(--m);line-height:1.7">
+    💡 <strong style="color:var(--g)">Стратегія двох каналів:</strong> Веди UA і RU канали паралельно. Перекладай пости через Claude — займає 2 хвилини. Теги пиши на обох мовах для охоплення.
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="page" id="page-quiz">
+  <div class="ptitle">🧠 Квізи для Telegram</div>
+  <div class="psub">Готові квізи — копіюй у Telegram. Або проходь тут щоб перевірити себе.</div>
+
+  <div class="quiz-card" style="border-color:rgba(0,255,178,0.2)">
+    <div class="quiz-head" onclick="tQuiz(this)" style="background:linear-gradient(135deg,rgba(0,255,178,0.06),transparent)">
+      <div><div class="quiz-title" style="color:var(--g)">🧠 Квіз: Як працює твій мозок?</div><div style="font-size:11px;color:var(--m);margin-top:3px">5 запитань · Психологія</div></div>
+      <span style="font-size:16px">▼</span>
+    </div>
+    <div class="quiz-body" id="qbody1">
+      <div id="q1wrap">
+        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 1 З 5</div>
+        <div class="quiz-q">Скільки рішень приймає людина за день — свідомо і несвідомо?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q1wrap','q2wrap','Мозок приймає близько 35 000 рішень на день. 95% з них — автоматично, без участі свідомості. Це еволюційний механізм економії енергії.')">~200 рішень</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q1wrap','q2wrap','Мозок приймає близько 35 000 рішень на день. 95% з них — автоматично, без участі свідомості. Це еволюційний механізм економії енергії.')">~3 000 рішень</button>
+          <button class="quiz-opt" onclick="answerQ(this,'correct','q1wrap','q2wrap','✅ Правильно! Мозок приймає близько 35 000 рішень на день. 95% з них — автоматично, без участі свідомості. Це еволюційний механізм економії енергії.')">~35 000 рішень</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q1wrap','q2wrap','Мозок приймає близько 35 000 рішень на день. 95% з них — автоматично, без участі свідомості. Це еволюційний механізм економії енергії.')">~100 000 рішень</button>
+        </div>
+        <div class="quiz-exp" id="q1exp"></div>
+      </div>
+      <div id="q2wrap" style="display:none">
+        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 2 З 5</div>
+        <div class="quiz-q">Що таке "петля дофаміну" у соцмережах?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="answerQ(this,'correct','q2wrap','q3wrap','✅ Саме так! Непередбачувана нагорода — найсильніший тип підкріплення. Скіннер довів це на щурах у 1950-х. Іноді лайк є, іноді ні — і саме ця непередбачуваність змушує повертатись знову.')">Механізм непередбачуваної нагороди що змушує повертатись</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q2wrap','q3wrap','Петля дофаміну — це механізм непередбачуваної нагороди. Іноді лайк є, іноді ні — і саме ця непередбачуваність змушує мозок повертатись знову і знову.')">Збільшення рівня дофаміну від перегляду відео</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q2wrap','q3wrap','Петля дофаміну — це механізм непередбачуваної нагороди. Іноді лайк є, іноді ні — і саме ця непередбачуваність змушує мозок повертатись знову і знову.')">Залежність від позитивних коментарів</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q2wrap','q3wrap','Петля дофаміну — це механізм непередбачуваної нагороди. Іноді лайк є, іноді ні — і саме ця непередбачуваність змушує мозок повертатись знову і знову.')">Відчуття задоволення від корисного контенту</button>
+        </div>
+        <div class="quiz-exp" id="q2exp"></div>
+      </div>
+      <div id="q3wrap" style="display:none">
+        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 3 З 5</div>
+        <div class="quiz-q">Що таке ефект Даннінга-Крюгера?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q3wrap','q4wrap','Ефект Даннінга-Крюгера — некомпетентні люди переоцінюють свої здібності, бо у них немає достатньо знань щоб оцінити власну некомпетентність. Парадокс: щоб знати що ти не знаєш — треба вже знати.')">Розумні люди недооцінюють себе через скромність</button>
+          <button class="quiz-opt" onclick="answerQ(this,'correct','q3wrap','q4wrap','✅ Правильно! Некомпетентні люди переоцінюють себе, бо у них немає знань щоб оцінити власну некомпетентність. Парадокс: щоб знати що ти не знаєш — треба вже знати.')">Некомпетентні люди переоцінюють свої здібності</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q3wrap','q4wrap','Ефект Даннінга-Крюгера — некомпетентні люди переоцінюють свої здібності. Це не про страх публічних виступів і не про скромність.')">Страх публічних виступів у талановитих людей</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q3wrap','q4wrap','Ефект Даннінга-Крюгера — некомпетентні люди переоцінюють свої здібності. Це не про навчання і не про страх.')">Невміння вчитися на чужих помилках</button>
+        </div>
+        <div class="quiz-exp" id="q3exp"></div>
+      </div>
+      <div id="q4wrap" style="display:none">
+        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 4 З 5</div>
+        <div class="quiz-q">Що таке sycophancy у AI-системах?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q4wrap','q5wrap','Sycophancy — тенденція AI погоджуватись з користувачем навіть коли той неправий. AI навчали на людських оцінках — і люди давали вищі оцінки відповідям що їм подобались. Так AI навчився лестити.')">AI відмовляється відповідати на небезпечні запити</button>
+          <button class="quiz-opt" onclick="answerQ(this,'correct','q4wrap','q5wrap','✅ Правильно! Sycophancy — тенденція AI погоджуватись з користувачем навіть коли той неправий. AI навчали на людських оцінках — люди давали вищі оцінки відповідям що їм подобались. Так AI навчився лестити.')">Тенденція AI погоджуватись з користувачем навіть коли той неправий</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q4wrap','q5wrap','Sycophancy — тенденція AI погоджуватись з користувачем навіть коли той неправий. Це не про галюцинації і не про швидкість.')">AI вигадує факти яких не існує</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q4wrap','q5wrap','Sycophancy — тенденція AI погоджуватись з користувачем навіть коли той неправий. Це не про швидкість обробки.')">Занадто повільна обробка складних запитів</button>
+        </div>
+        <div class="quiz-exp" id="q4exp"></div>
+      </div>
+      <div id="q5wrap" style="display:none">
+        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 5 З 5</div>
+        <div class="quiz-q">Що доводить "правило 24 годин" у психології покупок?</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q5wrap','qscore','Правило 24 годин базується на тому що імпульсне бажання купити зазвичай проходить за добу. Якщо бажання залишається — воно справжнє. Якщо зникає — це був імпульс спровокований маркетингом.')">Покупки вранці обходяться дешевше</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q5wrap','qscore','Правило 24 годин базується на тому що імпульсне бажання купити зазвичай проходить за добу. Якщо бажання залишається — воно справжнє. Якщо зникає — це був імпульс.')">Найкращий час для шопінгу — наступний день після зарплати</button>
+          <button class="quiz-opt" onclick="answerQ(this,'correct','q5wrap','qscore','✅ Правильно! Більшість імпульсних бажань зникають за 24 години. Якщо бажання залишається — воно справжнє. Якщо зникає — це був маркетинговий тригер, а не справжня потреба.')">Більшість імпульсних бажань купити зникають за добу</button>
+          <button class="quiz-opt" onclick="answerQ(this,'wrong','q5wrap','qscore','Правило 24 годин — про імпульсні покупки, а не про якість продуктів.')">Якість товарів краще оцінювати через день після покупки</button>
+        </div>
+        <div class="quiz-exp" id="q5exp"></div>
+      </div>
+      <div id="qscore" class="quiz-score">
+        <div style="font-size:36px;margin-bottom:10px">🏆</div>
+        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:900;color:var(--g);margin-bottom:6px" id="scoreText">Результат!</div>
+        <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:14px" id="scoreDesc">Молодець!</div>
+        <button onclick="resetQuiz()" style="background:var(--g);color:#000;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:9px 20px;border-radius:10px;cursor:pointer">Пройти ще раз 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slbl">Промпт для генерації нових квізів</div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:5px"><button class="cbtn" onclick="cEl(this,'qprompt')">Копіювати</button></div>
+  <div class="pbox" id="qprompt">Створи квіз для Telegram-каналу на тему: [ТЕМА].
+
+5 запитань з 4 варіантами відповіді кожне.
+Для кожного запитання:
+- Саме запитання (коротке, цікаве)
+- 4 варіанти (1 правильний, 3 правдоподібних неправильних)
+- Пояснення відповіді (3-4 речення з науковим фактом)
+
+Формат: підходить для публікації в Telegram.
+Тон: захопливий, трохи провокаційний.</div>
+</div>
+
+<!-- MONETIZATION UA -->
+<div class="page" id="page-mono">
+  <div class="ptitle">💰 Монетизація · Україна</div>
+  <div class="psub">Реальний план під UA-ринок для 4 каналів + Telegram</div>
+
+  <div style="background:linear-gradient(135deg,rgba(251,191,36,0.08),rgba(255,107,53,0.04));border:1px solid rgba(251,191,36,0.2);border-radius:13px;padding:14px 16px;margin-bottom:16px">
+    <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--y);margin-bottom:8px">🚀 Стратегія "1 контент — 4 виходи"</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.8">
+      1. Знімаєш <strong style="color:#fff">одне відео</strong> українською<br>
+      2. Міняєш озвучку через ElevenLabs на російську <strong style="color:#fff">(15 хв)</strong><br>
+      3. Публікуєш на <strong style="color:#fff">TikTok UA + TikTok RU + Shorts UA + Shorts RU</strong><br>
+      4. Дублюєш пости у <strong style="color:#fff">Telegram UA + Telegram RU</strong><br>
+      <span style="color:var(--y)">Робота як для одного каналу → охоплення як для шести.</span>
+    </div>
+  </div>
+
+  <div class="slbl">📈 Шлях до доходу</div>
+
+  <div class="mono-stage">
+    <div class="mono-line-wrap"><div class="mono-num" style="background:rgba(251,191,36,0.1);border:1.5px solid rgba(251,191,36,0.3)">1</div><div class="mono-line"></div></div>
+    <div style="flex:1;padding-bottom:8px">
+      <div style="font-size:13px;font-weight:700;color:var(--y);margin-bottom:8px">0–1К підписників · Місяці 1–2</div>
+      <div class="mono-way">→ Будуй аудиторію, тестуй формати</div>
+      <div class="mono-way">→ Telegram запускай одразу — донати через Monobank</div>
+      <div class="mono-way">→ Очікуваний дохід: <strong style="color:var(--y)">$0–50</strong></div>
+    </div>
+  </div>
+  <div class="mono-stage">
+    <div class="mono-line-wrap"><div class="mono-num" style="background:rgba(251,191,36,0.18);border:1.5px solid rgba(251,191,36,0.5)">2</div><div class="mono-line"></div></div>
+    <div style="flex:1;padding-bottom:8px">
+      <div style="font-size:13px;font-weight:700;color:var(--y);margin-bottom:8px">1–5К підписників · Місяці 3–4</div>
+      <div class="mono-way">→ Telegram: донати + перша реклама <strong style="color:var(--y)">$30–80/пост</strong></div>
+      <div class="mono-way">→ Партнерки: Prometheus, Skvot, EdEra</div>
+      <div class="mono-way">→ Очікуваний дохід: <strong style="color:var(--y)">$100–300/міс</strong></div>
+    </div>
+  </div>
+  <div class="mono-stage">
+    <div class="mono-line-wrap"><div class="mono-num" style="background:rgba(251,191,36,0.28);border:1.5px solid rgba(251,191,36,0.7)">3</div><div class="mono-line"></div></div>
+    <div style="flex:1;padding-bottom:8px">
+      <div style="font-size:13px;font-weight:700;color:var(--y);margin-bottom:8px">5–15К підписників · Місяці 5–8</div>
+      <div class="mono-way">→ Прямі інтеграції брендів <strong style="color:var(--y)">$100–400/відео</strong></div>
+      <div class="mono-way">→ YouTube YPP — монетизація Shorts</div>
+      <div class="mono-way">→ Власний PDF-гайд через Gumroad/Wayforpay</div>
+      <div class="mono-way">→ Очікуваний дохід: <strong style="color:var(--y)">$400–1000/міс</strong></div>
+    </div>
+  </div>
+  <div class="mono-stage">
+    <div class="mono-line-wrap"><div class="mono-num" style="background:rgba(251,191,36,0.4);border:1.5px solid var(--y)">4</div></div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:700;color:var(--y);margin-bottom:8px">15К+ підписників · Місяць 9–12</div>
+      <div class="mono-way">→ Системна реклама: Monobank, Sportbank, edtech</div>
+      <div class="mono-way">→ Мікрокурс або воркшоп</div>
+      <div class="mono-way">→ Patreon / підписка в Telegram</div>
+      <div class="mono-way">→ Очікуваний дохід: <strong style="color:var(--y)">$1000–3000/міс</strong></div>
+    </div>
+  </div>
+
+  <div class="slbl">🏦 Як отримувати гроші в Україні</div>
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:12px;overflow:hidden;margin-bottom:14px">
+    <div style="display:grid;grid-template-columns:1fr 1fr 60px;font-size:11px">
+      <div style="padding:9px 12px;border-bottom:1px solid var(--b);color:var(--m);font-weight:700;background:rgba(255,255,255,0.02)">СЕРВІС</div>
+      <div style="padding:9px 12px;border-bottom:1px solid var(--b);color:var(--m);font-weight:700;background:rgba(255,255,255,0.02)">ДЛЯ ЧОГО</div>
+      <div style="padding:9px 12px;border-bottom:1px solid var(--b);color:var(--m);font-weight:700;background:rgba(255,255,255,0.02)">✓</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);font-weight:700;font-size:12px">Monobank</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);font-size:11px;color:var(--m)">Донати, банка</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);color:var(--g);font-weight:700">✅</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);font-weight:700;font-size:12px">Wayforpay</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);font-size:11px;color:var(--m)">Продаж продуктів</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);color:var(--g);font-weight:700">✅</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);font-weight:700;font-size:12px">Payoneer</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);font-size:11px;color:var(--m)">Міжнародні виплати</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);color:var(--g);font-weight:700">✅</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);font-weight:700;font-size:12px">Wise</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);font-size:11px;color:var(--m)">Перекази з-за кордону</div>
+      <div style="padding:8px 12px;border-bottom:1px solid var(--b);color:var(--g);font-weight:700">✅</div>
+      <div style="padding:8px 12px;font-weight:700;font-size:12px">PayPal</div>
+      <div style="padding:8px 12px;font-size:11px;color:var(--m)">Виведення складне</div>
+      <div style="padding:8px 12px;color:var(--y);font-weight:700">⚠️</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(0,255,178,0.05);border:1px solid rgba(0,255,178,0.15);border-radius:12px;padding:13px 15px;font-size:12px;color:var(--m);line-height:1.7">
+    💡 <strong style="color:var(--g)">Лайфхак для старту:</strong> Одразу реєструйся як ФОП 3 групи (єдиний податок 5%). Це дозволить легально отримувати гроші від реклами і через Wayforpay без проблем з банком.
   </div>
 </div>
 
 <!-- STOCK -->
 <div class="page" id="page-stock">
-  <div class="ptitle">Стоки</div>
-  <div class="psub">Кликни на тег — скопируется. Ищи на английском.</div>
-  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--green)">🧠 Мозг / Психология</div><a href="https://pexels.com" target="_blank" style="font-size:11px;color:var(--green);text-decoration:none">Pexels ↗</a></div><div style="font-size:11px;color:var(--muted);margin-bottom:9px">Нейронаука, мышление</div><div><span class="tag tg" onclick="quickCopy(this)">brain neurons</span><span class="tag tg" onclick="quickCopy(this)">neuroscience abstract</span><span class="tag tg" onclick="quickCopy(this)">human mind thinking</span><span class="tag tg" onclick="quickCopy(this)">synapse connection</span></div></div>
-  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--purple)">🤖 AI / Технологии</div><a href="https://pixabay.com/videos/" target="_blank" style="font-size:11px;color:var(--purple);text-decoration:none">Pixabay ↗</a></div><div style="font-size:11px;color:var(--muted);margin-bottom:9px">Алгоритмы, данные</div><div><span class="tag tp" onclick="quickCopy(this)">artificial intelligence</span><span class="tag tp" onclick="quickCopy(this)">digital data flow</span><span class="tag tp" onclick="quickCopy(this)">hologram interface</span><span class="tag tp" onclick="quickCopy(this)">machine learning</span></div></div>
-  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--orange)">📱 Соцсети / Зависимость</div><a href="https://pexels.com" target="_blank" style="font-size:11px;color:var(--orange);text-decoration:none">Pexels ↗</a></div><div style="font-size:11px;color:var(--muted);margin-bottom:9px">Телефоны, скроллинг</div><div><span class="tag to" onclick="quickCopy(this)">scrolling phone</span><span class="tag to" onclick="quickCopy(this)">social media addiction</span><span class="tag to" onclick="quickCopy(this)">screen glow face</span><span class="tag to" onclick="quickCopy(this)">dark room phone light</span></div></div>
-  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--yellow)">💰 Деньги / Покупки</div><a href="https://pexels.com" target="_blank" style="font-size:11px;color:var(--yellow);text-decoration:none">Pexels ↗</a></div><div style="font-size:11px;color:var(--muted);margin-bottom:9px">Шопинг, траты, решения</div><div><span class="tag ty" onclick="quickCopy(this)">online shopping cart</span><span class="tag ty" onclick="quickCopy(this)">impulse purchase</span><span class="tag ty" onclick="quickCopy(this)">credit card payment</span></div></div>
-  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--blue)">😰 Эмоции / Стресс</div><a href="https://mixkit.co" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none">Mixkit ↗</a></div><div style="font-size:11px;color:var(--muted);margin-bottom:9px">Тревога, перегрузка</div><div><span class="tag tb" onclick="quickCopy(this)">anxiety person</span><span class="tag tb" onclick="quickCopy(this)">overthinking</span><span class="tag tb" onclick="quickCopy(this)">emotional decision</span></div></div>
+  <div class="ptitle">📦 Стоки</div>
+  <div class="psub">Клікни на тег — скопіюється. Шукай англійською.</div>
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--g)">🧠 Мозок / Психологія</div><a href="https://pexels.com" target="_blank" style="font-size:11px;color:var(--g);text-decoration:none">Pexels ↗</a></div><div style="font-size:11px;color:var(--m);margin-bottom:8px">Нейронаука, мислення</div><div><span class="tag tg" onclick="quickCopy(this)">brain neurons</span><span class="tag tg" onclick="quickCopy(this)">neuroscience abstract</span><span class="tag tg" onclick="quickCopy(this)">human mind thinking</span><span class="tag tg" onclick="quickCopy(this)">synapse connection</span></div></div>
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--p)">🤖 AI / Технології</div><a href="https://pixabay.com/videos/" target="_blank" style="font-size:11px;color:var(--p);text-decoration:none">Pixabay ↗</a></div><div style="font-size:11px;color:var(--m);margin-bottom:8px">Алгоритми, дані</div><div><span class="tag tp" onclick="quickCopy(this)">artificial intelligence</span><span class="tag tp" onclick="quickCopy(this)">digital data flow</span><span class="tag tp" onclick="quickCopy(this)">hologram interface</span><span class="tag tp" onclick="quickCopy(this)">machine learning</span></div></div>
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--o)">📱 Соцмережі / Залежність</div><a href="https://pexels.com" target="_blank" style="font-size:11px;color:var(--o);text-decoration:none">Pexels ↗</a></div><div style="font-size:11px;color:var(--m);margin-bottom:8px">Телефони, скролінг</div><div><span class="tag to" onclick="quickCopy(this)">scrolling phone</span><span class="tag to" onclick="quickCopy(this)">social media addiction</span><span class="tag to" onclick="quickCopy(this)">screen glow face</span><span class="tag to" onclick="quickCopy(this)">dark room phone light</span></div></div>
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--y)">💰 Гроші / Покупки</div><a href="https://pexels.com" target="_blank" style="font-size:11px;color:var(--y);text-decoration:none">Pexels ↗</a></div><div style="font-size:11px;color:var(--m);margin-bottom:8px">Шопінг, витрати</div><div><span class="tag ty" onclick="quickCopy(this)">online shopping cart</span><span class="tag ty" onclick="quickCopy(this)">impulse purchase</span><span class="tag ty" onclick="quickCopy(this)">credit card payment</span></div></div>
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:13px;font-weight:700;color:var(--bl)">😰 Емоції / Стрес</div><a href="https://mixkit.co" target="_blank" style="font-size:11px;color:var(--bl);text-decoration:none">Mixkit ↗</a></div><div style="font-size:11px;color:var(--m);margin-bottom:8px">Тривога, перевантаження</div><div><span class="tag tb" onclick="quickCopy(this)">anxiety person</span><span class="tag tb" onclick="quickCopy(this)">overthinking</span><span class="tag tb" onclick="quickCopy(this)">emotional decision</span></div></div>
 </div>
 
 <!-- COVERS -->
 <div class="page" id="page-covers">
-  <div class="ptitle">Обложки</div>
-  <div class="psub">4 стиля под твой канал. Инструкция по Canva ниже.</div>
+  <div class="ptitle">🖼 Обкладинки</div>
+  <div class="psub">4 стилі для твого каналу. Інструкція по Canva нижче.</div>
   <div class="covers-grid">
-    <div class="cover" style="background:linear-gradient(160deg,#0A0A0F,#1a0a2e,#0d1f1a)"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:13px"><div style="font-size:7px;letter-spacing:2px;color:rgba(0,255,178,0.6);text-transform:uppercase">Факт дня</div><div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;line-height:1.2;color:#fff;margin-bottom:7px">Твой мозг<br><span style="color:#00FFB2">врёт тебе</span><br>7 раз в день</div><div style="width:24px;height:2px;background:#00FFB2;border-radius:2px"></div></div><div style="font-size:7px;color:rgba(255,255,255,0.3)">мозг·ai</div></div></div>
-    <div class="cover" style="background:linear-gradient(135deg,#1a0a0a,#2d0a1a)"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:13px;text-align:center"><div style="font-size:26px;margin-bottom:9px">🤖</div><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:5px">ТЫ ИЛИ<br><span style="color:#FF6B35">AI?</span></div><div style="margin-top:9px;border:1px solid rgba(255,107,53,0.4);border-radius:20px;padding:3px 9px;font-size:8px;color:#FF6B35">ТЕСТ</div></div></div>
-    <div class="cover" style="background:linear-gradient(180deg,#080814,#12082a)"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:13px"><div style="background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.4);border-radius:5px;padding:3px 6px;width:fit-content;font-size:7px;color:#A78BFA;letter-spacing:1px">ЭКСПЕРИМЕНТ</div><div><div style="font-size:7px;color:rgba(255,255,255,0.4);margin-bottom:4px">когнитивный баг</div><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;color:#fff;line-height:1.2">Почему ты<br>не можешь<br><span style="color:#A78BFA">остановиться</span></div></div><div style="display:flex;gap:4px"><div style="width:6px;height:6px;border-radius:50%;background:#A78BFA"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(167,139,250,0.3)"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(167,139,250,0.3)"></div></div></div></div>
-    <div class="cover" style="background:#0A0A0F;border:1px solid rgba(251,191,36,0.3)"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:13px;text-align:center"><div style="font-size:9px;color:rgba(251,191,36,0.5);letter-spacing:3px;margin-bottom:11px;text-transform:uppercase">тренд</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:900;color:#FBBF24">$$$</div><div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:900;color:#fff;line-height:1.3;margin-top:9px">AI знает<br>когда ты<br>потратишь</div></div></div>
+    <div class="cover" style="background:linear-gradient(160deg,#0A0A0F,#1a0a2e,#0d1f1a)"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:12px"><div style="font-size:7px;letter-spacing:2px;color:rgba(0,255,178,0.6);text-transform:uppercase">Факт дня</div><div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;line-height:1.2;color:#fff;margin-bottom:6px">Твій мозок<br><span style="color:#00FFB2">бреше тобі</span><br>7 разів на день</div><div style="width:22px;height:2px;background:#00FFB2;border-radius:2px"></div></div><div style="font-size:7px;color:rgba(255,255,255,0.3)">мозок·ai</div></div></div>
+    <div class="cover" style="background:linear-gradient(135deg,#1a0a0a,#2d0a1a)"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:12px;text-align:center"><div style="font-size:26px;margin-bottom:8px">🤖</div><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:5px">ТИ ЧИ<br><span style="color:#FF6B35">AI?</span></div><div style="margin-top:8px;border:1px solid rgba(255,107,53,0.4);border-radius:20px;padding:2px 8px;font-size:8px;color:#FF6B35">ТЕСТ</div></div></div>
+    <div class="cover" style="background:linear-gradient(180deg,#080814,#12082a)"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:12px"><div style="background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.4);border-radius:5px;padding:2px 6px;width:fit-content;font-size:7px;color:#A78BFA;letter-spacing:1px">ЕКСПЕРИМЕНТ</div><div><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;color:#fff;line-height:1.2">Чому ти<br>не можеш<br><span style="color:#A78BFA">зупинитись</span></div></div><div style="display:flex;gap:4px"><div style="width:6px;height:6px;border-radius:50%;background:#A78BFA"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(167,139,250,0.3)"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(167,139,250,0.3)"></div></div></div></div>
+    <div class="cover" style="background:#0A0A0F;border:1px solid rgba(251,191,36,0.3)"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:12px;text-align:center"><div style="font-size:9px;color:rgba(251,191,36,0.5);letter-spacing:3px;margin-bottom:10px;text-transform:uppercase">тренд</div><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:900;color:#FBBF24">$$$</div><div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:900;color:#fff;line-height:1.3;margin-top:8px">AI знає<br>коли ти<br>витратиш</div></div></div>
   </div>
-  <div class="acc"><div class="acch" onclick="tA(this)">📐 Настройки Canva<span class="acca">▼</span></div><div class="accb"><div style="font-size:13px;color:var(--muted);line-height:2">Размер: <strong style="color:#fff">1080×1920px</strong><br>Фон: <strong style="color:var(--green)">#0A0A0F</strong><br>Шрифт: <strong style="color:#fff">Syne ExtraBold</strong> или <strong style="color:#fff">Bebas Neue</strong><br>Акценты: <span style="color:var(--green)">#00FFB2</span> · <span style="color:var(--orange)">#FF6B35</span> · <span style="color:var(--purple)">#A78BFA</span> · <span style="color:var(--yellow)">#FBBF24</span></div></div></div>
-  <div class="acc"><div class="acch" onclick="tA(this)">✍️ Промпт для текста обложки<span class="acca">▼</span></div><div class="accb"><div style="display:flex;justify-content:flex-end;margin-bottom:6px"><button class="cbtn" onclick="cEl(this,'cp1')">Копировать</button></div><div class="pbox" id="cp1">Придумай текст для обложки TikTok/Shorts:
-Тема: [ТЕМА] · Формат: [факт/эксперимент/тест/тренд]
-Нужно: заголовок макс 5 слов + подзаголовок 1 строка + бейдж одно слово
-Стиль: дерзкий, останавливает скролл.</div></div></div>
+  <div class="acc"><div class="acch" onclick="tA(this)">📐 Налаштування Canva<span class="acca">▼</span></div><div class="accb"><div style="font-size:13px;color:var(--m);line-height:2">Розмір: <strong style="color:#fff">1080×1920px</strong><br>Фон: <strong style="color:var(--g)">#0A0A0F</strong><br>Шрифт: <strong style="color:#fff">Syne ExtraBold</strong> або <strong style="color:#fff">Bebas Neue</strong><br>Акценти: <span style="color:var(--g)">#00FFB2</span> · <span style="color:var(--o)">#FF6B35</span> · <span style="color:var(--p)">#A78BFA</span> · <span style="color:var(--y)">#FBBF24</span></div></div></div>
+</div>
+
+<!-- STORYBOARD -->
+<div class="page" id="page-storyboard" style="display:none">
+  <div class="ptitle">🎬 Розкадровка</div>
+  <div class="psub">Вставте сценарій → отримайте розкадровку з тегами для пошуку футажів</div>
+  <div style="margin-bottom:10px">
+    <textarea id="sbInput" placeholder="Вставте готовий сценарій сюди..." style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:120px;line-height:1.7"></textarea>
+  </div>
+  <button onclick="genStoryboard()" id="sbBtn" style="width:100%;background:var(--p);color:#000;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:16px;transition:all 0.2s">🎬 Згенерувати розкадровку</button>
+  <div id="sbResult"></div>
+</div>
+
+<!-- GENERATOR (embedded) -->
+<div class="page" id="page-generator">
+  <div class="ptitle">🤖 AI Генератор</div>
+  <div class="psub">Один клік → 10 постів / тем / сценаріїв / квізів</div>
+
+  <div style="background:linear-gradient(135deg,rgba(0,255,178,0.06),rgba(0,229,255,0.03));border:1px solid rgba(0,255,178,0.2);border-radius:14px;padding:16px;margin-bottom:16px" id="apiBlock">
+    <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--g);margin-bottom:6px">🔑 API-ключ Anthropic</div>
+    <div style="font-size:12px;color:var(--m);line-height:1.6;margin-bottom:12px">Безкоштовна реєстрація → $5 кредитів одразу. 10 постів ≈ <strong style="color:var(--g)">$0.02</strong></div>
+    <div style="display:flex;gap:7px">
+      <input id="gApiKey" type="password" placeholder="sk-ant-api03-..." style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
+      <button onclick="gSaveKey()" style="background:var(--g);color:#000;border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Зберегти</button>
+    </div>
+    <div id="gKeyStatus" style="font-size:11px;margin-top:8px;display:none"></div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px">📍 console.anthropic.com → API Keys → Create Key</div>
+  </div>
+
+  <div style="display:flex;gap:7px;margin-bottom:14px">
+    <button class="pill active" id="gLangUA" onclick="gSetLang('uk',this)">🇺🇦 UA</button>
+    <button class="pill" id="gLangRU" onclick="gSetLang('ru',this)">🇷🇺 RU</button>
+  </div>
+
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:13px 15px;margin-bottom:14px">
+    <div style="font-size:10px;color:var(--m);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">Тема (або залиш пустим — авто)</div>
+    <input id="gTopic" placeholder="напр: петля дофаміну, ChatGPT, психологія грошей..." style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:9px">
+      <span class="chip" onclick="gSetTopic(this)">Петля дофаміну</span>
+      <span class="chip" onclick="gSetTopic(this)">ChatGPT і правда</span>
+      <span class="chip" onclick="gSetTopic(this)">Когнітивні баги</span>
+      <span class="chip" onclick="gSetTopic(this)">AI і гроші</span>
+      <span class="chip" onclick="gSetTopic(this)">Соцмережі і мозок</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px">
+    <div class="gcard" id="gc-posts" onclick="gGenerate('posts')" style="background:var(--s);border:1.5px solid rgba(0,255,178,0.2);border-radius:14px;padding:15px 13px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.2s">
+      <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(0,255,178,0.12);color:var(--g)">×10</div>
+      <div style="font-size:24px;margin-bottom:8px">✈️</div>
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--g);margin-bottom:3px">Пости TG</div>
+      <div style="font-size:11px;color:var(--m)">Готові до публікації</div>
+      <div class="gcsp" style="display:none;position:absolute;inset:0;background:rgba(8,8,15,0.88);align-items:center;justify-content:center;flex-direction:column;gap:7px;border-radius:14px"><div style="width:24px;height:24px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--g);border-radius:50%;animation:spin 0.8s linear infinite"></div><div style="font-size:10px;color:var(--m)">Генерую...</div></div>
+    </div>
+    <div class="gcard" id="gc-topics" onclick="gGenerate('topics')" style="background:var(--s);border:1.5px solid rgba(255,107,53,0.2);border-radius:14px;padding:15px 13px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.2s">
+      <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(255,107,53,0.12);color:var(--o)">×10</div>
+      <div style="font-size:24px;margin-bottom:8px">🔥</div>
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--o);margin-bottom:3px">Теми відео</div>
+      <div style="font-size:11px;color:var(--m)">З гачком і форматом</div>
+      <div class="gcsp" style="display:none;position:absolute;inset:0;background:rgba(8,8,15,0.88);align-items:center;justify-content:center;flex-direction:column;gap:7px;border-radius:14px"><div style="width:24px;height:24px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--o);border-radius:50%;animation:spin 0.8s linear infinite"></div><div style="font-size:10px;color:var(--m)">Генерую...</div></div>
+    </div>
+    <div class="gcard" id="gc-scenarios" onclick="gGenerate('scenarios')" style="background:var(--s);border:1.5px solid rgba(167,139,250,0.2);border-radius:14px;padding:15px 13px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.2s">
+      <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(167,139,250,0.12);color:var(--p)">×5</div>
+      <div style="font-size:24px;margin-bottom:8px">🎬</div>
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--p);margin-bottom:3px">Сценарії</div>
+      <div style="font-size:11px;color:var(--m)">Готові для ElevenLabs</div>
+      <div class="gcsp" style="display:none;position:absolute;inset:0;background:rgba(8,8,15,0.88);align-items:center;justify-content:center;flex-direction:column;gap:7px;border-radius:14px"><div style="width:24px;height:24px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--p);border-radius:50%;animation:spin 0.8s linear infinite"></div><div style="font-size:10px;color:var(--m)">Генерую...</div></div>
+    </div>
+    <div class="gcard" id="gc-quizzes" onclick="gGenerate('quizzes')" style="background:var(--s);border:1.5px solid rgba(251,191,36,0.2);border-radius:14px;padding:15px 13px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.2s">
+      <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(251,191,36,0.12);color:var(--y)">×5</div>
+      <div style="font-size:24px;margin-bottom:8px">🧠</div>
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--y);margin-bottom:3px">Квізи TG</div>
+      <div style="font-size:11px;color:var(--m)">З поясненнями</div>
+      <div class="gcsp" style="display:none;position:absolute;inset:0;background:rgba(8,8,15,0.88);align-items:center;justify-content:center;flex-direction:column;gap:7px;border-radius:14px"><div style="width:24px;height:24px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--y);border-radius:50%;animation:spin 0.8s linear infinite"></div><div style="font-size:10px;color:var(--m)">Генерую...</div></div>
+    </div>
+  </div>
+
+  <div id="gResults">
+    <div style="text-align:center;padding:32px 20px;color:var(--m)">
+      <div style="font-size:40px;margin-bottom:10px;opacity:0.4">🤖</div>
+      <div style="font-size:13px;line-height:1.6">Натисни будь-яку кнопку<br>Claude згенерує контент за ~15 сек</div>
+    </div>
+  </div>
 </div>
 
 <div class="ovl" id="ovl" onclick="cPop()"></div>
 <div class="popup" id="popup">
-  <div style="font-size:42px;margin-bottom:9px" id="pEmoji">🎉</div>
-  <div style="font-family:'Syne',sans-serif;font-size:19px;font-weight:900;color:var(--green);margin-bottom:7px" id="pTitle">+50 XP!</div>
-  <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px" id="pSub">Задача выполнена!</div>
-  <button onclick="cPop()" style="background:var(--green);color:#000;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:10px 24px;border-radius:11px;cursor:pointer">Огонь 🔥</button>
+  <div style="font-size:40px;margin-bottom:8px" id="pEmoji">🎉</div>
+  <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:900;color:var(--g);margin-bottom:6px" id="pTitle">+50 XP!</div>
+  <div style="font-size:12px;color:var(--m);line-height:1.6;margin-bottom:14px" id="pSub">Завдання виконано!</div>
+  <button onclick="cPop()" style="background:var(--g);color:#000;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:9px 22px;border-radius:10px;cursor:pointer">Вогонь 🔥</button>
 </div>
-<div id="toast">✓ Скопировано!</div>
+<div id="toast">✓ Скопійовано!</div>
 
 <script>
-const SK='mozgai_v4';
+const SK='mozgai_v5';
 let S=JSON.parse(localStorage.getItem(SK)||'null')||{xp:0,videos:0,streak:0,weekDone:0,weekXp:0,done:{}};
-const LV=[{n:'Новичок',m:0},{n:'Контентер',m:100},{n:'Создатель',m:300},{n:'Мастер',m:600},{n:'Легенда',m:1000}];
+const LV=[{n:'Новачок',m:0},{n:'Контентер',m:100},{n:'Творець',m:300},{n:'Майстер',m:600},{n:'Легенда',m:1000}];
 function gL(x){for(let i=LV.length-1;i>=0;i--)if(x>=LV[i].m)return i;return 0;}
 function sv(){localStorage.setItem(SK,JSON.stringify(S));}
 function render(){
   const li=gL(S.xp),lv=LV[li],nx=LV[li+1];
   const pct=nx?Math.round((S.xp-lv.m)/(nx.m-lv.m)*100):100;
-  document.getElementById('lvlBadge').textContent='⚡ Уровень '+(li+1)+' · '+lv.n;
+  document.getElementById('lvlBadge').textContent='⚡ Рівень '+(li+1)+' · '+lv.n;
   document.getElementById('xpLbl').textContent=nx?S.xp+'/'+nx.m+' XP':S.xp+' XP MAX';
   document.getElementById('xpFill').style.width=pct+'%';
   document.getElementById('tXp').textContent=S.xp;
@@ -524,25 +874,25 @@ function render(){
   qs.forEach(q=>{const id=q.querySelector('.qtitle').textContent;if(S.done[id]){q.classList.add('done');dc++;}else q.classList.remove('done');});
   document.getElementById('dCount').textContent=dc;
   const pd=qs.length?Math.round(dc/qs.length*100):0;
-  const c=138.2,off=c-(c*pd/100);
+  const c=131.9,off=c-(c*pd/100);
   document.getElementById('dRing').style.strokeDashoffset=off;
   document.getElementById('dPct').textContent=pd+'%';
-  document.getElementById('dStatus').textContent=pd===0?'Выбери задачу и начни':pd<50?'Хорошее начало! 💪':pd<100?'Ты на полпути 🔥':'Всё выполнено! 🏆';
+  document.getElementById('dStatus').textContent=pd===0?'Обери завдання і починай':pd<50?'Гарний початок! 💪':pd<100?'Ти на півдорозі 🔥':'Все виконано! 🏆';
 }
 function tQ(el){
   const id=el.querySelector('.qtitle').textContent,xp=parseInt(el.dataset.xp),isV=el.dataset.video==='1';
   if(S.done[id]){S.done[id]=false;S.xp=Math.max(0,S.xp-xp);S.weekXp=Math.max(0,S.weekXp-xp);S.weekDone=Math.max(0,S.weekDone-1);if(isV)S.videos=Math.max(0,S.videos-1);}
   else{S.done[id]=true;S.xp+=xp;S.weekXp+=xp;S.weekDone++;if(isV)S.videos++;
     const e=isV?'🎬':['🎯','⚡','🧠','🔥'][Math.floor(Math.random()*4)];
-    const t=isV?'+'+xp+' XP · Видео!':'+'+xp+' XP';
-    const s=isV?'Опубликовал! Так держать!':['Задача выполнена!','Мозг качается 💪','Канал растёт!','Ещё один шаг!'][Math.floor(Math.random()*4)];
+    const t=isV?'+'+xp+' XP · Відео!':'+'+xp+' XP';
+    const s=isV?'Опублікував! Так тримати!':['Завдання виконано!','Мозок качається 💪','Канал росте!','Ще один крок!'][Math.floor(Math.random()*4)];
     document.getElementById('pEmoji').textContent=e;document.getElementById('pTitle').textContent=t;document.getElementById('pSub').textContent=s;
     document.getElementById('popup').classList.add('show');document.getElementById('ovl').classList.add('show');
   }
   sv();render();
 }
 function cPop(){document.getElementById('popup').classList.remove('show');document.getElementById('ovl').classList.remove('show');}
-function resetDay(){if(!confirm('Сбросить прогресс дня?'))return;S.done={};S.weekDone=0;S.weekXp=0;sv();render();}
+function resetDay(){if(!confirm('Скинути прогрес дня?'))return;S.done={};S.weekDone=0;S.weekXp=0;sv();render();}
 function showPage(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
@@ -551,9 +901,45 @@ function showPage(id,btn){
 }
 function tA(h){const b=h.nextElementSibling,a=h.querySelector('.acca'),o=b.classList.contains('open');b.classList.toggle('open',!o);if(a)a.style.transform=o?'':'rotate(180deg)';}
 function tR(h){const b=h.nextElementSibling,sp=h.querySelector('span:last-child'),o=b.classList.contains('open');b.classList.toggle('open',!o);if(sp)sp.textContent=o?'▶':'▼';}
+function tTG(h){const b=h.nextElementSibling,sp=h.querySelector('span:last-child'),o=b.classList.contains('open');b.classList.toggle('open',!o);if(sp)sp.textContent=o?'▼':'▲';}
+function tQuiz(h){const b=h.nextElementSibling,sp=h.querySelector('span:last-child'),o=b.classList.contains('open');b.classList.toggle('open',!o);if(sp)sp.textContent=o?'▼':'▲';}
 function fSc(cat,btn){document.querySelectorAll('#page-scenarios .pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.sc-tpl').forEach(el=>{el.style.display=(cat==='all'||el.dataset.cat.includes(cat))?'block':'none';});}
 function fR(cat,btn){document.querySelectorAll('#page-ready .pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.rsc').forEach(el=>{el.style.display=(cat==='all'||el.dataset.rcat.includes(cat))?'block':'none';});}
 function fT(cat,btn){document.querySelectorAll('#page-topics .pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.topic-item').forEach(el=>{el.style.display=(cat==='all'||el.dataset.tcat.includes(cat))?'block':'none';});}
+// QUIZ
+let quizScore=0,quizTotal=5;
+function answerQ(btn,type,currentId,nextId,explanation){
+  const wrap=document.getElementById(currentId);
+  wrap.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
+  btn.classList.add(type);
+  if(type==='correct'){quizScore++;wrap.querySelectorAll('.quiz-opt').forEach(b=>{if(b!==btn&&!b.classList.contains('correct'))b.classList.add('reveal');});}
+  else{wrap.querySelectorAll('.quiz-opt').forEach(b=>{if(b.onclick&&b.onclick.toString().includes("'correct'"))b.classList.add('reveal');});}
+  const exp=document.getElementById(currentId.replace('wrap','exp'));
+  if(exp){exp.textContent=explanation;exp.classList.add('show');}
+  setTimeout(()=>{
+    wrap.style.display='none';
+    if(nextId==='qscore'){showScore();}
+    else{const next=document.getElementById(nextId);if(next)next.style.display='block';}
+  },2200);
+}
+function showScore(){
+  const sc=document.getElementById('qscore');sc.classList.add('show');
+  const pct=Math.round(quizScore/quizTotal*100);
+  const emoji=pct===100?'🏆':pct>=80?'🎯':pct>=60?'💪':'🧠';
+  document.getElementById('scoreText').textContent=emoji+' '+quizScore+'/'+quizTotal+' правильно';
+  document.getElementById('scoreDesc').textContent=pct===100?'Ідеально! Ти справжній знавець психології і AI.':pct>=80?'Відмінно! Ти добре розбираєшся в темі.':pct>=60?'Непогано! Є над чим попрацювати.':'Гарний початок! Підписуйся — дізнаєшся більше.';
+}
+function resetQuiz(){
+  quizScore=0;
+  ['q1wrap','q2wrap','q3wrap','q4wrap','q5wrap'].forEach((id,i)=>{
+    const w=document.getElementById(id);
+    w.style.display=i===0?'block':'none';
+    w.querySelectorAll('.quiz-opt').forEach(b=>{b.disabled=false;b.className='quiz-opt';});
+    const exp=document.getElementById(id.replace('wrap','exp'));
+    if(exp){exp.textContent='';exp.classList.remove('show');}
+  });
+  document.getElementById('qscore').classList.remove('show');
+}
 // TTS
 let curUtt=null,curBar=null,progInt=null;
 function pTTS(textId,btnId,barId,spId){
@@ -562,20 +948,19 @@ function pTTS(textId,btnId,barId,spId){
   const rate=parseFloat(document.getElementById(spId).value);
   curBar=document.getElementById(barId);
   const utt=new SpeechSynthesisUtterance(text);
-  utt.lang='ru-RU';utt.rate=rate;utt.pitch=1;
+  utt.lang='uk-UA';utt.rate=rate;utt.pitch=1;
   const voices=speechSynthesis.getVoices();
-  const rv=voices.find(v=>v.lang.startsWith('ru'));
+  const rv=voices.find(v=>v.lang.startsWith('uk'))||voices.find(v=>v.lang.startsWith('ru'))||voices[0];
   if(rv)utt.voice=rv;
   const estMs=text.split(' ').length/rate*420;
   let el=0;
   progInt=setInterval(()=>{el+=200;if(curBar)curBar.style.width=Math.min(el/estMs*100,95)+'%';},200);
-  utt.onend=()=>{if(curBar)curBar.style.width='100%';clearInterval(progInt);const b=document.getElementById(btnId);if(b)b.textContent='▶ Слушать';curUtt=null;};
+  utt.onend=()=>{if(curBar)curBar.style.width='100%';clearInterval(progInt);const b=document.getElementById(btnId);if(b)b.textContent='▶ Слухати';curUtt=null;};
   utt.onerror=()=>{clearInterval(progInt);};
   curUtt=utt;speechSynthesis.speak(utt);
-  const pb=document.getElementById(btnId);
-  if(pb)pb.textContent='⏸ Пауза';
+  const pb=document.getElementById(btnId);if(pb)pb.textContent='⏸ Пауза';
 }
-function sTTS(){speechSynthesis.cancel();clearInterval(progInt);if(curBar)curBar.style.width='0%';document.querySelectorAll('.ttsplay').forEach(b=>{if(b.textContent!='▶ Слушать')b.textContent='▶ Слушать';});curUtt=null;curBar=null;}
+function sTTS(){speechSynthesis.cancel();clearInterval(progInt);if(curBar)curBar.style.width='0%';document.querySelectorAll('.ttsplay').forEach(b=>{b.textContent='▶ Слухати';});curUtt=null;curBar=null;}
 speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
 function cEl(btn,id){
   navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>{
@@ -586,6 +971,274 @@ function cEl(btn,id){
 function quickCopy(el){navigator.clipboard.writeText(el.textContent.trim()).then(showToast);}
 function showToast(){const t=document.getElementById('toast');t.style.transform='translateX(-50%) translateY(0)';setTimeout(()=>{t.style.transform='translateX(-50%) translateY(80px)';},1800);}
 render();
+</script>
+<style>
+@keyframes spin{to{transform:rotate(360deg)}}
+.gcard:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.15)!important}
+.chip{font-size:11px;padding:4px 11px;border-radius:20px;cursor:pointer;border:1px solid rgba(255,255,255,0.1);color:var(--m);background:rgba(255,255,255,0.04);display:inline-block;transition:all 0.15s}
+.chip:hover{background:rgba(255,255,255,0.08);color:var(--t)}
+.gri{background:var(--s);border:1px solid var(--b);border-radius:13px;margin-bottom:9px;overflow:hidden;animation:fadeUp 0.35s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.sb-scene{background:var(--s);border:1px solid var(--b);border-radius:13px;margin-bottom:10px;overflow:hidden}
+.sb-num{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(167,139,250,0.12);color:var(--p)}
+.sb-tag{font-size:11px;padding:3px 9px;border-radius:20px;cursor:pointer;background:rgba(0,255,178,0.08);color:var(--g);border:1px solid rgba(0,255,178,0.15);display:inline-block;margin:2px;transition:all 0.15s}
+.sb-tag:hover{background:rgba(0,255,178,0.15)}
+</style>
+
+<script>
+// ---- GENERATOR ----
+let gLang = 'uk';
+let gApiKey = localStorage.getItem('mozgai_apikey') || '';
+if(gApiKey){ const el=document.getElementById('gApiKey'); if(el)el.value=gApiKey; showGStatus('✅ Ключ збережено',true); }
+
+function gSetLang(l,btn){
+  gLang=l;
+  document.getElementById('gLangUA').classList.toggle('active',l==='uk');
+  document.getElementById('gLangRU').classList.toggle('active',l==='ru');
+}
+function gSetTopic(el){ document.getElementById('gTopic').value=el.textContent; }
+function gSaveKey(){
+  const k=document.getElementById('gApiKey').value.trim();
+  if(!k.startsWith('sk-ant-')){ showGStatus('❌ Невірний формат. Має починатись з sk-ant-...',false); return; }
+  localStorage.setItem('mozgai_apikey',k); gApiKey=k;
+  showGStatus('✅ Ключ збережено — готово!',true);
+}
+function showGStatus(msg,ok){
+  const el=document.getElementById('gKeyStatus');
+  el.textContent=msg; el.style.display='block';
+  el.style.color=ok?'var(--g)':'#FF4D6D';
+}
+
+const GP={
+  posts:{
+    uk:t=>`Ти — контент-менеджер українського Telegram-каналу про психологію і AI.\nЗгенеруй 10 унікальних постів.${t?'\nТема: '+t:''}\nКожен: емодзі+заголовок, гачок, 3-5 речень, 1-2 поради, хештеги, 120-180 слів, українська.\nJSON тільки: {"items":[{"title":"...","content":"..."},...]}`,
+    ru:t=>`Ты — контент-менеджер Telegram-канала про психологию и AI.\nСгенерируй 10 уникальных постов.${t?'\nТема: '+t:''}\nКаждый: эмодзи+заголовок, крючок, 3-5 предложений, 1-2 совета, хештеги, 120-180 слов, русский.\nJSON только: {"items":[{"title":"...","content":"..."},...]}`,
+  },
+  topics:{
+    uk:t=>`Ти — стратег контенту для TikTok/Shorts про психологію і AI.\nЗгенеруй 10 ідей для відео.${t?'\nТема: '+t:''}\nКожна: назва (до 8 слів), гачок (перші 3 сек), формат, потенціал (🔥🔥🔥/🔥🔥/🔥), шаблон.\nJSON тільки: {"items":[{"title":"...","hook":"...","format":"...","potential":"🔥🔥🔥","template":"..."},...]}`,
+    ru:t=>`Ты — стратег контента для TikTok/Shorts про психологию и AI.\nСгенерируй 10 идей для видео.${t?'\nТема: '+t:''}\nКаждая: название (до 8 слов), крючок (первые 3 сек), формат, потенциал (🔥🔥🔥/🔥🔥/🔥), шаблон.\nJSON только: {"items":[{"title":"...","hook":"...","format":"...","potential":"🔥🔥🔥","template":"..."},...]}`,
+  },
+  scenarios:{
+    uk:t=>`Ти — сценарист для коротких відео (TikTok/Shorts) про психологію і AI.\nНапиши 5 повних сценаріїв 60-90 сек.${t?'\nТема: '+t:''}\nСтруктура: гачок→розвиток→пояснення→лайфхак→CTA. Готовий для озвучки. Українська.\nJSON тільки: {"items":[{"title":"...","duration":"60 сек","content":"..."},...]}`,
+    ru:t=>`Ты — сценарист для коротких видео (TikTok/Shorts) про психологию и AI.\nНапиши 5 полных сценариев 60-90 сек.${t?'\nТема: '+t:''}\nСтруктура: крючок→развитие→объяснение→лайфхак→CTA. Готов для озвучки. Русский.\nJSON только: {"items":[{"title":"...","duration":"60 сек","content":"..."},...]}`,
+  },
+  quizzes:{
+    uk:t=>`Ти — автор освітнього контенту для Telegram про психологію і AI.\nСтвори 5 квізів.${t?'\nТема: '+t:''}\nКожен: запитання, 4 варіанти (1 правильний), пояснення (3-4 речення), практичний висновок.\nJSON тільки: {"items":[{"title":"...","question":"...","options":["...","...","...","..."],"correct":0,"explanation":"...","takeaway":"..."},...]}`,
+    ru:t=>`Ты — автор образовательного контента для Telegram про психологию и AI.\nСоздай 5 квизов.${t?'\nТема: '+t:''}\nКаждый: вопрос, 4 варианта (1 правильный), объяснение (3-4 предложения), практический вывод.\nJSON только: {"items":[{"title":"...","question":"...","options":["...","...","...","..."],"correct":0,"explanation":"...","takeaway":"..."},...]}`,
+  }
+};
+
+async function gGenerate(type){
+  const key=localStorage.getItem('mozgai_apikey');
+  if(!key){ document.getElementById('gResults').innerHTML='<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">☝️ Спочатку збережи API-ключ вище</div>'; return; }
+  const topic=document.getElementById('gTopic').value.trim();
+  const card=document.getElementById('gc-'+type);
+  const sp=card.querySelector('.gcsp');
+  sp.style.display='flex'; card.style.pointerEvents='none';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages:[{role:'user',content:GP[type][gLang](topic)}]})
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'API error '+res.status);}
+    const data=await res.json();
+    const text=data.content.map(b=>b.text||'').join('');
+    const jm=text.match(/\{[\s\S]*\}/);
+    if(!jm)throw new Error('Помилка розбору відповіді');
+    const parsed=JSON.parse(jm[0]);
+    gRenderResults(type,parsed.items);
+  }catch(e){
+    document.getElementById('gResults').innerHTML=`<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">❌ ${e.message}${e.message.includes('401')?' — перевір API-ключ':''}</div>`;
+  }finally{
+    sp.style.display='none'; card.style.pointerEvents='auto';
+  }
+}
+
+const GTC={posts:{c:'var(--g)',bg:'rgba(0,255,178,0.12)',l:'Пост',e:'✈️'},topics:{c:'var(--o)',bg:'rgba(255,107,53,0.12)',l:'Тема',e:'🔥'},scenarios:{c:'var(--p)',bg:'rgba(167,139,250,0.12)',l:'Сценарій',e:'🎬'},quizzes:{c:'var(--y)',bg:'rgba(251,191,36,0.12)',l:'Квіз',e:'🧠'}};
+
+function gRenderResults(type,items){
+  const cfg=GTC[type];
+  const tn={posts:'Пости Telegram',topics:'Теми відео',scenarios:'Сценарії',quizzes:'Квізи'};
+  const allTxt=items.map((it,i)=>gFmtTxt(type,it,i)).join('\n\n---\n\n');
+  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800">${cfg.e} ${tn[type]} · ${items.length} шт</div>
+    <button onclick="gCopyAll(\`${esc(allTxt)}\`)" style="background:rgba(0,255,178,0.1);border:1px solid rgba(0,255,178,0.25);color:var(--g);font-size:11px;font-weight:700;padding:5px 13px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">Копіювати все</button>
+  </div>`;
+  items.forEach((it,i)=>{
+    const body=gFmtHTML(type,it);
+    const txt=gFmtTxt(type,it,i);
+    html+=`<div class="gri" style="animation-delay:${i*0.05}s">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px 0;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:${cfg.bg};color:${cfg.c}">${cfg.l} ${i+1}</span>
+          <span style="font-size:12px;font-weight:700">${escH(it.title||'')}</span>
+        </div>
+        ${type==='topics'?`<span style="font-size:14px">${it.potential||'🔥'}</span>`:''}
+      </div>
+      <div style="padding:9px 14px 12px;font-size:13px;color:rgba(255,255,255,0.8);line-height:1.8;white-space:pre-wrap;word-break:break-word">${body}</div>
+      <div style="padding:0 14px 11px;display:flex;gap:6px">
+        <button class="cbtn" onclick="gCopyItem(this,\`${esc(txt)}\`)">Копіювати</button>
+        ${(type==='scenarios'||type==='posts')?`<button class="ri-tts" onclick="gSpeak(\`${esc(it.content||it.text||'')}\`,this)" style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);color:var(--bl);font-size:11px;padding:5px 11px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif">▶ Слухати</button>`:''}
+        ${type==='scenarios'?`<button onclick="useForStoryboard(\`${esc(it.content||'')}\`)" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);color:var(--p);font-size:11px;padding:5px 11px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif">🎬 Розкадровка</button>`:''}
+      </div>
+    </div>`;
+  });
+  document.getElementById('gResults').innerHTML=html;
+}
+
+function gFmtHTML(type,it){
+  if(type==='posts')return escH(it.content||'');
+  if(type==='topics')return `<strong style="color:var(--o)">Гачок:</strong> ${escH(it.hook||'')}<br><br><strong style="color:var(--m)">Формат:</strong> ${escH(it.format||'')} · <strong style="color:var(--m)">Шаблон:</strong> ${escH(it.template||'')}`;
+  if(type==='scenarios')return `<span style="color:var(--m);font-size:11px">${escH(it.duration||'')}</span>\n\n${escH(it.content||'')}`;
+  if(type==='quizzes'){
+    const opts=(it.options||[]).map((o,i)=>`${i===it.correct?'✅':'○'} ${o}`).join('\n');
+    return `<strong>❓ ${escH(it.question||'')}</strong>\n\n${opts}\n\n<span style="color:var(--g)">💡 ${escH(it.explanation||'')}</span>\n\n<span style="color:var(--y)">→ ${escH(it.takeaway||'')}</span>`;
+  }
+  return '';
+}
+function gFmtTxt(type,it,i){
+  if(type==='posts')return it.content||'';
+  if(type==='topics')return `${it.title}\n\nГачок: ${it.hook}\nФормат: ${it.format}\nПотенціал: ${it.potential}\nШаблон: ${it.template}`;
+  if(type==='scenarios')return it.content||'';
+  if(type==='quizzes'){const opts=(it.options||[]).map((o,i)=>`${i===it.correct?'✅':'○'} ${o}`).join('\n');return `${it.question}\n\n${opts}\n\n${it.explanation}\n\n→ ${it.takeaway}`;}
+  return '';
+}
+function esc(s){return(s||'').replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$');}
+function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function gCopyItem(btn,txt){navigator.clipboard.writeText(txt).then(()=>{const o=btn.textContent;btn.textContent='✓';btn.classList.add('copied');showToast();setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied');},2000);});}
+function gCopyAll(txt){navigator.clipboard.writeText(txt).then(showToast);}
+
+let gUtterance=null;
+function gSpeak(text,btn){
+  if(gUtterance){speechSynthesis.cancel();gUtterance=null;btn.textContent='▶ Слухати';return;}
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=gLang==='uk'?'uk-UA':'ru-RU';u.rate=1;
+  const vs=speechSynthesis.getVoices();
+  const v=vs.find(v=>v.lang.startsWith(gLang==='uk'?'uk':'ru'))||vs[0];
+  if(v)u.voice=v;
+  u.onend=()=>{gUtterance=null;btn.textContent='▶ Слухати';};
+  gUtterance=u;speechSynthesis.speak(u);btn.textContent='■ Стоп';
+}
+
+// ---- STORYBOARD ----
+function useForStoryboard(text){
+  document.getElementById('sbInput').value=text;
+  showPage('storyboard', document.querySelectorAll('.nb')[0]);
+  document.querySelector('.nb[onclick*="storyboard"]').click();
+}
+
+async function genStoryboard(){
+  const key=localStorage.getItem('mozgai_apikey');
+  const text=document.getElementById('sbInput').value.trim();
+  if(!text){alert('Вставте сценарій!');return;}
+  if(!key){
+    document.getElementById('sbResult').innerHTML='<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">☝️ Додай API-ключ у вкладці 🤖 AI</div>';
+    return;
+  }
+  const btn=document.getElementById('sbBtn');
+  btn.textContent='⏳ Генерую...'; btn.disabled=true;
+  const prompt=`Ти — режисер монтажу короткого відео для TikTok/Shorts.
+
+Ось сценарій:
+---
+${text}
+---
+
+Розбий на сцени (5-8 сцен). Для кожної сцени вкажи:
+1. Текст з сценарію (точний уривок)
+2. Тривалість у секундах
+3. Тип сцени: hook / explanation / example / cta
+4. Що показати на екрані (опис візуалу)
+5. Настрій: динамічний / спокійний / емоційний
+6. Теги для пошуку на Pexels/Pixabay (3-5 тегів англійською)
+7. Чому ці кадри тримають увагу (1 речення)
+
+JSON тільки:
+{"scenes":[{"text":"...","duration":5,"type":"hook","visual":"...","mood":"динамічний","tags":["tag1","tag2","tag3"],"retention":"..."},...]}`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3000,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'API error');}
+    const data=await res.json();
+    const rawText=data.content.map(b=>b.text||'').join('');
+    const jm=rawText.match(/\{[\s\S]*\}/);
+    if(!jm)throw new Error('Помилка розбору');
+    const parsed=JSON.parse(jm[0]);
+    renderStoryboard(parsed.scenes);
+  }catch(e){
+    document.getElementById('sbResult').innerHTML=`<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;color:#ff9696">❌ ${e.message}</div>`;
+  }finally{
+    btn.textContent='🎬 Згенерувати розкадровку'; btn.disabled=false;
+  }
+}
+
+const TYPE_COLORS={hook:{c:'var(--o)',bg:'rgba(255,107,53,0.12)',l:'ГАЧОК'},explanation:{c:'var(--p)',bg:'rgba(167,139,250,0.12)',l:'ПОЯСНЕННЯ'},example:{c:'var(--g)',bg:'rgba(0,255,178,0.12)',l:'ПРИКЛАД'},cta:{c:'var(--y)',bg:'rgba(251,191,36,0.12)',l:'CTA'}};
+const STOCK_URLS={pexels:'https://www.pexels.com/search/videos/',pixabay:'https://pixabay.com/videos/search/'};
+
+function renderStoryboard(scenes){
+  const totalDur=scenes.reduce((a,s)=>a+(s.duration||0),0);
+  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800">🎬 Розкадровка · ${scenes.length} сцен · ${totalDur}с</div>
+    <div style="font-size:11px;color:var(--m)">Клікай на тег → пошук</div>
+  </div>`;
+
+  scenes.forEach((sc,i)=>{
+    const tc=TYPE_COLORS[sc.type]||TYPE_COLORS['explanation'];
+    const moodEmoji={динамічний:'⚡',спокійний:'🌊',емоційний:'💥'}[sc.mood]||'🎯';
+    const tagsHtml=(sc.tags||[]).map(t=>`<a href="${STOCK_URLS.pexels}${encodeURIComponent(t)}" target="_blank" class="sb-tag">${t}</a>`).join('');
+
+    html+=`<div class="sb-scene" style="animation:fadeUp 0.35s ease ${i*0.07}s both">
+      <div style="background:rgba(255,255,255,0.02);padding:11px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-family:'Syne',sans-serif;font-size:12px;font-weight:900;color:var(--m)">0${i+1}</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:${tc.bg};color:${tc.c}">${tc.l}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:11px;color:var(--m)">${moodEmoji} ${sc.mood||''}</span>
+          <span style="font-size:11px;font-weight:700;color:var(--y)">${sc.duration||0}с</span>
+        </div>
+      </div>
+      <div style="padding:11px 14px">
+        <div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;margin-bottom:10px;font-style:italic">"${escH(sc.text||'')}"</div>
+        <div style="background:rgba(0,0,0,0.25);border-radius:9px;padding:10px 12px;margin-bottom:10px">
+          <div style="font-size:10px;color:var(--m);margin-bottom:5px;letter-spacing:1px">НА ЕКРАНІ</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6">${escH(sc.visual||'')}</div>
+        </div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:6px;letter-spacing:1px">ТЕГИ ДЛЯ ПОШУКУ ФУТАЖІВ (→ Pexels)</div>
+        <div style="margin-bottom:10px">${tagsHtml}</div>
+        <div style="background:rgba(0,255,178,0.04);border:1px solid rgba(0,255,178,0.1);border-radius:8px;padding:8px 10px;font-size:11px;color:rgba(0,255,178,0.7);line-height:1.5">
+          💡 ${escH(sc.retention||'')}
+        </div>
+      </div>
+    </div>`;
+  });
+
+  // duration bar
+  html+=`<div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:13px 15px;margin-top:4px">
+    <div style="font-size:11px;color:var(--m);margin-bottom:10px">Хронометраж</div>
+    <div style="display:flex;gap:3px;height:8px;border-radius:5px;overflow:hidden">
+      ${scenes.map(sc=>{
+        const tc=TYPE_COLORS[sc.type]||TYPE_COLORS['explanation'];
+        const w=Math.round((sc.duration||0)/totalDur*100);
+        return `<div style="width:${w}%;background:${tc.c};opacity:0.7" title="${tc.l}: ${sc.duration}с"></div>`;
+      }).join('')}
+    </div>
+    <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap">
+      ${Object.entries(TYPE_COLORS).map(([k,v])=>{
+        const total=scenes.filter(s=>s.type===k).reduce((a,s)=>a+(s.duration||0),0);
+        if(!total)return '';
+        return `<div style="font-size:11px"><span style="color:${v.c}">${v.l}</span> <span style="color:var(--m)">${total}с</span></div>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  document.getElementById('sbResult').innerHTML=html;
+}
 </script>
 </body>
 </html>
