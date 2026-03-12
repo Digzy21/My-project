@@ -1,6 +1,174 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBC9WRyPijARo2Pq6OurvVwDw1fze9rh2o",
+    authDomain: "brain-d06d8.firebaseapp.com",
+    projectId: "brain-d06d8",
+    storageBucket: "brain-d06d8.firebasestorage.app",
+    messagingSenderId: "869712650008",
+    appId: "1:869712650008:web:78de5b47f143c183f6886d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  let currentUser = null;
+  let userId = null;
+
+  // ---- AUTH ----
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    userId = user ? user.uid : null;
+    updateAuthUI(user);
+    if(user) {
+      await loadFromCloud(user.uid);
+    }
+  });
+
+  function updateAuthUI(user) {
+    const btn = document.getElementById('authBtn');
+    const info = document.getElementById('authInfo');
+    if(!btn) return;
+    if(user) {
+      btn.textContent = 'Вийти';
+      btn.style.background = 'rgba(255,77,109,0.15)';
+      btn.style.color = '#FF4D6D';
+      btn.style.borderColor = 'rgba(255,77,109,0.3)';
+      if(info) info.textContent = user.displayName || user.email;
+    } else {
+      btn.textContent = '☁️ Увійти через Google';
+      btn.style.background = 'rgba(0,255,178,0.1)';
+      btn.style.color = 'var(--g)';
+      btn.style.borderColor = 'rgba(0,255,178,0.25)';
+      if(info) info.textContent = 'Не авторизовано';
+    }
+  }
+
+  window.fbLogin = async function() {
+    if(currentUser) {
+      await signOut(auth);
+      showFBToast('Вийшли з акаунту');
+    } else {
+      try {
+        await signInWithPopup(auth, provider);
+        showFBToast('✅ Успішно увійшли!');
+      } catch(e) {
+        showFBToast('❌ ' + e.message);
+      }
+    }
+  };
+
+  // ---- SAVE TO CLOUD ----
+  window.saveToCloud = async function(key, data) {
+    if(!userId) return false;
+    try {
+      await setDoc(doc(db, 'users', userId, 'data', key), { value: JSON.stringify(data), updated: Date.now() });
+      return true;
+    } catch(e) { console.error('Save error:', e); return false; }
+  };
+
+  window.loadFromCloud = async function(uid) {
+    const uId = uid || userId;
+    if(!uId) return;
+    try {
+      // Load API key
+      const apiDoc = await getDoc(doc(db, 'users', uId, 'data', 'apikey'));
+      if(apiDoc.exists()) {
+        const key = JSON.parse(apiDoc.data().value);
+        localStorage.setItem('mozgai_apikey', key);
+        const el = document.getElementById('gApiKey');
+        if(el) el.value = key;
+        showGStatus('✅ Ключ завантажено з хмари', true);
+      }
+
+      // Load analytics
+      const anDoc = await getDoc(doc(db, 'users', uId, 'data', 'analytics'));
+      if(anDoc.exists()) {
+        window.anData = JSON.parse(anDoc.data().value);
+        renderAnalytics();
+      }
+
+      // Load chat history
+      const chatDoc = await getDoc(doc(db, 'users', uId, 'data', 'chatHistory'));
+      if(chatDoc.exists()) {
+        const saved = JSON.parse(chatDoc.data().value);
+        window.chatHistory = saved.history || [];
+        if(saved.messages) {
+          document.getElementById('chatMessages').innerHTML = saved.messages;
+        }
+      }
+
+      // Load custom prompts
+      const promptDoc = await getDoc(doc(db, 'users', uId, 'data', 'customPrompts'));
+      if(promptDoc.exists()) {
+        window.customPrompts = JSON.parse(promptDoc.data().value);
+        showFBToast('☁️ Дані завантажено з хмари');
+      }
+
+    } catch(e) { console.error('Load error:', e); }
+  };
+
+  // ---- CLOUD SYNC WRAPPERS ----
+  // Override saveAnalytics to also sync
+  const origSaveAnalytics = window.saveAnalytics;
+  window.saveAnalyticsCloud = async function() {
+    if(window.saveAnalytics) window.saveAnalytics();
+    if(userId) {
+      await window.saveToCloud('analytics', window.anData || []);
+      showFBToast('☁️ Аналітику збережено');
+    }
+  };
+
+  // Save API key to cloud when saved
+  window.saveApiKeyCloud = async function() {
+    if(window.gSaveKey) window.gSaveKey();
+    if(userId) {
+      const key = localStorage.getItem('mozgai_apikey');
+      if(key) {
+        await window.saveToCloud('apikey', key);
+        showFBToast('☁️ Ключ збережено в хмарі');
+      }
+    }
+  };
+
+  // Save chat to cloud
+  window.saveChatToCloud = async function() {
+    if(!userId) return;
+    const messages = document.getElementById('chatMessages')?.innerHTML || '';
+    await window.saveToCloud('chatHistory', {
+      history: window.chatHistory || [],
+      messages: messages,
+      updated: Date.now()
+    });
+  };
+
+  function showFBToast(msg) {
+    const t = document.getElementById('toast');
+    if(!t) return;
+    const orig = t.textContent;
+    t.textContent = msg;
+    t.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(() => {
+      t.style.transform = 'translateX(-50%) translateY(80px)';
+      setTimeout(() => t.textContent = orig, 400);
+    }, 2500);
+  }
+
+  window._fbReady = true;
+  window._db = db;
+  window._auth = auth;
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Мозг·AI — Штаб Створювача</title>
@@ -121,6 +289,11 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-he
 </style>
 </head>
 <body>
+<div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(0,0,0,0.2)">
+  <div style="flex:1;font-size:11px;color:var(--m)" id="authInfo">Не авторизовано</div>
+  <button id="authBtn" onclick="fbLogin()" style="font-size:11px;font-weight:700;padding:5px 13px;border-radius:20px;border:1px solid rgba(0,255,178,0.25);background:rgba(0,255,178,0.1);color:var(--g);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s">☁️ Увійти через Google</button>
+</div>
+
 <div class="nav">
   <div class="logo">мозг<span>·</span>ai</div>
   <div class="nt">
@@ -134,6 +307,12 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-he
     <button class="nb" onclick="showPage('stock',this)">📦</button>
     <button class="nb" onclick="showPage('covers',this)">🖼</button>
     <button class="nb" onclick="showPage('storyboard',this)">🎬 Кадри</button>
+    <button class="nb" onclick="showPage('calendar',this)">🗓 План</button>
+    <button class="nb" onclick="showPage('translate',this)">🔄 UA→RU</button>
+    <button class="nb" onclick="showPage('hooks',this)">🎯 Хуки</button>
+    <button class="nb" onclick="showPage('analytics',this)">📊 Ріст</button>
+    <button class="nb" onclick="showPage('aichat',this)" style="color:var(--y);font-weight:700">💬 Чат</button>
+    <button class="nb" onclick="showPage('aianalysis',this)">🔬 Аналіз</button>
     <button class="nb" onclick="showPage('generator',this)" style="color:var(--g);font-weight:700">🤖 AI</button>
   </div>
 </div>
@@ -772,20 +951,200 @@ AI-алгоритми магазинів знають коли ти втомле
   <div id="sbResult"></div>
 </div>
 
+<!-- CALENDAR PAGE -->
+<div class="page" id="page-calendar">
+  <div class="ptitle">🗓 Контент-план</div>
+  <div class="psub">Вкажи дату старту → отримай розклад на 30 днів для всіх 6 каналів</div>
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:14px 16px;margin-bottom:14px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:6px;letter-spacing:1px">ДАТА СТАРТУ</div>
+        <input type="date" id="calStart" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:6px;letter-spacing:1px">ВІДЕО НА ТИЖДЕНЬ</div>
+        <select id="calFreq" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none">
+          <option value="3">3 відео/тиждень</option>
+          <option value="4" selected>4 відео/тиждень</option>
+          <option value="5">5 відео/тиждень</option>
+          <option value="7">Щодня</option>
+        </select>
+      </div>
+    </div>
+    <button onclick="genCalendar()" style="width:100%;background:var(--g);color:#000;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🗓 Згенерувати план на 30 днів</button>
+  </div>
+  <div id="calResult"></div>
+</div>
+
+<!-- TRANSLATE PAGE -->
+<div class="page" id="page-translate">
+  <div class="ptitle">🔄 Перекладач UA → RU</div>
+  <div class="psub">Вставляй пост або сценарій → одразу отримуєш версію для другого каналу</div>
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:14px 16px;margin-bottom:12px">
+    <div style="font-size:10px;color:var(--m);margin-bottom:8px;letter-spacing:1px">ОРИГІНАЛ (УКРАЇНСЬКА)</div>
+    <textarea id="trInput" placeholder="Вставте пост, сценарій або тему українською..." style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:140px;line-height:1.7"></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button onclick="doTranslate('ru')" id="trBtnRU" style="flex:1;background:rgba(255,107,53,0.15);border:1px solid rgba(255,107,53,0.3);color:var(--o);border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🇷🇺 Перекласти на російську</button>
+      <button onclick="doTranslate('en')" id="trBtnEN" style="flex:1;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:var(--bl);border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🌐 English</button>
+    </div>
+  </div>
+  <div id="trResult"></div>
+</div>
+
+<!-- HOOKS PAGE -->
+<div class="page" id="page-hooks">
+  <div class="ptitle">🎯 Генератор хуків</div>
+  <div class="psub">Вводиш тему → 20 варіантів першого речення. Хук — це 80% успіху відео.</div>
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:14px 16px;margin-bottom:12px">
+    <div style="font-size:10px;color:var(--m);margin-bottom:8px;letter-spacing:1px">ТЕМА ВІДЕО АБО ПОСТУ</div>
+    <input id="hookTopic" placeholder="напр: петля дофаміну, ChatGPT брехня, психологія грошей..." style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px"/>
+    <div style="display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="pill active" id="hl-uk" onclick="setHookLang('uk',this)">🇺🇦 UA</button>
+      <button class="pill" id="hl-ru" onclick="setHookLang('ru',this)">🇷🇺 RU</button>
+      <button class="pill active" id="hf-video" onclick="toggleHookFormat('video',this)">📱 Відео</button>
+      <button class="pill" id="hf-post" onclick="toggleHookFormat('post',this)">✈️ Пост</button>
+    </div>
+    <button onclick="genHooks()" style="width:100%;background:var(--o);color:#000;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🎯 Згенерувати 20 хуків</button>
+  </div>
+  <div id="hookResult"></div>
+</div>
+
+<!-- ANALYTICS PAGE -->
+<div class="page" id="page-analytics">
+  <div class="ptitle">📊 Трекер росту</div>
+  <div class="psub">Вводь цифри раз на тиждень — бачиш динаміку всіх каналів</div>
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:14px 16px;margin-bottom:14px">
+    <div style="font-size:11px;font-weight:700;color:var(--t);margin-bottom:12px">➕ Додати запис</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:5px;letter-spacing:1px">ДАТА</div>
+        <input type="date" id="anDate" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:5px;letter-spacing:1px">КАНАЛ</div>
+        <select id="anChannel" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none">
+          <option>TikTok UA</option>
+          <option>TikTok RU</option>
+          <option>Shorts UA</option>
+          <option>Shorts RU</option>
+          <option>Telegram UA</option>
+          <option>Telegram RU</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+      <div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:5px;letter-spacing:1px">ПІДПИСНИКИ</div>
+        <input type="number" id="anSubs" placeholder="0" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:5px;letter-spacing:1px">ПЕРЕГЛЯДИ</div>
+        <input type="number" id="anViews" placeholder="0" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--m);margin-bottom:5px;letter-spacing:1px">ВІДЕО</div>
+        <input type="number" id="anVids" placeholder="0" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
+      </div>
+    </div>
+    <button onclick="userId ? saveAnalyticsCloud() : saveAnalytics()" style="width:100%;background:var(--p);color:#000;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Зберегти запис</button>
+  </div>
+  <div id="anResult"></div>
+</div>
+
+<!-- AI CHAT PAGE -->
+<div class="page" id="page-aichat">
+  <div class="ptitle">💬 AI-аналітик</div>
+  <div class="psub">Кидай скріни аналітики, сценарії, теми — отримуй конкретні поради</div>
+
+  <div style="background:linear-gradient(135deg,rgba(251,191,36,0.06),rgba(255,107,53,0.03));border:1px solid rgba(251,191,36,0.2);border-radius:13px;padding:12px 15px;margin-bottom:14px;font-size:12px;color:var(--m);line-height:1.7">
+    <strong style="color:var(--y)">Що можна кидати:</strong><br>
+    📊 Скріншот аналітики TikTok / YouTube Studio<br>
+    📝 Текст сценарію — отримаєш правки<br>
+    🔥 Питання по темах, хуках, монетизації<br>
+    📈 Кілька скрінів одразу — порівняє відео між собою
+  </div>
+
+  <!-- Chat messages -->
+  <div id="chatMessages" style="min-height:200px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px">
+    <div style="background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.15);border-radius:12px;padding:13px 15px;font-size:13px;color:rgba(255,255,255,0.75);line-height:1.7">
+      👋 Привіт! Я твій AI-аналітик для каналу.<br><br>
+      Кидай скріншот аналітики з TikTok Studio або YouTube Analytics — і я розберу:<br>
+      • Чому одні відео набирають більше переглядів<br>
+      • Де губиться аудиторія (retention)<br>
+      • Які теми краще заходять саме твоїй аудиторії<br>
+      • Що конкретно змінити в наступному сценарії<br><br>
+      Або просто запитай що завгодно про канал 🎯
+    </div>
+  </div>
+
+  <!-- Image previews -->
+  <div id="imgPreviews" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px"></div>
+
+  <!-- Input area -->
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:14px;overflow:hidden">
+    <textarea id="chatInput" placeholder="Напиши питання або просто кинь скрін..." style="width:100%;background:none;border:none;padding:13px 15px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;resize:none;min-height:80px;line-height:1.7;max-height:200px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'" onkeydown="if((e=event).ctrlKey&&e.key==='Enter')sendChat()"></textarea>
+    <div style="padding:8px 12px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.05)">
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="cursor:pointer;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--m);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--m)'">
+          <span style="font-size:18px">📎</span>
+          <input type="file" id="chatImg" accept="image/*" multiple style="display:none" onchange="previewImgs(this)"/>
+          Скрін аналітики
+        </label>
+        <button onclick="clearChat()" style="font-size:11px;color:rgba(255,255,255,0.2);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif" onmouseover="this.style.color='var(--m)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Очистити чат</button>
+      </div>
+      <div style="display:flex;gap:7px;align-items:center">
+        <span style="font-size:10px;color:rgba(255,255,255,0.2)">Ctrl+Enter</span>
+        <button onclick="sendChat()" id="chatSendBtn" style="background:var(--y);color:#000;border:none;border-radius:9px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s">Надіслати</button>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:rgba(255,255,255,0.2);text-align:center;margin-top:8px">Потрібен API-ключ у вкладці 🤖 AI</div>
+</div>
+
+<!-- AI ANALYSIS PAGE -->
+<div class="page" id="page-aianalysis">
+  <div class="ptitle">🔬 AI-аналіз</div>
+  <div class="psub">Вставляй сценарій → Claude розбирає хук, структуру, темп і дає конкретні правки</div>
+
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:14px 16px;margin-bottom:12px">
+    <div style="font-size:10px;color:var(--m);margin-bottom:8px;letter-spacing:1px">ТЕКСТ СЦЕНАРІЮ АБО ПОСТУ</div>
+    <textarea id="aaInput" placeholder="Вставте сценарій відео або пост для Telegram..." style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:160px;line-height:1.7;margin-bottom:10px"></textarea>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button class="pill active" id="aa-video" onclick="setAAType('video',this)">🎬 Сценарій відео</button>
+      <button class="pill" id="aa-post" onclick="setAAType('post',this)">✈️ Telegram пост</button>
+    </div>
+    <div style="font-size:10px;color:var(--m);margin-bottom:8px;letter-spacing:1px">ДОДАТКОВИЙ КОНТЕКСТ (необов'язково)</div>
+    <input id="aaContext" placeholder="напр: тема — дофамін, аудиторія 18-25, попереднє відео набрало 10к переглядів..." style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:10px 13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;margin-bottom:12px"/>
+    <button onclick="runAnalysis()" style="width:100%;background:linear-gradient(135deg,var(--g),#00B4D8);color:#000;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🔬 Проаналізувати</button>
+  </div>
+
+  <div style="background:rgba(0,255,178,0.04);border:1px solid rgba(0,255,178,0.12);border-radius:12px;padding:12px 15px;margin-bottom:14px;font-size:12px;color:var(--m);line-height:1.7">
+    💡 <strong style="color:var(--g)">Лайфхак:</strong> Щоб проаналізувати відео разом з аналітикою — зроби скріншот з TikTok Studio або YouTube Analytics і завантаж його сюди в чат до Claude. Я побачу цифри і дам правки з урахуванням реальних даних.
+  </div>
+
+  <div id="aaResult"></div>
+</div>
+
 <!-- GENERATOR (embedded) -->
 <div class="page" id="page-generator">
   <div class="ptitle">🤖 AI Генератор</div>
   <div class="psub">Один клік → 10 постів / тем / сценаріїв / квізів</div>
 
   <div style="background:linear-gradient(135deg,rgba(0,255,178,0.06),rgba(0,229,255,0.03));border:1px solid rgba(0,255,178,0.2);border-radius:14px;padding:16px;margin-bottom:16px" id="apiBlock">
-    <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--g);margin-bottom:6px">🔑 API-ключ Anthropic</div>
-    <div style="font-size:12px;color:var(--m);line-height:1.6;margin-bottom:12px">Безкоштовна реєстрація → $5 кредитів одразу. 10 постів ≈ <strong style="color:var(--g)">$0.02</strong></div>
+    <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--g);margin-bottom:6px">🔑 API-ключ Anthropic (Claude)</div>
+    <div style="font-size:12px;color:var(--m);line-height:1.6;margin-bottom:12px">Реєстрація → $5 кредитів одразу. 10 постів ≈ <strong style="color:var(--g)">$0.02</strong> (~250 генерацій)</div>
     <div style="display:flex;gap:7px">
       <input id="gApiKey" type="password" placeholder="sk-ant-api03-..." style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
-      <button onclick="gSaveKey()" style="background:var(--g);color:#000;border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Зберегти</button>
+      <button onclick="window._fbReady && window.saveApiKeyCloud ? saveApiKeyCloud() : gSaveKey()" style="background:var(--g);color:#000;border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Зберегти</button>
     </div>
     <div id="gKeyStatus" style="font-size:11px;margin-top:8px;display:none"></div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px">📍 console.anthropic.com → API Keys → Create Key</div>
+    <div style="background:rgba(0,0,0,0.2);border-radius:9px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--m);line-height:1.9">
+      <strong style="color:var(--t)">Як отримати (3 хв):</strong><br>
+      1. Відкрий <a href="https://console.anthropic.com" target="_blank" style="color:var(--g)">console.anthropic.com</a><br>
+      2. Реєстрація → картка (списань немає, $5 кредитів одразу)<br>
+      3. API Keys → <strong style="color:#fff">Create Key</strong> → скопіюй сюди<br>
+      <span style="color:rgba(255,255,255,0.25)">🔒 Зберігається тільки у твоєму браузері</span>
+    </div>
   </div>
 
   <div style="display:flex;gap:7px;margin-bottom:14px">
@@ -979,6 +1338,7 @@ render();
 .chip:hover{background:rgba(255,255,255,0.08);color:var(--t)}
 .gri{background:var(--s);border:1px solid var(--b);border-radius:13px;margin-bottom:9px;overflow:hidden;animation:fadeUp 0.35s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
 .sb-scene{background:var(--s);border:1px solid var(--b);border-radius:13px;margin-bottom:10px;overflow:hidden}
 .sb-num{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(167,139,250,0.12);color:var(--p)}
 .sb-tag{font-size:11px;padding:3px 9px;border-radius:20px;cursor:pointer;background:rgba(0,255,178,0.08);color:var(--g);border:1px solid rgba(0,255,178,0.15);display:inline-block;margin:2px;transition:all 0.15s}
@@ -1030,7 +1390,7 @@ const GP={
 
 async function gGenerate(type){
   const key=localStorage.getItem('mozgai_apikey');
-  if(!key){ document.getElementById('gResults').innerHTML='<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">☝️ Спочатку збережи API-ключ вище</div>'; return; }
+  if(!key){ document.getElementById('gResults').innerHTML='<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">☝️ Спочатку збережи Gemini API-ключ вище</div>'; return; }
   const topic=document.getElementById('gTopic').value.trim();
   const card=document.getElementById('gc-'+type);
   const sp=card.querySelector('.gcsp');
@@ -1080,7 +1440,12 @@ function gRenderResults(type,items){
       <div style="padding:0 14px 11px;display:flex;gap:6px">
         <button class="cbtn" onclick="gCopyItem(this,\`${esc(txt)}\`)">Копіювати</button>
         ${(type==='scenarios'||type==='posts')?`<button class="ri-tts" onclick="gSpeak(\`${esc(it.content||it.text||'')}\`,this)" style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);color:var(--bl);font-size:11px;padding:5px 11px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif">▶ Слухати</button>`:''}
-        ${type==='scenarios'?`<button onclick="useForStoryboard(\`${esc(it.content||'')}\`)" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);color:var(--p);font-size:11px;padding:5px 11px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif">🎬 Розкадровка</button>`:''}
+        ${type==='scenarios'?`
+          <button id="hk-btn-${i}" onclick="genInlineHooks(\`${esc(it.content||'')}\`,${i},this)" style="background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);color:var(--o);font-size:11px;padding:5px 11px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">🎯 Хуки</button>
+          <button id="sb-btn-${i}" onclick="genInlineStoryboard(\`${esc(it.content||'')}\`,${i},this)" style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);color:var(--p);font-size:11px;padding:5px 11px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">🎬 Розкадровка</button>
+          <div id="hk-wrap-${i}" style="margin-top:0"></div>
+          <div id="sb-wrap-${i}" style="margin-top:0"></div>
+        `:''}
       </div>
     </div>`;
   });
@@ -1124,8 +1489,122 @@ function gSpeak(text,btn){
 // ---- STORYBOARD ----
 function useForStoryboard(text){
   document.getElementById('sbInput').value=text;
-  showPage('storyboard', document.querySelectorAll('.nb')[0]);
-  document.querySelector('.nb[onclick*="storyboard"]').click();
+}
+
+async function genInlineStoryboard(text, idx, btn){
+  const key=localStorage.getItem('mozgai_apikey');
+  if(!key){ alert('Додай Gemini API-ключ у вкладці 🤖 AI'); return; }
+  const wrap=document.getElementById('sb-wrap-'+idx);
+  if(!wrap) return;
+
+  // Show loading state
+  btn.textContent='⏳ Генерую...'; btn.disabled=true;
+  wrap.innerHTML=`<div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15);border-radius:12px;padding:16px;margin-bottom:4px;display:flex;align-items:center;gap:12px">
+    <div style="width:22px;height:22px;border:3px solid rgba(167,139,250,0.2);border-top-color:var(--p);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0"></div>
+    <div style="font-size:12px;color:var(--m)">Claude аналізує сценарій і підбирає кадри...</div>
+  </div>`;
+
+  const prompt=`Ти — режисер монтажу короткого відео для TikTok/Shorts (вертикальне відео 9:16).
+
+Ось сценарій:
+---
+${text}
+---
+
+Розбий на сцени (5-8 сцен). Для кожної сцени:
+1. Точний уривок тексту з сценарію
+2. Тривалість у секундах
+3. Тип: hook / explanation / example / cta
+4. Що показати на екрані (конкретний візуальний опис)
+5. Рух камери: статично / zoom-in / zoom-out / pan
+6. Настрій: динамічний / спокійний / емоційний
+7. 4-5 тегів англійською для пошуку на Pexels/Pixabay
+8. Чому ця сцена тримає увагу глядача (1 речення)
+
+JSON тільки, без пояснень:
+{"scenes":[{"text":"...","duration":4,"type":"hook","visual":"...","camera":"zoom-in","mood":"динамічний","tags":["tag1","tag2","tag3","tag4"],"retention":"..."},...]}`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3000,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'API error '+res.status);}
+    const data=await res.json();
+    const rawText=data.content.map(b=>b.text||'').join('');
+    const jm=rawText.match(/\{[\s\S]*\}/);
+    if(!jm)throw new Error('Помилка розбору відповіді');
+    const parsed=JSON.parse(jm[0]);
+    wrap.innerHTML = buildStoryboardHTML(parsed.scenes);
+    btn.textContent='🔄 Оновити розкадровку';
+    btn.disabled=false;
+  }catch(e){
+    wrap.innerHTML=`<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:10px;padding:11px 13px;font-size:12px;color:#ff9696;margin-bottom:4px">❌ ${e.message}</div>`;
+    btn.textContent='🎬 Розкадровка'; btn.disabled=false;
+  }
+}
+
+function buildStoryboardHTML(scenes){
+  const totalDur=scenes.reduce((a,s)=>a+(s.duration||0),0);
+  const TC={hook:{c:'var(--o)',bg:'rgba(255,107,53,0.12)',l:'ГАЧОК'},explanation:{c:'var(--p)',bg:'rgba(167,139,250,0.12)',l:'ПОЯСНЕННЯ'},example:{c:'var(--g)',bg:'rgba(0,255,178,0.12)',l:'ПРИКЛАД'},cta:{c:'var(--y)',bg:'rgba(251,191,36,0.12)',l:'CTA'}};
+  const moodE={динамічний:'⚡',спокійний:'🌊',емоційний:'💥'};
+  const camE={'zoom-in':'🔍','zoom-out':'🔎',статично:'📷',pan:'↔️'};
+
+  let html=`<div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:14px;overflow:hidden;margin-bottom:4px;margin-top:4px">
+    <div style="padding:12px 15px;background:rgba(167,139,250,0.08);display:flex;justify-content:space-between;align-items:center">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--p)">🎬 Розкадровка · ${scenes.length} сцен · ${totalDur}с</div>
+      <div style="font-size:10px;color:var(--m)">клік на тег → Pexels</div>
+    </div>`;
+
+  // Timeline bar
+  html+=`<div style="padding:0 15px 10px;padding-top:10px">
+    <div style="display:flex;gap:2px;height:6px;border-radius:4px;overflow:hidden;margin-bottom:6px">
+      ${scenes.map(sc=>{const tc=TC[sc.type]||TC['explanation'];const w=Math.round((sc.duration||0)/totalDur*100);return `<div style="width:${w}%;background:${tc.c};opacity:0.6" title="${tc.l}: ${sc.duration}с"></div>`;}).join('')}
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      ${Object.entries(TC).map(([k,v])=>{const t=scenes.filter(s=>s.type===k).reduce((a,s)=>a+(s.duration||0),0);if(!t)return '';return `<span style="font-size:10px;color:${v.c}">${v.l} ${t}с</span>`;}).join('')}
+    </div>
+  </div>`;
+
+  scenes.forEach((sc,i)=>{
+    const tc=TC[sc.type]||TC['explanation'];
+    const tags=(sc.tags||[]).map(t=>`<a href="https://www.pexels.com/search/videos/${encodeURIComponent(t)}/" target="_blank" style="font-size:11px;padding:3px 8px;border-radius:20px;cursor:pointer;background:rgba(0,255,178,0.08);color:var(--g);border:1px solid rgba(0,255,178,0.15);text-decoration:none;display:inline-block;margin:2px;transition:all 0.15s">${t}</a>`).join('');
+    const pixTags=(sc.tags||[]).slice(0,2).map(t=>`<a href="https://pixabay.com/videos/search/${encodeURIComponent(t)}/" target="_blank" style="font-size:10px;padding:2px 7px;border-radius:20px;cursor:pointer;background:rgba(96,165,250,0.08);color:var(--bl);border:1px solid rgba(96,165,250,0.15);text-decoration:none;display:inline-block;margin:2px">${t}</a>`).join('');
+
+    html+=`<div style="border-top:1px solid rgba(255,255,255,0.05);padding:12px 15px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="font-family:'Syne',sans-serif;font-size:11px;font-weight:900;color:rgba(255,255,255,0.25)">0${i+1}</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:${tc.bg};color:${tc.c}">${tc.l}</span>
+          <span style="font-size:11px;color:var(--m)">${camE[sc.camera]||'📷'} ${sc.camera||''}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:11px;color:var(--m)">${moodE[sc.mood]||'🎯'} ${sc.mood||''}</span>
+          <span style="font-size:12px;font-weight:700;color:var(--y)">${sc.duration||0}с</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:9px;font-style:italic;padding-left:8px;border-left:2px solid rgba(255,255,255,0.1)">"${escH(sc.text||'')}"</div>
+      <div style="background:rgba(0,0,0,0.25);border-radius:9px;padding:9px 11px;margin-bottom:9px">
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-bottom:4px;letter-spacing:1px">📽 НА ЕКРАНІ</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.75);line-height:1.5">${escH(sc.visual||'')}</div>
+      </div>
+      <div style="margin-bottom:7px">
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-bottom:5px;letter-spacing:1px">🔍 PEXELS</div>
+        ${tags}
+      </div>
+      <div style="margin-bottom:7px">
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-bottom:5px;letter-spacing:1px">🔍 PIXABAY</div>
+        ${pixTags}
+      </div>
+      <div style="background:rgba(0,255,178,0.04);border-left:2px solid rgba(0,255,178,0.3);padding:7px 10px;font-size:11px;color:rgba(0,255,178,0.65);line-height:1.5">
+        💡 ${escH(sc.retention||'')}
+      </div>
+    </div>`;
+  });
+
+  html+='</div>';
+  return html;
 }
 
 async function genStoryboard(){
@@ -1239,6 +1718,742 @@ function renderStoryboard(scenes){
 
   document.getElementById('sbResult').innerHTML=html;
 }
+
+// ===== CALENDAR =====
+function genCalendar(){
+  const startVal = document.getElementById('calStart').value;
+  const freq = parseInt(document.getElementById('calFreq').value);
+  if(!startVal){ alert('Вкажи дату старту!'); return; }
+
+  const start = new Date(startVal);
+  const videoDays = freq === 7 ? [0,1,2,3,4,5,6] : freq === 5 ? [1,2,3,4,5] : freq === 4 ? [1,3,5,0] : [1,3,5];
+  const tgDays = [0,1,2,3,4,5,6]; // every day
+
+  const topics = ['Петля дофаміну','Ефект Даннінга-Крюгера','ChatGPT і правда','Психологія грошей','AI і увага','Соцмережі і мозок','Когнітивні упередження','Deepfake і довіра','FOMO і тривога','Прокрастинація і мозок','Алгоритм TikTok','Імпульсні покупки','Ефект якоря','Синдром самозванця','AI і творчість'];
+  const tgTypes = ['🧠 Факт дня','🗳 Опитування','💡 Лайфхак','🎬 Анонс','📊 Статистика','🔥 Підбірка','🧪 Квіз'];
+  const channels = ['TikTok UA','TikTok RU','Shorts UA','Shorts RU'];
+
+  let weeks = {};
+  let topicIdx = 0;
+
+  for(let d = 0; d < 30; d++){
+    const date = new Date(start);
+    date.setDate(start.getDate() + d);
+    const dow = date.getDay();
+    const weekNum = Math.floor(d / 7) + 1;
+    const dateStr = date.toLocaleDateString('uk-UA', {day:'numeric', month:'short'});
+    const dayName = ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'][dow];
+
+    if(!weeks[weekNum]) weeks[weekNum] = [];
+
+    const isVideoDay = videoDays.includes(dow);
+    const topic = topics[topicIdx % topics.length];
+    if(isVideoDay) topicIdx++;
+
+    weeks[weekNum].push({
+      date: dateStr, day: dayName, dow,
+      video: isVideoDay ? topic : null,
+      tg: tgTypes[d % tgTypes.length]
+    });
+  }
+
+  const chColors = {'TikTok UA':'var(--o)','TikTok RU':'#FF6B6B','Shorts UA':'var(--g)','Shorts RU':'#00B4D8','Telegram UA':'var(--p)','Telegram RU':'#7B61FF'};
+
+  let html = '<div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">';
+  Object.entries(chColors).forEach(([ch,c]) => {
+    html += `<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.05);color:${c};border:1px solid ${c}33">${ch}</span>`;
+  });
+  html += '</div>';
+
+  Object.entries(weeks).forEach(([wk, days]) => {
+    html += `<div style="margin-bottom:16px"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:var(--m);letter-spacing:2px;margin-bottom:8px">ТИЖДЕНЬ ${wk}</div><div style="display:flex;flex-direction:column;gap:6px">`;
+    days.forEach(d => {
+      const isToday = d.video !== null;
+      html += `<div style="background:var(--s);border:1px solid ${isToday ? 'rgba(0,255,178,0.15)' : 'var(--b)'};border-radius:11px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start">
+        <div style="flex-shrink:0;text-align:center;min-width:36px">
+          <div style="font-size:11px;font-weight:700;color:${isToday ? 'var(--g)' : 'var(--m)'}">${d.day}</div>
+          <div style="font-size:10px;color:var(--m)">${d.date}</div>
+        </div>
+        <div style="flex:1;min-width:0">
+          ${d.video ? `<div style="font-size:12px;font-weight:700;color:var(--t);margin-bottom:5px">🎬 ${d.video}</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            ${channels.map(ch => `<span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(255,255,255,0.05);color:${chColors[ch]}">${ch}</span>`).join('')}
+          </div>` : '<div style="font-size:11px;color:rgba(255,255,255,0.2)">— відпочинок від відео</div>'}
+          <div style="margin-top:6px;font-size:11px;color:var(--p)">✈️ TG: ${d.tg}</div>
+        </div>
+      </div>`;
+    });
+    html += '</div></div>';
+  });
+
+  document.getElementById('calResult').innerHTML = html;
+}
+
+// ===== TRANSLATE =====
+let trLang = 'ru';
+async function doTranslate(lang){
+  const key = localStorage.getItem('mozgai_apikey');
+  const text = document.getElementById('trInput').value.trim();
+  if(!text){ alert('Вставте текст для перекладу!'); return; }
+  if(!key){ document.getElementById('trResult').innerHTML = '<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">☝️ Додай API-ключ у вкладці 🤖 AI</div>'; return; }
+
+  const langName = lang === 'ru' ? 'російську' : 'англійську';
+  const btn = document.getElementById(lang === 'ru' ? 'trBtnRU' : 'trBtnEN');
+  const orig = btn.textContent;
+  btn.textContent = '⏳ Перекладаю...'; btn.disabled = true;
+
+  document.getElementById('trResult').innerHTML = '<div style="text-align:center;padding:20px;color:var(--m)"><div style="width:22px;height:22px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--p);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 8px"></div>Перекладаю...</div>';
+
+  const prompt = `Переклади наступний текст з української на ${langName}.
+Зберігай стиль, тон, емодзі, хештеги (перекладай хештеги теж).
+Якщо це пост для Telegram — зберігай структуру.
+Якщо це сценарій для відео — зберігай розбивку на абзаци.
+Повертай ТІЛЬКИ перекладений текст, без пояснень.
+
+Текст:
+${text}`;
+
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'API error');}
+    const data = await res.json();
+    const translated = data.content.map(b=>b.text||'').join('');
+    const flag = lang === 'ru' ? '🇷🇺' : '🌐';
+    document.getElementById('trResult').innerHTML = `
+      <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;overflow:hidden">
+        <div style="padding:11px 15px;background:rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;font-weight:700">${flag} Переклад</span>
+          <button class="cbtn" onclick="copyTr(this)">Копіювати</button>
+        </div>
+        <div id="trOut" style="padding:13px 15px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.8;white-space:pre-wrap">${escH(translated)}</div>
+      </div>`;
+  }catch(e){
+    document.getElementById('trResult').innerHTML = `<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">❌ ${e.message}</div>`;
+  }finally{
+    btn.textContent = orig; btn.disabled = false;
+  }
+}
+function copyTr(btn){
+  const txt = document.getElementById('trOut').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const o=btn.textContent;btn.textContent='✓';btn.classList.add('copied');showToast();
+    setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied');},2000);
+  });
+}
+
+// ===== HOOKS =====
+let hookLang = 'uk';
+let hookFormat = 'video';
+function setHookLang(l,btn){
+  hookLang=l;
+  document.getElementById('hl-uk').classList.toggle('active',l==='uk');
+  document.getElementById('hl-ru').classList.toggle('active',l==='ru');
+}
+function toggleHookFormat(f,btn){
+  hookFormat=f;
+  document.getElementById('hf-video').classList.toggle('active',f==='video');
+  document.getElementById('hf-post').classList.toggle('active',f==='post');
+}
+
+async function genHooks(){
+  const key = localStorage.getItem('mozgai_apikey');
+  const topic = document.getElementById('hookTopic').value.trim();
+  if(!topic){ alert('Введи тему!'); return; }
+  if(!key){ document.getElementById('hookResult').innerHTML = '<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">☝️ Додай API-ключ у вкладці 🤖 AI</div>'; return; }
+
+  const btn = document.querySelector('#page-hooks button:last-of-type');
+  btn.textContent='⏳ Генерую...'; btn.disabled=true;
+  document.getElementById('hookResult').innerHTML='<div style="text-align:center;padding:24px;color:var(--m)"><div style="width:22px;height:22px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--o);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 8px"></div>Генерую хуки...</div>';
+
+  const fmtDesc = hookFormat === 'video' ? 'перше речення для короткого відео TikTok/Shorts (глядач почує у перші 2 секунди)' : 'перший рядок для посту в Telegram (змушує відкрити і читати далі)';
+  const lang = hookLang === 'uk' ? 'українською' : 'російською';
+
+  const prompt = `Ти — копірайтер який спеціалізується на вірусному контенті про психологію і AI.
+
+Тема: ${topic}
+Завдання: згенеруй 20 різних хуків — ${fmtDesc}.
+Мова: ${lang}
+
+Типи хуків (використай всі):
+- Шок-факт ("95% людей не знають що...")
+- Провокаційне запитання ("А що якщо твій мозок тебе обманює?")  
+- Виклик ("Зроби це прямо зараз — більшість провалиться")
+- Персональне звернення ("Ти зараз скролиш. І це не випадково.")
+- Число ("7 разів на день твій мозок бреше тобі")
+- Парадокс ("Чим більше ти стараєшся забути — тим краще пам'ятаєш")
+- Таємниця ("TikTok знає про тебе те, чого не знаєш ти сам")
+
+JSON тільки: {"hooks":[{"text":"...","type":"шок-факт"},{"text":"...","type":"..."},...]}`;
+
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2500,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'API error');}
+    const data = await res.json();
+    const text = data.content.map(b=>b.text||'').join('');
+    const jm = text.match(/\{[\s\S]*\}/);
+    if(!jm) throw new Error('Помилка розбору');
+    const parsed = JSON.parse(jm[0]);
+    renderHooks(parsed.hooks);
+  }catch(e){
+    document.getElementById('hookResult').innerHTML=`<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">❌ ${e.message}</div>`;
+  }finally{
+    btn.textContent='🎯 Згенерувати 20 хуків'; btn.disabled=false;
+  }
+}
+
+const hookTypeColors = {'шок-факт':'var(--o)','провокаційне запитання':'var(--p)','виклик':'var(--r,#FF4D6D)','персональне звернення':'var(--g)','число':'var(--y)','парадокс':'var(--bl)','таємниця':'#FF6B9D'};
+
+function renderHooks(hooks){
+  const allTxt = hooks.map(h=>h.text).join('\n\n');
+  let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800">🎯 Хуки · ${hooks.length} варіантів</div>
+    <button onclick="navigator.clipboard.writeText(\`${esc(allTxt)}\`).then(showToast)" style="background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);color:var(--o);font-size:11px;font-weight:700;padding:5px 13px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">Копіювати все</button>
+  </div>`;
+  hooks.forEach((h,i)=>{
+    const c = hookTypeColors[h.type?.toLowerCase()] || 'var(--m)';
+    html += `<div style="background:var(--s);border:1px solid var(--b);border-radius:12px;padding:12px 14px;margin-bottom:7px;animation:fadeUp 0.3s ease ${i*0.04}s both;display:flex;gap:10px;align-items:flex-start">
+      <span style="font-size:10px;font-weight:700;color:var(--m);flex-shrink:0;padding-top:2px">${String(i+1).padStart(2,'0')}</span>
+      <div style="flex:1">
+        <div style="font-size:13px;color:rgba(255,255,255,0.9);line-height:1.6;margin-bottom:6px">${escH(h.text||'')}</div>
+        <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.05);color:${c}">${h.type||''}</span>
+      </div>
+      <button class="cbtn" style="flex-shrink:0" onclick="gCopyItem(this,\`${esc(h.text||'')}\`)">⎘</button>
+    </div>`;
+  });
+  document.getElementById('hookResult').innerHTML = html;
+}
+
+// ===== ANALYTICS =====
+let anData = JSON.parse(localStorage.getItem('mozgai_analytics') || '[]');
+
+function saveAnalytics(){
+  const date = document.getElementById('anDate').value;
+  const channel = document.getElementById('anChannel').value;
+  const subs = parseInt(document.getElementById('anSubs').value)||0;
+  const views = parseInt(document.getElementById('anViews').value)||0;
+  const vids = parseInt(document.getElementById('anVids').value)||0;
+  if(!date){ alert('Вкажи дату!'); return; }
+  anData.push({date,channel,subs,views,vids,ts:Date.now()});
+  localStorage.setItem('mozgai_analytics', JSON.stringify(anData));
+  renderAnalytics();
+  showToast();
+  document.getElementById('anSubs').value='';
+  document.getElementById('anViews').value='';
+  document.getElementById('anVids').value='';
+}
+
+function renderAnalytics(){
+  const el = document.getElementById('anResult');
+  if(!anData.length){
+    el.innerHTML='<div style="text-align:center;padding:32px;color:var(--m);font-size:13px">Додай перший запис щоб побачити графік росту</div>';
+    return;
+  }
+
+  const channels = [...new Set(anData.map(d=>d.channel))];
+  const chColors2 = {'TikTok UA':'#FF6B35','TikTok RU':'#FF4D6D','Shorts UA':'#00FFB2','Shorts RU':'#00B4D8','Telegram UA':'#A78BFA','Telegram RU':'#7B61FF'};
+
+  // Summary cards
+  let html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">';
+  channels.forEach(ch=>{
+    const chData = anData.filter(d=>d.channel===ch).sort((a,b)=>a.date.localeCompare(b.date));
+    if(!chData.length) return;
+    const latest = chData[chData.length-1];
+    const prev = chData.length > 1 ? chData[chData.length-2] : null;
+    const growth = prev ? latest.subs - prev.subs : 0;
+    const c = chColors2[ch] || 'var(--m)';
+    html += `<div style="background:var(--s);border:1px solid rgba(255,255,255,0.07);border-left:3px solid ${c};border-radius:11px;padding:11px 13px">
+      <div style="font-size:11px;color:${c};font-weight:700;margin-bottom:6px">${ch}</div>
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:900;color:var(--t)">${latest.subs.toLocaleString()}</div>
+      <div style="font-size:10px;color:var(--m);margin-top:2px">підписників</div>
+      ${growth > 0 ? `<div style="font-size:11px;color:var(--g);margin-top:4px">+${growth} за тиждень ↑</div>` : growth < 0 ? `<div style="font-size:11px;color:#FF4D6D;margin-top:4px">${growth} ↓</div>` : ''}
+      <div style="font-size:10px;color:var(--m);margin-top:3px">${latest.views.toLocaleString()} переглядів · ${latest.vids} відео</div>
+    </div>`;
+  });
+  html += '</div>';
+
+  // History table
+  html += `<div style="background:var(--s);border:1px solid var(--b);border-radius:13px;overflow:hidden">
+    <div style="padding:11px 15px;background:rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:12px;font-weight:700">Всі записи</span>
+      <button onclick="clearAnalytics()" style="font-size:10px;color:rgba(255,77,109,0.6);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif">Очистити</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <tr style="border-bottom:1px solid var(--b)">
+          <th style="padding:8px 12px;text-align:left;color:var(--m);font-weight:600">Дата</th>
+          <th style="padding:8px 12px;text-align:left;color:var(--m);font-weight:600">Канал</th>
+          <th style="padding:8px 12px;text-align:right;color:var(--m);font-weight:600">Підп.</th>
+          <th style="padding:8px 12px;text-align:right;color:var(--m);font-weight:600">Перегляди</th>
+          <th style="padding:8px 12px;text-align:right;color:var(--m);font-weight:600">Відео</th>
+        </tr>`;
+  [...anData].reverse().slice(0,20).forEach(d=>{
+    const c = chColors2[d.channel] || 'var(--m)';
+    html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+      <td style="padding:8px 12px;color:var(--m)">${d.date}</td>
+      <td style="padding:8px 12px"><span style="color:${c};font-weight:600">${d.channel}</span></td>
+      <td style="padding:8px 12px;text-align:right;font-weight:700">${d.subs.toLocaleString()}</td>
+      <td style="padding:8px 12px;text-align:right;color:var(--m)">${d.views.toLocaleString()}</td>
+      <td style="padding:8px 12px;text-align:right;color:var(--m)">${d.vids}</td>
+    </tr>`;
+  });
+  html += '</table></div></div>';
+
+  el.innerHTML = html;
+}
+
+function clearAnalytics(){
+  if(!confirm('Видалити всі записи?')) return;
+  anData = [];
+  localStorage.removeItem('mozgai_analytics');
+  renderAnalytics();
+}
+
+// Init analytics on load
+renderAnalytics();
+// Set today's date as default
+document.addEventListener('DOMContentLoaded', ()=>{
+  const today = new Date().toISOString().split('T')[0];
+  const anDateEl = document.getElementById('anDate');
+  const calEl = document.getElementById('calStart');
+  if(anDateEl) anDateEl.value = today;
+  if(calEl) calEl.value = today;
+});
+
+
+// ===== INLINE HOOKS IN SCENARIO =====
+async function genInlineHooks(scenarioText, idx, btn) {
+  const key = localStorage.getItem('mozgai_apikey');
+  if(!key){ alert('Додай API-ключ у вкладці 🤖 AI'); return; }
+  const wrap = document.getElementById('hk-wrap-' + idx);
+  if(!wrap) return;
+
+  btn.textContent = '⏳ Генерую...'; btn.disabled = true;
+  wrap.style.marginTop = '10px';
+  wrap.innerHTML = `<div style="background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.15);border-radius:11px;padding:13px;display:flex;align-items:center;gap:10px">
+    <div style="width:18px;height:18px;border:2.5px solid rgba(255,107,53,0.2);border-top-color:var(--o);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0"></div>
+    <div style="font-size:12px;color:var(--m)">Аналізую сценарій і підбираю хуки...</div>
+  </div>`;
+
+  // Extract topic from scenario
+  const firstLines = scenarioText.split('\n').slice(0,3).join(' ');
+  const prompt = `Ось сценарій відео:
+---
+${scenarioText.slice(0, 800)}
+---
+
+На основі цього сценарію згенеруй 7 різних хуків — перших речень для відео (глядач почує у перші 2-3 секунди).
+
+Типи хуків (використай різні):
+- Шок-факт з цифрою
+- Провокаційне запитання  
+- Пряме звернення "Ти..."
+- Виклик/тест
+- Парадокс
+- Таємниця
+- Статистика що дивує
+
+Мова: та сама що у сценарії.
+JSON тільки: {"hooks":[{"text":"...","type":"..."},{"text":"...","type":"..."},...]}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'API error');}
+    const data = await res.json();
+    const text = data.content.map(b=>b.text||'').join('');
+    const jm = text.match(/\{[\s\S]*\}/);
+    if(!jm) throw new Error('Помилка розбору');
+    const parsed = JSON.parse(jm[0]);
+    const typeColors = {'шок-факт':'var(--o)','провокаційне запитання':'var(--p)','пряме звернення':'var(--g)','виклик':'#FF4D6D','парадокс':'var(--bl)','таємниця':'#FF6B9D','статистика':'var(--y)'};
+    let html = `<div style="background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.2);border-radius:12px;overflow:hidden;margin-top:10px">
+      <div style="padding:10px 14px;background:rgba(255,107,53,0.08);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;font-weight:700;color:var(--o)">🎯 Хуки для цього сценарію</span>
+        <span style="font-size:10px;color:var(--m)">${parsed.hooks.length} варіантів</span>
+      </div>`;
+    parsed.hooks.forEach((h,i) => {
+      const c = typeColors[h.type?.toLowerCase()] || 'var(--m)';
+      html += `<div style="padding:9px 14px;border-top:1px solid rgba(255,255,255,0.04);display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:10px;color:var(--m);flex-shrink:0;padding-top:2px">${String(i+1).padStart(2,'0')}</span>
+        <div style="flex:1">
+          <div style="font-size:13px;color:rgba(255,255,255,0.9);line-height:1.6;margin-bottom:4px">${escH(h.text||'')}</div>
+          <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:rgba(255,255,255,0.05);color:${c}">${h.type||''}</span>
+        </div>
+        <button class="cbtn" onclick="gCopyItem(this,\`${esc(h.text||'')}\`)" style="flex-shrink:0;font-size:11px">⎘</button>
+      </div>`;
+    });
+    html += '</div>';
+    wrap.innerHTML = html;
+    btn.textContent = '🔄 Оновити хуки';
+    btn.disabled = false;
+  } catch(e) {
+    wrap.innerHTML = `<div style="background:rgba(255,77,109,0.08);border-radius:10px;padding:10px 13px;font-size:12px;color:#ff9696;margin-top:8px">❌ ${e.message}</div>`;
+    btn.textContent = '🎯 Хуки'; btn.disabled = false;
+  }
+}
+
+// ===== AI ANALYSIS =====
+let aaType = 'video';
+function setAAType(t, btn) {
+  aaType = t;
+  document.getElementById('aa-video').classList.toggle('active', t==='video');
+  document.getElementById('aa-post').classList.toggle('active', t==='post');
+}
+
+async function runAnalysis() {
+  const key = localStorage.getItem('mozgai_apikey');
+  const text = document.getElementById('aaInput').value.trim();
+  const context = document.getElementById('aaContext').value.trim();
+  if(!text){ alert('Вставте текст для аналізу!'); return; }
+  if(!key){ document.getElementById('aaResult').innerHTML = '<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">☝️ Додай API-ключ у вкладці 🤖 AI</div>'; return; }
+
+  const btn = document.querySelector('#page-aianalysis button:last-of-type');
+  btn.textContent = '⏳ Аналізую...'; btn.disabled = true;
+  document.getElementById('aaResult').innerHTML = '<div style="text-align:center;padding:32px;color:var(--m)"><div style="width:26px;height:26px;border:3px solid rgba(0,255,178,0.15);border-top-color:var(--g);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px"></div>Claude аналізує...</div>';
+
+  const typePrompt = aaType === 'video'
+    ? 'сценарій для короткого відео TikTok/YouTube Shorts (60-90 секунд)'
+    : 'пост для Telegram-каналу';
+
+  const prompt = `Ти — досвідчений контент-стратег для вірусних відео і Telegram-каналів про психологію і AI.
+
+Проаналізуй цей ${typePrompt}:
+---
+${text}
+---
+${context ? `
+Додатковий контекст: ${context}` : ''}
+
+Дай детальний аналіз у форматі JSON:
+{
+  "scores": {
+    "hook": 8,
+    "structure": 7,
+    "value": 9,
+    "cta": 6,
+    "overall": 8
+  },
+  "hook_analysis": {
+    "current": "поточний хук одним реченням",
+    "strength": "що добре у хуку",
+    "weakness": "що слабко",
+    "better_version": "покращений варіант хука"
+  },
+  "strengths": ["сильна сторона 1", "сильна сторона 2", "сильна сторона 3"],
+  "weaknesses": ["слабка сторона 1", "слабка сторона 2"],
+  "fixes": [
+    {"what": "що змінити", "how": "як саме змінити", "example": "конкретний приклад правки"},
+    {"what": "...", "how": "...", "example": "..."}
+  ],
+  "next_video": {
+    "topic": "тема для наступного відео",
+    "hook": "хук для наступного відео",
+    "reason": "чому ця тема підійде"
+  },
+  "verdict": "загальна оцінка 2-3 реченнями"
+}
+
+Оцінки від 1 до 10. Будь конкретним — без загальних слів типу "добре" або "погано".`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'API error');}
+    const data = await res.json();
+    const rawText = data.content.map(b=>b.text||'').join('');
+    const jm = rawText.match(/\{[\s\S]*\}/);
+    if(!jm) throw new Error('Помилка розбору відповіді');
+    const r = JSON.parse(jm[0]);
+    renderAnalysis(r);
+  } catch(e) {
+    document.getElementById('aaResult').innerHTML = `<div style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);border-radius:12px;padding:13px;font-size:13px;color:#ff9696">❌ ${e.message}</div>`;
+  } finally {
+    btn.textContent = '🔬 Проаналізувати'; btn.disabled = false;
+  }
+}
+
+function scoreColor(s){ return s>=8?'var(--g)':s>=6?'var(--y)':'#FF4D6D'; }
+function scoreBar(s){ return `<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px;margin-top:5px;overflow:hidden"><div style="height:100%;width:${s*10}%;background:${scoreColor(s)};border-radius:3px;transition:width 0.8s ease"></div></div>`; }
+
+function renderAnalysis(r) {
+  const sc = r.scores || {};
+  let html = `
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:14px;overflow:hidden;margin-bottom:10px">
+    <div style="padding:14px 16px;background:rgba(0,255,178,0.05);border-bottom:1px solid var(--b)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800">📊 Оцінки</div>
+        <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:900;color:${scoreColor(sc.overall||0)}">${sc.overall||'?'}<span style="font-size:14px;color:var(--m)">/10</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        ${[['Хук',sc.hook],['Структура',sc.structure],['Цінність',sc.value],['CTA',sc.cta]].map(([l,v])=>`
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--m)">${l}</span><span style="font-weight:700;color:${scoreColor(v||0)}">${v||'?'}</span></div>
+          ${scoreBar(v||0)}
+        </div>`).join('')}
+      </div>
+    </div>
+    <div style="padding:13px 16px">
+      <div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.7;font-style:italic">${escH(r.verdict||'')}</div>
+    </div>
+  </div>
+
+  <div style="background:var(--s);border:1px solid rgba(255,107,53,0.2);border-radius:14px;padding:14px 16px;margin-bottom:10px">
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--o);margin-bottom:10px">🎯 Аналіз хука</div>
+    <div style="background:rgba(0,0,0,0.2);border-radius:9px;padding:10px 12px;margin-bottom:8px">
+      <div style="font-size:10px;color:var(--m);margin-bottom:4px;letter-spacing:1px">ПОТОЧНИЙ</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.8);font-style:italic">"${escH(r.hook_analysis?.current||'')}"</div>
+    </div>
+    <div style="font-size:12px;color:var(--g);margin-bottom:4px">✅ ${escH(r.hook_analysis?.strength||'')}</div>
+    <div style="font-size:12px;color:#FF4D6D;margin-bottom:10px">❌ ${escH(r.hook_analysis?.weakness||'')}</div>
+    <div style="background:rgba(0,255,178,0.06);border:1px solid rgba(0,255,178,0.15);border-radius:9px;padding:10px 12px">
+      <div style="font-size:10px;color:var(--g);margin-bottom:4px;letter-spacing:1px">ПОКРАЩЕНИЙ ВАРІАНТ</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.9);line-height:1.6">"${escH(r.hook_analysis?.better_version||'')}"</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px">
+    <div style="background:var(--s);border:1px solid rgba(0,255,178,0.15);border-radius:13px;padding:13px 14px">
+      <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:9px">💪 Сильні сторони</div>
+      ${(r.strengths||[]).map(s=>`<div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:6px;padding-left:10px;border-left:2px solid rgba(0,255,178,0.3)">✅ ${escH(s)}</div>`).join('')}
+    </div>
+    <div style="background:var(--s);border:1px solid rgba(255,77,109,0.15);border-radius:13px;padding:13px 14px">
+      <div style="font-size:12px;font-weight:700;color:#FF4D6D;margin-bottom:9px">⚠️ Слабкі сторони</div>
+      ${(r.weaknesses||[]).map(s=>`<div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:6px;padding-left:10px;border-left:2px solid rgba(255,77,109,0.3)">❌ ${escH(s)}</div>`).join('')}
+    </div>
+  </div>
+
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:14px;padding:14px 16px;margin-bottom:10px">
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:11px">🔧 Конкретні правки</div>
+    ${(r.fixes||[]).map((f,i)=>`
+    <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:11px 13px;margin-bottom:8px">
+      <div style="display:flex;gap:8px;margin-bottom:6px">
+        <span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.08);padding:2px 7px;border-radius:20px;flex-shrink:0">${i+1}</span>
+        <span style="font-size:12px;font-weight:700;color:var(--t)">${escH(f.what||'')}</span>
+      </div>
+      <div style="font-size:12px;color:var(--m);margin-bottom:6px">${escH(f.how||'')}</div>
+      <div style="background:rgba(0,255,178,0.04);border-left:2px solid rgba(0,255,178,0.3);padding:6px 10px;font-size:12px;color:rgba(0,255,178,0.8);font-style:italic">"${escH(f.example||'')}"</div>
+    </div>`).join('')}
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(0,255,178,0.04));border:1px solid rgba(167,139,250,0.2);border-radius:14px;padding:14px 16px">
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--p);margin-bottom:10px">➡️ Наступне відео</div>
+    <div style="font-size:14px;font-weight:700;color:var(--t);margin-bottom:6px">${escH(r.next_video?.topic||'')}</div>
+    <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:9px 12px;margin-bottom:7px">
+      <div style="font-size:10px;color:var(--m);margin-bottom:3px;letter-spacing:1px">ХVУК</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic">"${escH(r.next_video?.hook||'')}"</div>
+    </div>
+    <div style="font-size:12px;color:var(--m)">${escH(r.next_video?.reason||'')}</div>
+  </div>`;
+
+  document.getElementById('aaResult').innerHTML = html;
+}
+
+
+// ===== AI CHAT WITH VISION =====
+let chatHistory = [];
+let pendingImages = []; // [{base64, mediaType, name}]
+
+const CHAT_SYSTEM = `Ти — AI-аналітик для україномовного контент-каналу про психологію і AI (TikTok, YouTube Shorts, Telegram).
+
+Канал веде один автор анонімно (без обличчя). Мови каналів: українська і російська.
+Теми: психологія, когнітивні упередження, нейронаука, AI і суспільство, психологія грошей.
+
+Коли отримуєш скріншот аналітики — аналізуй:
+- Перегляди, охоплення, утримання аудиторії (retention)
+- Які теми/формати заходять краще
+- Де і чому губиться аудиторія
+- Конкретні рекомендації для наступного відео
+
+Коли отримуєш текст сценарію — аналізуй хук, структуру, темп, CTA.
+
+Відповідай конкретно, з прикладами. Без загальних слів. Мова відповіді — українська.
+Якщо є і скрін і запитання — спочатку аналізуй скрін, потім відповідай на запитання.`;
+
+function previewImgs(input) {
+  const files = Array.from(input.files);
+  const previewEl = document.getElementById('imgPreviews');
+  
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target.result.split(',')[1];
+      const mediaType = file.type;
+      pendingImages.push({ base64, mediaType, name: file.name });
+      
+      const div = document.createElement('div');
+      div.style.cssText = 'position:relative;display:inline-block';
+      div.innerHTML = `<img src="${e.target.result}" style="width:70px;height:70px;object-fit:cover;border-radius:9px;border:1px solid rgba(251,191,36,0.3)"/>
+        <button onclick="removeImg(this,${pendingImages.length-1})" style="position:absolute;top:-5px;right:-5px;background:#FF4D6D;border:none;border-radius:50%;width:18px;height:18px;color:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">×</button>`;
+      previewEl.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function removeImg(btn, idx) {
+  pendingImages.splice(idx, 1);
+  btn.parentElement.remove();
+}
+
+async function sendChat() {
+  const key = localStorage.getItem('mozgai_apikey');
+  if(!key) { addMsg('assistant', '☝️ Спочатку збережи API-ключ у вкладці 🤖 AI'); return; }
+  
+  const inputEl = document.getElementById('chatInput');
+  const userText = inputEl.value.trim();
+  
+  if(!userText && !pendingImages.length) return;
+  
+  // Build user message content
+  const userContent = [];
+  
+  // Add images first
+  pendingImages.forEach(img => {
+    userContent.push({
+      type: 'image',
+      source: { type: 'base64', media_type: img.mediaType, data: img.base64 }
+    });
+  });
+  
+  // Add text
+  if(userText) {
+    userContent.push({ type: 'text', text: userText });
+  } else if(pendingImages.length) {
+    userContent.push({ type: 'text', text: 'Проаналізуй цей скріншот аналітики. Що заходить краще і чому? Що рекомендуєш змінити?' });
+  }
+  
+  // Show user message
+  const imgPreviews = pendingImages.map(img => 
+    `<img src="data:${img.mediaType};base64,${img.base64}" style="max-width:200px;border-radius:9px;margin-top:6px;display:block"/>`
+  ).join('');
+  addMsg('user', (userText || 'Аналіз скріншоту') + imgPreviews);
+  
+  // Clear input
+  inputEl.value = '';
+  inputEl.style.height = 'auto';
+  pendingImages = [];
+  document.getElementById('imgPreviews').innerHTML = '';
+  
+  // Add to history
+  chatHistory.push({ role: 'user', content: userContent });
+  
+  // Disable send
+  const btn = document.getElementById('chatSendBtn');
+  btn.textContent = '⏳'; btn.disabled = true;
+  
+  // Show typing indicator
+  const typingId = 'typing-' + Date.now();
+  addTyping(typingId);
+  
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        system: CHAT_SYSTEM,
+        messages: chatHistory
+      })
+    });
+    
+    if(!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'API error ' + res.status); }
+    const data = await res.json();
+    const reply = data.content.map(b => b.text || '').join('');
+    
+    // Remove typing
+    document.getElementById(typingId)?.remove();
+    
+    // Add to history (text only for next turn)
+    chatHistory.push({ role: 'assistant', content: reply });
+    if(window.saveChatToCloud) saveChatToCloud();
+    
+    // Keep history reasonable (last 10 turns)
+    if(chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+    
+    addMsg('assistant', formatChatReply(reply));
+    
+  } catch(e) {
+    document.getElementById(typingId)?.remove();
+    addMsg('assistant', '❌ ' + e.message);
+  } finally {
+    btn.textContent = 'Надіслати'; btn.disabled = false;
+  }
+}
+
+function formatChatReply(text) {
+  // Convert markdown-like to HTML
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#fff">$1</strong>')
+    .replace(/^#{1,3} (.+)$/gm, '<div style="font-family:\'Syne\',sans-serif;font-size:14px;font-weight:800;color:var(--y);margin:10px 0 5px">$1</div>')
+    .replace(/^[-•] (.+)$/gm, '<div style="padding-left:12px;border-left:2px solid rgba(251,191,36,0.3);margin-bottom:5px">→ $1</div>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+function addMsg(role, html) {
+  const el = document.getElementById('chatMessages');
+  const isUser = role === 'user';
+  const div = document.createElement('div');
+  div.style.cssText = `background:${isUser ? 'rgba(251,191,36,0.08)' : 'rgba(255,255,255,0.03)'};border:1px solid ${isUser ? 'rgba(251,191,36,0.2)' : 'rgba(255,255,255,0.07)'};border-radius:12px;padding:13px 15px;font-size:13px;color:rgba(255,255,255,0.82);line-height:1.75;animation:fadeUp 0.3s ease both`;
+  if(isUser) div.style.marginLeft = '20px';
+  else div.style.marginRight = '20px';
+  
+  const label = isUser 
+    ? '<div style="font-size:10px;color:rgba(251,191,36,0.6);margin-bottom:6px;font-weight:700;letter-spacing:1px">ТИ</div>'
+    : '<div style="font-size:10px;color:rgba(0,255,178,0.6);margin-bottom:6px;font-weight:700;letter-spacing:1px">AI-АНАЛІТИК</div>';
+  
+  div.innerHTML = label + html;
+  el.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+function addTyping(id) {
+  const el = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.id = id;
+  div.style.cssText = 'background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:13px 15px;margin-right:20px';
+  div.innerHTML = '<div style="font-size:10px;color:rgba(0,255,178,0.6);margin-bottom:6px;font-weight:700;letter-spacing:1px">AI-АНАЛІТИК</div><div style="display:flex;gap:5px;align-items:center"><div style="width:7px;height:7px;background:var(--g);border-radius:50%;animation:pulse 1s ease infinite"></div><div style="width:7px;height:7px;background:var(--g);border-radius:50%;animation:pulse 1s ease 0.2s infinite"></div><div style="width:7px;height:7px;background:var(--g);border-radius:50%;animation:pulse 1s ease 0.4s infinite"></div></div>';
+  el.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+function clearChat() {
+  chatHistory = [];
+  pendingImages = [];
+  document.getElementById('imgPreviews').innerHTML = '';
+  document.getElementById('chatMessages').innerHTML = '<div style="background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.15);border-radius:12px;padding:13px 15px;font-size:13px;color:rgba(255,255,255,0.75);line-height:1.7">Чат очищено. Кидай новий скрін або питання 👋</div>';
+}
+
+
+function copyNear(btn) {
+  const txt = btn.closest('div').querySelector('.hook-txt');
+  if(txt) navigator.clipboard.writeText(txt.textContent.trim()).then(()=>{
+    const o=btn.textContent; btn.textContent='✓'; btn.classList.add('copied');
+    showToast();
+    setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied');},2000);
+  });
+}
+
 </script>
 </body>
 </html>
