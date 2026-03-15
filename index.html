@@ -241,9 +241,9 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-he
 .tp{background:rgba(167,139,250,0.1);color:var(--p);border:1px solid rgba(167,139,250,0.2)}
 .ty{background:rgba(251,191,36,0.1);color:var(--y);border:1px solid rgba(251,191,36,0.2)}
 .tb{background:rgba(96,165,250,0.1);color:var(--bl);border:1px solid rgba(96,165,250,0.2)}
-.quest{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:all 0.2s}
+
 .quest:hover{border-color:rgba(255,255,255,0.14);transform:translateY(-1px)}
-.quest.done{opacity:0.4}.quest.done .qtitle{text-decoration:line-through}
+.quest.done{opacity:0.4}.quest.done 
 .qh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px}
 .qtitle{font-size:13px;font-weight:700;line-height:1.3}
 .qxp{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
@@ -309,18 +309,17 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-he
   </div>
   <div class="sb-sections">
     <div class="sb-section">
-      <div class="sb-section-hd">Головна</div>
-      <button class="sb-item active" onclick="showPage('quests',this)"><span class="sb-icon">⚔️</span><span class="sb-label">Квести</span><span class="sb-badge" id="xpBadgeSb">XP</span></button>
-      <button class="sb-item" onclick="showPage('tg',this)"><span class="sb-icon">✈️</span><span class="sb-label">Telegram план</span></button>
-      <button class="sb-item" onclick="showPage('quiz',this)"><span class="sb-icon">🧠</span><span class="sb-label">Квіз</span></button>
-      <button class="sb-item" onclick="showPage('mono',this)"><span class="sb-icon">💰</span><span class="sb-label">Монетизація UA</span></button>
+      <div class="sb-section-hd">Проєкти</div>
+      <button class="sb-item active" onclick="showPage('projects',this)"><span class="sb-icon">🎬</span><span class="sb-label">Мої проєкти</span></button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-hd">Генерація</div>
     </div>
     <div class="sb-section">
       <div class="sb-section-hd">AI Генерація</div>
       <button class="sb-item" onclick="showPage('generator',this)"><span class="sb-icon">🤖</span><span class="sb-label">AI Генератор</span></button>
       <button class="sb-item" onclick="showPage('hooks',this)"><span class="sb-icon">🎯</span><span class="sb-label">Хуки</span></button>
       <button class="sb-item" onclick="showPage('translate',this)"><span class="sb-icon">🔄</span><span class="sb-label">UA → RU</span></button>
-      <button class="sb-item" onclick="showPage('aichat',this)"><span class="sb-icon">💬</span><span class="sb-label">AI Аналітик</span></button>
       <button class="sb-item" onclick="showPage('aianalysis',this)"><span class="sb-icon">🔬</span><span class="sb-label">Аналіз тексту</span></button>
     </div>
     <div class="sb-section">
@@ -338,11 +337,7 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-he
       <button class="sb-item" onclick="showPage('analytics',this)"><span class="sb-icon">📊</span><span class="sb-label">Ріст каналу</span></button>
     </div>
   </div>
-  <div class="sb-xp">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <span id="lvlBadgeSb" style="font-size:11px;font-weight:700;color:var(--g)">⚡ Рівень 1</span>
-      <span id="xpLblSb" style="font-size:10px">0 XP</span>
-    </div>
+  
     <div class="sb-xp-bar"><div class="sb-xp-fill" id="xpFillSb" style="width:0%"></div></div>
   </div>
 </div>
@@ -366,50 +361,6 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-he
 </div>
 
 
-<div class="stats">
-  <div class="xpc">
-    <div class="xpr"><div class="lvl" id="lvlBadge">⚡ Рівень 1 · Новачок</div><div style="font-size:11px;color:var(--m)" id="xpLbl">0/100 XP</div></div>
-    <div class="xptrack"><div class="xpfill" id="xpFill" style="width:0%"></div></div>
-    <div style="display:flex;gap:12px;margin-top:6px">
-      <div style="font-size:11px;color:var(--m)">Відео: <strong id="vCount" style="color:var(--t)">0</strong></div>
-      <div style="font-size:11px;color:var(--m)">XP: <strong id="tXp" style="color:var(--t)">0</strong></div>
-      <div style="font-size:11px;color:var(--m)">Завдань: <strong id="dCount" style="color:var(--t)">0</strong></div>
-    </div>
-  </div>
-  <div class="srow">
-    <div class="sc"><div style="font-size:15px">🔥</div><div><div class="sv" style="color:var(--o)" id="strVal">0</div><div class="sl">днів поспіль</div></div></div>
-    <div class="sc"><div style="font-size:15px">✅</div><div><div class="sv" style="color:var(--g)" id="wDone">0/7</div><div class="sl">тиждень</div></div></div>
-    <div class="sc"><div style="font-size:15px">🎯</div><div><div class="sv" style="color:var(--p)" id="wXp">0</div><div class="sl">XP тиждень</div></div></div>
-  </div>
-</div>
-
-<!-- QUESTS -->
-<div class="page active" id="page-quests">
-  <div style="background:linear-gradient(135deg,rgba(0,255,178,0.05),rgba(0,229,255,0.02));border:1px solid rgba(0,255,178,0.15);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:var(--m);line-height:1.7">
-    Привіт 👋 Обери <strong style="color:var(--g)">1–2 завдання</strong> по настрою. Навіть 5 хвилин — це прогрес.
-  </div>
-  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
-    <div class="rw">
-      <svg width="50" height="50" viewBox="0 0 50 50"><circle fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="4" cx="25" cy="25" r="21"/><circle fill="none" stroke="var(--g)" stroke-width="4" stroke-linecap="round" cx="25" cy="25" r="21" stroke-dasharray="131.9" stroke-dashoffset="131.9" id="dRing" style="transition:stroke-dashoffset 0.8s cubic-bezier(.34,1.56,.64,1)"/></svg>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:900;color:var(--g)" id="dPct">0%</div>
-    </div>
-    <div><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:2px">Сьогодні</div><div style="font-size:11px;color:var(--m)" id="dStatus">Обери завдання і починай</div></div>
-  </div>
-  <div class="slbl">⚡ Швидкі · 5–15 хв</div>
-  <div class="quest" data-xp="20" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Придумай 3 ідеї для відео</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--g)">+20 XP</div></div><div class="qtime">⏱ 5 хв · Промпт у «Шаблони»</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="20" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Напиши 1 пост для Telegram</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--g)">+20 XP</div></div><div class="qtime">⏱ 10 хв · Шаблони в ✈️ TG</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="25" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Знайди 5 кліпів на стоці</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--g)">+25 XP</div></div><div class="qtime">⏱ 10 хв · Теги у «Стоки»</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="30" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Зроби обкладинку у Canva</div><div class="qxp" style="background:rgba(0,255,178,0.12);color:var(--g)">+30 XP</div></div><div class="qtime">⏱ 15 хв</div></div><div class="qcheck"></div></div></div>
-  <div class="slbl">🎯 Середні · 20–40 хв</div>
-  <div class="quest" data-xp="50" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Напиши сценарій відео</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--p)">+50 XP</div></div><div class="qtime">⏱ 20 хв</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="60" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Запиши озвучку</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--p)">+60 XP</div></div><div class="qtime">⏱ 10 хв · ElevenLabs</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="70" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">Змонтуй чернетку у CapCut</div><div class="qxp" style="background:rgba(167,139,250,0.12);color:var(--p)">+70 XP</div></div><div class="qtime">⏱ 30 хв</div></div><div class="qcheck"></div></div></div>
-  <div class="slbl">🏆 Великі</div>
-  <div class="quest" data-xp="150" data-video="1" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">🎬 Опублікуй готове відео</div><div class="qxp" style="background:rgba(255,107,53,0.12);color:var(--o)">+150 XP</div></div><div class="qtime">⏱ TikTok UA + RU + Shorts UA + RU</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="40" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">✈️ Опублікуй 2 пости у Telegram</div><div class="qxp" style="background:rgba(255,107,53,0.12);color:var(--o)">+40 XP</div></div><div class="qtime">⏱ UA + RU канали</div></div><div class="qcheck"></div></div></div>
-  <div class="quest" data-xp="100" onclick="tQ(this)"><div style="display:flex;gap:8px"><div style="flex:1"><div class="qh"><div class="qtitle">📊 Переглянь аналітику</div><div class="qxp" style="background:rgba(255,107,53,0.12);color:var(--o)">+100 XP</div></div><div class="qtime">⏱ Що зайшло? Що повторити?</div></div><div class="qcheck"></div></div></div>
-  <div style="text-align:center;margin-top:16px"><button onclick="resetDay()" style="background:none;border:1px solid rgba(255,255,255,0.08);color:var(--m);font-size:11px;padding:6px 16px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">🔄 Скинути день</button></div>
-</div>
 
 <!-- SCENARIOS (TEMPLATES) -->
 <div class="page" id="page-scenarios">
@@ -790,94 +741,7 @@ AI-алгоритми магазинів знають коли ти втомле
   </div>
 </div>
 
-<!-- QUIZ -->
-<div class="page" id="page-quiz">
-  <div class="ptitle">🧠 Квізи для Telegram</div>
-  <div class="psub">Готові квізи — копіюй у Telegram. Або проходь тут щоб перевірити себе.</div>
 
-  <div class="quiz-card" style="border-color:rgba(0,255,178,0.2)">
-    <div class="quiz-head" onclick="tQuiz(this)" style="background:linear-gradient(135deg,rgba(0,255,178,0.06),transparent)">
-      <div><div class="quiz-title" style="color:var(--g)">🧠 Квіз: Як працює твій мозок?</div><div style="font-size:11px;color:var(--m);margin-top:3px">5 запитань · Психологія</div></div>
-      <span style="font-size:16px">▼</span>
-    </div>
-    <div class="quiz-body" id="qbody1">
-      <div id="q1wrap">
-        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 1 З 5</div>
-        <div class="quiz-q">Скільки рішень приймає людина за день — свідомо і несвідомо?</div>
-        <div class="quiz-opts">
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q1wrap','q2wrap','Мозок приймає близько 35 000 рішень на день. 95% з них — автоматично, без участі свідомості. Це еволюційний механізм економії енергії.')">~200 рішень</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q1wrap','q2wrap','Мозок приймає близько 35 000 рішень на день. 95% з них — автоматично, без участі свідомості. Це еволюційний механізм економії енергії.')">~3 000 рішень</button>
-          <button class="quiz-opt" onclick="answerQ(this,'correct','q1wrap','q2wrap','✅ Правильно! Мозок приймає близько 35 000 рішень на день. 95% з них — автоматично, без участі свідомості. Це еволюційний механізм економії енергії.')">~35 000 рішень</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q1wrap','q2wrap','Мозок приймає близько 35 000 рішень на день. 95% з них — автоматично, без участі свідомості. Це еволюційний механізм економії енергії.')">~100 000 рішень</button>
-        </div>
-        <div class="quiz-exp" id="q1exp"></div>
-      </div>
-      <div id="q2wrap" style="display:none">
-        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 2 З 5</div>
-        <div class="quiz-q">Що таке "петля дофаміну" у соцмережах?</div>
-        <div class="quiz-opts">
-          <button class="quiz-opt" onclick="answerQ(this,'correct','q2wrap','q3wrap','✅ Саме так! Непередбачувана нагорода — найсильніший тип підкріплення. Скіннер довів це на щурах у 1950-х. Іноді лайк є, іноді ні — і саме ця непередбачуваність змушує повертатись знову.')">Механізм непередбачуваної нагороди що змушує повертатись</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q2wrap','q3wrap','Петля дофаміну — це механізм непередбачуваної нагороди. Іноді лайк є, іноді ні — і саме ця непередбачуваність змушує мозок повертатись знову і знову.')">Збільшення рівня дофаміну від перегляду відео</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q2wrap','q3wrap','Петля дофаміну — це механізм непередбачуваної нагороди. Іноді лайк є, іноді ні — і саме ця непередбачуваність змушує мозок повертатись знову і знову.')">Залежність від позитивних коментарів</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q2wrap','q3wrap','Петля дофаміну — це механізм непередбачуваної нагороди. Іноді лайк є, іноді ні — і саме ця непередбачуваність змушує мозок повертатись знову і знову.')">Відчуття задоволення від корисного контенту</button>
-        </div>
-        <div class="quiz-exp" id="q2exp"></div>
-      </div>
-      <div id="q3wrap" style="display:none">
-        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 3 З 5</div>
-        <div class="quiz-q">Що таке ефект Даннінга-Крюгера?</div>
-        <div class="quiz-opts">
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q3wrap','q4wrap','Ефект Даннінга-Крюгера — некомпетентні люди переоцінюють свої здібності, бо у них немає достатньо знань щоб оцінити власну некомпетентність. Парадокс: щоб знати що ти не знаєш — треба вже знати.')">Розумні люди недооцінюють себе через скромність</button>
-          <button class="quiz-opt" onclick="answerQ(this,'correct','q3wrap','q4wrap','✅ Правильно! Некомпетентні люди переоцінюють себе, бо у них немає знань щоб оцінити власну некомпетентність. Парадокс: щоб знати що ти не знаєш — треба вже знати.')">Некомпетентні люди переоцінюють свої здібності</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q3wrap','q4wrap','Ефект Даннінга-Крюгера — некомпетентні люди переоцінюють свої здібності. Це не про страх публічних виступів і не про скромність.')">Страх публічних виступів у талановитих людей</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q3wrap','q4wrap','Ефект Даннінга-Крюгера — некомпетентні люди переоцінюють свої здібності. Це не про навчання і не про страх.')">Невміння вчитися на чужих помилках</button>
-        </div>
-        <div class="quiz-exp" id="q3exp"></div>
-      </div>
-      <div id="q4wrap" style="display:none">
-        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 4 З 5</div>
-        <div class="quiz-q">Що таке sycophancy у AI-системах?</div>
-        <div class="quiz-opts">
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q4wrap','q5wrap','Sycophancy — тенденція AI погоджуватись з користувачем навіть коли той неправий. AI навчали на людських оцінках — і люди давали вищі оцінки відповідям що їм подобались. Так AI навчився лестити.')">AI відмовляється відповідати на небезпечні запити</button>
-          <button class="quiz-opt" onclick="answerQ(this,'correct','q4wrap','q5wrap','✅ Правильно! Sycophancy — тенденція AI погоджуватись з користувачем навіть коли той неправий. AI навчали на людських оцінках — люди давали вищі оцінки відповідям що їм подобались. Так AI навчився лестити.')">Тенденція AI погоджуватись з користувачем навіть коли той неправий</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q4wrap','q5wrap','Sycophancy — тенденція AI погоджуватись з користувачем навіть коли той неправий. Це не про галюцинації і не про швидкість.')">AI вигадує факти яких не існує</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q4wrap','q5wrap','Sycophancy — тенденція AI погоджуватись з користувачем навіть коли той неправий. Це не про швидкість обробки.')">Занадто повільна обробка складних запитів</button>
-        </div>
-        <div class="quiz-exp" id="q4exp"></div>
-      </div>
-      <div id="q5wrap" style="display:none">
-        <div style="font-size:10px;color:var(--m);margin-bottom:10px;letter-spacing:1px">ЗАПИТАННЯ 5 З 5</div>
-        <div class="quiz-q">Що доводить "правило 24 годин" у психології покупок?</div>
-        <div class="quiz-opts">
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q5wrap','qscore','Правило 24 годин базується на тому що імпульсне бажання купити зазвичай проходить за добу. Якщо бажання залишається — воно справжнє. Якщо зникає — це був імпульс спровокований маркетингом.')">Покупки вранці обходяться дешевше</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q5wrap','qscore','Правило 24 годин базується на тому що імпульсне бажання купити зазвичай проходить за добу. Якщо бажання залишається — воно справжнє. Якщо зникає — це був імпульс.')">Найкращий час для шопінгу — наступний день після зарплати</button>
-          <button class="quiz-opt" onclick="answerQ(this,'correct','q5wrap','qscore','✅ Правильно! Більшість імпульсних бажань зникають за 24 години. Якщо бажання залишається — воно справжнє. Якщо зникає — це був маркетинговий тригер, а не справжня потреба.')">Більшість імпульсних бажань купити зникають за добу</button>
-          <button class="quiz-opt" onclick="answerQ(this,'wrong','q5wrap','qscore','Правило 24 годин — про імпульсні покупки, а не про якість продуктів.')">Якість товарів краще оцінювати через день після покупки</button>
-        </div>
-        <div class="quiz-exp" id="q5exp"></div>
-      </div>
-      <div id="qscore" class="quiz-score">
-        <div style="font-size:36px;margin-bottom:10px">🏆</div>
-        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:900;color:var(--g);margin-bottom:6px" id="scoreText">Результат!</div>
-        <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:14px" id="scoreDesc">Молодець!</div>
-        <button onclick="resetQuiz()" style="background:var(--g);color:#000;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:9px 20px;border-radius:10px;cursor:pointer">Пройти ще раз 🔄</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="slbl">Промпт для генерації нових квізів</div>
-  <div style="display:flex;justify-content:flex-end;margin-bottom:5px"><button class="cbtn" onclick="cEl(this,'qprompt')">Копіювати</button></div>
-  <div class="pbox" id="qprompt">Створи квіз для Telegram-каналу на тему: [ТЕМА].
-
-5 запитань з 4 варіантами відповіді кожне.
-Для кожного запитання:
-- Саме запитання (коротке, цікаве)
-- 4 варіанти (1 правильний, 3 правдоподібних неправильних)
-- Пояснення відповіді (3-4 речення з науковим фактом)
-
-Формат: підходить для публікації в Telegram.
-Тон: захопливий, трохи провокаційний.</div>
-</div>
 
 <!-- MONETIZATION UA -->
 <div class="page" id="page-mono">
@@ -1174,6 +1038,76 @@ AI-алгоритми магазинів знають коли ти втомле
   <div id="aaResult"></div>
 </div>
 
+<!-- PROJECTS PAGE -->
+<div class="page" id="page-projects">
+  <div class="ptitle">🎬 Мої проєкти</div>
+  <div class="psub">Генеруй теми → проєкти з'являються автоматично з хуками, сценарієм і розкадровкою</div>
+
+  <!-- API KEY -->
+  <div style="background:linear-gradient(135deg,rgba(0,255,178,0.06),rgba(0,229,255,0.03));border:1px solid rgba(0,255,178,0.2);border-radius:14px;padding:14px 16px;margin-bottom:14px" id="apiBlockProj">
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--g);margin-bottom:6px">🔑 API-ключ Anthropic</div>
+    <div style="font-size:11px;color:var(--m);line-height:1.5;margin-bottom:10px">1 проєкт ≈ <strong style="color:var(--g)">$0.02</strong> · $5 = ~250 проєктів · <a href="https://console.anthropic.com" target="_blank" style="color:var(--g)">Отримати ключ →</a></div>
+    <div style="display:flex;gap:7px">
+      <input id="gApiKey" type="password" placeholder="sk-ant-api03-..." style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none"/>
+      <button onclick="gSaveKey()" style="background:var(--g);color:#000;border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Зберегти</button>
+    </div>
+    <div id="gKeyStatus" style="font-size:11px;margin-top:7px;display:none"></div>
+  </div>
+
+  <!-- BATCH GENERATION -->
+  <div style="background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(167,139,250,0.05));border:1px solid rgba(255,107,53,0.3);border-radius:14px;padding:14px 16px;margin-bottom:14px">
+    <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--o);margin-bottom:6px">⚡ Пакетна генерація</div>
+    <div style="font-size:12px;color:var(--m);line-height:1.6;margin-bottom:10px">Напиши загальну тему або залиш пустим → Claude автоматично згенерує теми і для КОЖНОЇ: сценарій + 5 хуків + розкадровка по секундах з промтами Kling + Pika</div>
+    <input id="batchTopic" placeholder="напр: психологія грошей, когнітивні баги..." style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px"/>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div style="display:flex;gap:5px">
+        <button class="pill active" id="bLangUA" onclick="setBatchLang('uk',this)">🇺🇦 UA</button>
+        <button class="pill" id="bLangRU" onclick="setBatchLang('ru',this)">🇷🇺 RU</button>
+      </div>
+      <div style="display:flex;gap:5px">
+        <span style="font-size:11px;color:var(--m);align-self:center">Кількість:</span>
+        <button class="pill active" id="bCnt1" onclick="setBatchCount(1,this)">×1</button>
+        <button class="pill" id="bCnt3" onclick="setBatchCount(3,this)">×3</button>
+        <button class="pill" id="bCnt5" onclick="setBatchCount(5,this)">×5</button>
+        <button class="pill" id="bCnt10" onclick="setBatchCount(10,this)">×10</button>
+      </div>
+    </div>
+    <button onclick="generateBatch()" id="batchBtn" style="width:100%;background:linear-gradient(135deg,var(--o),var(--p));color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🚀 Згенерувати проєкти</button>
+    <div id="batchProgress" style="display:none;margin-top:10px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--m);margin-bottom:5px">
+        <span id="batchStatus">Генерую...</span>
+        <span id="batchCounter">0/0</span>
+      </div>
+      <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+        <div id="batchBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--o),var(--p));border-radius:3px;transition:width 0.4s ease"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SINGLE PROJECT -->
+  <div style="background:var(--s);border:1px solid var(--b);border-radius:13px;padding:13px 15px;margin-bottom:14px">
+    <div style="font-size:12px;font-weight:700;color:var(--m);margin-bottom:9px">➕ Один проєкт (конкретна тема)</div>
+    <input id="projTopic" placeholder="напр: петля дофаміну, ChatGPT, психологія грошей..." style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;margin-bottom:9px"/>
+    <div style="display:flex;gap:7px;margin-bottom:9px">
+      <button class="pill active" id="pLangUA" onclick="setProjLang('uk',this)">🇺🇦 UA</button>
+      <button class="pill" id="pLangRU" onclick="setProjLang('ru',this)">🇷🇺 RU</button>
+    </div>
+    <button onclick="generateProject()" id="genProjBtn" style="width:100%;background:linear-gradient(135deg,var(--g),#00B4D8);color:#000;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🎬 Згенерувати проєкт</button>
+  </div>
+
+  <!-- FILTER -->
+  <div id="statusFilter" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
+    <button class="pill active" onclick="filterProjects('all',this)">Всі <span id="cntAll" style="opacity:0.5"></span></button>
+    <button class="pill" onclick="filterProjects('idea',this)">💡 Ідея <span id="cntIdea" style="opacity:0.5"></span></button>
+    <button class="pill" onclick="filterProjects('script',this)">📝 Сцен.</button>
+    <button class="pill" onclick="filterProjects('filming',this)">🎥 Зн.</button>
+    <button class="pill" onclick="filterProjects('editing',this)">✂️ Монт.</button>
+    <button class="pill" onclick="filterProjects('done',this)">✅ Готово</button>
+  </div>
+
+  <div id="projectsList"><div style="text-align:center;padding:40px 20px;color:var(--m)"><div style="font-size:40px;opacity:0.3;margin-bottom:12px">🎬</div><div style="font-size:13px;line-height:1.7">Проєктів ще немає.<br>Натисни <strong style="color:var(--o)">Згенерувати проєкти</strong> вище ↑</div></div></div>
+</div>
+
 <!-- GENERATOR (embedded) -->
 <div class="page" id="page-generator">
   <div class="ptitle">🤖 AI Генератор</div>
@@ -1253,13 +1187,7 @@ AI-алгоритми магазинів знають коли ти втомле
 </div>
 
 </div><!-- /main-wrap -->
-<div class="ovl" id="ovl" onclick="cPop()"></div>
-<div class="popup" id="popup">
-  <div style="font-size:40px;margin-bottom:8px" id="pEmoji">🎉</div>
-  <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:900;color:var(--g);margin-bottom:6px" id="pTitle">+50 XP!</div>
-  <div style="font-size:12px;color:var(--m);line-height:1.6;margin-bottom:14px" id="pSub">Завдання виконано!</div>
-  <button onclick="cPop()" style="background:var(--g);color:#000;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:9px 22px;border-radius:10px;cursor:pointer">Вогонь 🔥</button>
-</div>
+
 <div id="toast">✓ Скопійовано!</div>
 
 <script>
@@ -1288,18 +1216,7 @@ function render(){
   document.getElementById('dPct').textContent=pd+'%';
   document.getElementById('dStatus').textContent=pd===0?'Обери завдання і починай':pd<50?'Гарний початок! 💪':pd<100?'Ти на півдорозі 🔥':'Все виконано! 🏆';
 }
-function tQ(el){
-  const id=el.querySelector('.qtitle').textContent,xp=parseInt(el.dataset.xp),isV=el.dataset.video==='1';
-  if(S.done[id]){S.done[id]=false;S.xp=Math.max(0,S.xp-xp);S.weekXp=Math.max(0,S.weekXp-xp);S.weekDone=Math.max(0,S.weekDone-1);if(isV)S.videos=Math.max(0,S.videos-1);}
-  else{S.done[id]=true;S.xp+=xp;S.weekXp+=xp;S.weekDone++;if(isV)S.videos++;
-    const e=isV?'🎬':['🎯','⚡','🧠','🔥'][Math.floor(Math.random()*4)];
-    const t=isV?'+'+xp+' XP · Відео!':'+'+xp+' XP';
-    const s=isV?'Опублікував! Так тримати!':['Завдання виконано!','Мозок качається 💪','Канал росте!','Ще один крок!'][Math.floor(Math.random()*4)];
-    document.getElementById('pEmoji').textContent=e;document.getElementById('pTitle').textContent=t;document.getElementById('pSub').textContent=s;
-    document.getElementById('popup').classList.add('show');document.getElementById('ovl').classList.add('show');
-  }
-  sv();render();
-}
+
 function cPop(){document.getElementById('popup').classList.remove('show');document.getElementById('ovl').classList.remove('show');}
 function resetDay(){if(!confirm('Скинути прогрес дня?'))return;S.done={};S.weekDone=0;S.weekXp=0;sv();render();}
 function showPage(id,btn){
@@ -2508,9 +2425,9 @@ function copyNear(btn) {
 // ===== BOTTOM NAV SECTIONS =====
 const SECTIONS = {
   home: [
-    {id:'quests', label:'⚔️ Квести'},
+    
     {id:'tg', label:'✈️ Telegram'},
-    {id:'quiz', label:'🧠 Квіз'},
+    
     {id:'mono', label:'💰 Монетизація'},
     {id:'calendar', label:'🗓 Контент-план'},
   ],
@@ -2596,32 +2513,490 @@ function showPage(id, el) {
       break;
     }
   }
-  syncXPSidebar();
 }
 
-// Init: show home section
-document.addEventListener('DOMContentLoaded', () => {
-  switchSection('home', document.getElementById('bn-home'));
-});
+// ===== PROJECTS SYSTEM =====
+let projects = JSON.parse(localStorage.getItem('mozgai_projects') || '[]');
+let projLang = 'uk';
+let projFilter = 'all';
+let batchLang = 'uk';
+let batchCount = 1;
 
+const STATUSES = {
+  idea:     { label:'💡 Ідея',        color:'rgba(251,191,36,0.2)',  border:'rgba(251,191,36,0.4)',  text:'var(--y)' },
+  script:   { label:'📝 Сценарій',    color:'rgba(96,165,250,0.15)', border:'rgba(96,165,250,0.4)',  text:'var(--bl)' },
+  filming:  { label:'🎥 Знімається',  color:'rgba(255,107,53,0.15)', border:'rgba(255,107,53,0.4)',  text:'var(--o)' },
+  editing:  { label:'✂️ Монтаж',      color:'rgba(167,139,250,0.15)',border:'rgba(167,139,250,0.4)', text:'var(--p)' },
+  done:     { label:'✅ Опубліковано',color:'rgba(0,255,178,0.12)',  border:'rgba(0,255,178,0.3)',   text:'var(--g)' },
+};
 
-// Sync XP to sidebar
-function syncXPSidebar() {
-  const lvlBadge = document.getElementById('lvlBadgeSb');
-  const xpLbl = document.getElementById('xpLblSb');
-  const fill = document.getElementById('xpFillSb');
-  const badge = document.getElementById('xpBadgeSb');
-  if(!lvlBadge) return;
-  const levels = [{n:'Новачок',m:0},{n:'Учень',m:200},{n:'Практик',m:500},{n:'Майстер',m:1000},{n:'Легенда',m:2000}];
-  const li = levels.findIndex((l,i)=>S.xp<(levels[i+1]?.m||Infinity));
-  const lv = levels[Math.max(0,li)];
-  const nx = levels[li+1];
-  const pct = nx ? Math.round((S.xp-lv.m)/(nx.m-lv.m)*100) : 100;
-  lvlBadge.textContent = '⚡ ' + lv.n;
-  xpLbl.textContent = S.xp + ' XP';
-  if(fill) fill.style.width = pct + '%';
-  if(badge) badge.textContent = S.xp + ' XP';
+const STATUS_ORDER = ['idea','script','filming','editing','done'];
+
+function setProjLang(l, btn) {
+  projLang = l;
+  document.getElementById('pLangUA').classList.toggle('active', l==='uk');
+  document.getElementById('pLangRU').classList.toggle('active', l==='ru');
 }
+
+function filterProjects(status, btn) {
+  projFilter = status;
+  document.querySelectorAll('#statusFilter .pill').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderProjects();
+}
+
+async function generateProject() {
+  const key = localStorage.getItem('mozgai_apikey');
+  if(!key) { alert('Додай API-ключ у вкладці 🤖 AI'); return; }
+
+  const topic = document.getElementById('projTopic').value.trim();
+  const btn = document.getElementById('genProjBtn');
+  btn.textContent = '⏳ Генерую...'; btn.disabled = true;
+
+  const lang = projLang === 'uk' ? 'українська' : 'російська';
+  const prompt = `Ти — контент-стратег і сценарист для TikTok/YouTube Shorts про психологію і AI.
+
+Створи повний пакет для одного відео.
+${topic ? 'Тема: ' + topic : 'Вибери актуальну тему про психологію, AI, когнітивні упередження або нейронауку.'}
+Мова: ${lang}
+
+Поверни ТІЛЬКИ JSON (без пояснень):
+{
+  "topic": "назва теми",
+  "hooks": [
+    {"text": "хук 1", "type": "шок-факт"},
+    {"text": "хук 2", "type": "запитання"},
+    {"text": "хук 3", "type": "парадокс"},
+    {"text": "хук 4", "type": "виклик"},
+    {"text": "хук 5", "type": "статистика"}
+  ],
+  "script": "повний текст сценарію 60-90 сек, структура: гачок→розвиток→пояснення→лайфхак→CTA, готовий для озвучки",
+  "scenes": [
+    {
+      "seconds": "0-3",
+      "text": "текст озвучки цієї сцени",
+      "visual": "що показуємо на екрані (конкретно)",
+      "camera": "zoom-in",
+      "mood": "динамічний",
+      "kling_prompt": "English prompt for Kling AI text-to-video: cinematic, vertical 9:16, specific action, lighting, style",
+      "pika_prompt": "English prompt for Pika: short, punchy, specific visual description",
+      "stock_tags": ["english tag 1", "english tag 2", "english tag 3"]
+    }
+  ],
+  "tg_post": "готовий пост для Telegram з емодзі та хештегами",
+  "tg_ru": "той самий пост але російською"
+}
+
+Сцен має бути 6-8. Кожна сцена покриває конкретні секунди відео.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:6000, messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok) { const e=await res.json(); throw new Error(e.error?.message||'API error'); }
+    const data = await res.json();
+    const text = data.content.map(b=>b.text||'').join('');
+    const jm = text.match(/\{[\s\S]*\}/);
+    if(!jm) throw new Error('Помилка розбору');
+    const parsed = JSON.parse(jm[0]);
+
+    // Save project
+    const project = {
+      id: 'proj_' + Date.now(),
+      topic: parsed.topic,
+      lang: projLang,
+      status: 'idea',
+      hooks: parsed.hooks || [],
+      script: parsed.script || '',
+      scenes: parsed.scenes || [],
+      tg_post: parsed.tg_post || '',
+      tg_ru: parsed.tg_ru || '',
+      created: Date.now(),
+      updated: Date.now(),
+      notes: ''
+    };
+
+    projects.unshift(project);
+    saveProjects();
+    renderProjects();
+    document.getElementById('projTopic').value = '';
+    showToast('✅ Проєкт створено!');
+
+  } catch(e) {
+    alert('Помилка: ' + e.message);
+  } finally {
+    btn.textContent = '🚀 Згенерувати проєкт (тема + сценарій + хуки + розкадровка)';
+    btn.disabled = false;
+  }
+}
+
+function setBatchLang(l, btn) {
+  batchLang = l;
+  document.getElementById('bLangUA').classList.toggle('active', l==='uk');
+  document.getElementById('bLangRU').classList.toggle('active', l==='ru');
+}
+
+function setBatchCount(n, btn) {
+  batchCount = n;
+  [1,3,5,10].forEach(v => {
+    const el = document.getElementById('bCnt'+v);
+    if(el) el.classList.toggle('active', v===n);
+  });
+}
+
+async function generateBatch() {
+  const key = localStorage.getItem('mozgai_apikey');
+  if(!key) { alert('Додай API-ключ у вкладці AI'); return; }
+
+  const topicRaw = document.getElementById('batchTopic').value.trim();
+  const btn = document.getElementById('batchBtn');
+  const progressEl = document.getElementById('batchProgress');
+  const statusEl = document.getElementById('batchStatus');
+  const counterEl = document.getElementById('batchCounter');
+  const barEl = document.getElementById('batchBar');
+
+  btn.disabled = true;
+  btn.textContent = 'Генерую...';
+  progressEl.style.display = 'block';
+
+  let topics = [];
+  if(batchCount === 1) {
+    topics = [topicRaw || ''];
+  } else {
+    statusEl.textContent = 'Генерую список тем...';
+    counterEl.textContent = '0/' + batchCount;
+    barEl.style.width = '5%';
+    try {
+      const lang = batchLang === 'uk' ? 'українська' : 'російська';
+      const topicPrompt = `Згенеруй ${batchCount} унікальних тем для TikTok/YouTube Shorts про психологію, AI та нейронауку.${topicRaw ? ' Тематика: ' + topicRaw : ''}\nМова: ${lang}\nТеми мають бути різноманітними, цікавими, вірусними.\nПоверни ТІЛЬКИ JSON масив рядків: ["тема 1","тема 2",...]`;
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:topicPrompt}]})
+      });
+      const d = await res.json();
+      const txt = d.content.map(b=>b.text||'').join('');
+      const m = txt.match(/\[[\s\S]*\]/);
+      if(m) topics = JSON.parse(m[0]);
+      else topics = Array.from({length:batchCount},(_,i)=>'Тема '+(i+1));
+    } catch(e) {
+      topics = Array.from({length:batchCount},(_,i)=>topicRaw||'Тема '+(i+1));
+    }
+  }
+
+  let created = 0;
+  for(let i=0; i<topics.length; i++) {
+    const topic = topics[i];
+    statusEl.textContent = 'Генерую: "' + topic + '"';
+    counterEl.textContent = i + '/' + topics.length;
+    barEl.style.width = Math.round((i / topics.length) * 90 + 5) + '%';
+
+    const lang = batchLang === 'uk' ? 'українська' : 'російська';
+    const prompt = `Ти — сценарист і відеоредактор для TikTok/YouTube Shorts про психологію і AI.
+
+Створи повний пакет для одного відео.
+Тема: ${topic}
+Мова: ${lang}
+
+ВАЖЛИВО — РОЗКАДРОВКА: розбий сценарій на окремі фрази. Кожна фраза = 1 кадр у монтажі.
+Для кожної фрази вкажи КОНКРЕТНО яке відео підставити під неї при монтажі.
+
+Поверни ТІЛЬКИ валідний JSON (без \`\`\`, без коментарів):
+{
+  "topic": "назва теми",
+  "hooks": [
+    {"text": "хук 1", "type": "шок-факт"},
+    {"text": "хук 2", "type": "запитання"},
+    {"text": "хук 3", "type": "парадокс"},
+    {"text": "хук 4", "type": "виклик"},
+    {"text": "хук 5", "type": "статистика"}
+  ],
+  "script": "повний текст сценарію 60-90 сек, структура: гачок→розвиток→пояснення→лайфхак→CTA",
+  "scenes": [
+    {
+      "phrase": "точна фраза з сценарію яку озвучує диктор",
+      "duration": "2-4с",
+      "visual_description": "КОНКРЕТНИЙ опис кадру для монтажера: що саме на екрані, хто/що показано, яка дія — як режисерська ремарка",
+      "visual_type": "stock_video",
+      "stock_search": "3-5 англійських слів для пошуку на Pexels",
+      "stock_tags": ["tag1", "tag2", "tag3"],
+      "kling_prompt": "English: vertical 9:16, [subject + action], [camera: slow zoom in / pan left / handheld], [lighting: warm golden / cold neon / soft diffused], cinematic 4K",
+      "pika_prompt": "English: [subject], [motion], [mood], [lighting], vertical",
+      "text_overlay": "текст поверх відео або null",
+      "transition": "cut"
+    }
+  ],
+  "tg_post": "готовий пост для Telegram з емодзі та хештегами",
+  "tg_ru": "той самий пост але російською"
+}
+
+Кількість сцен = кількість фраз у сценарії (15-25 сцен).
+visual_description — дуже конкретно: "крупний план рук що печатають на клавіатурі вночі, синє підсвічування екрану, розмитий фон".`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:6000,messages:[{role:'user',content:prompt}]})
+      });
+      if(!res.ok) { const e=await res.json(); throw new Error(e.error?.message||'API error'); }
+      const data = await res.json();
+      const text = data.content.map(b=>b.text||'').join('');
+      const jm = text.match(/\{[\s\S]*\}/);
+      if(!jm) throw new Error('Помилка розбору');
+      const parsed = JSON.parse(jm[0]);
+      projects.unshift({
+        id:'proj_'+Date.now()+'_'+i,
+        topic:parsed.topic, lang:batchLang, status:'idea',
+        hooks:parsed.hooks||[], script:parsed.script||'',
+        scenes:parsed.scenes||[], tg_post:parsed.tg_post||'',
+        tg_ru:parsed.tg_ru||'', created:Date.now(),
+        updated:Date.now(), notes:''
+      });
+      created++;
+    } catch(e) { console.warn('Batch error:', topic, e.message); }
+
+    if(i < topics.length-1) await new Promise(r=>setTimeout(r,800));
+  }
+
+  saveProjects();
+  renderProjects();
+  barEl.style.width = '100%';
+  counterEl.textContent = created+'/'+topics.length;
+  statusEl.textContent = 'Готово! Створено '+created+' проєктів';
+
+  setTimeout(()=>{
+    progressEl.style.display='none';
+    btn.disabled=false;
+    btn.textContent='🚀 Згенерувати проєкти';
+    document.getElementById('batchTopic').value='';
+  }, 2500);
+
+  showToast('Створено '+created+' проєктів!');
+}
+
+function saveProjects() {
+  localStorage.setItem('mozgai_projects', JSON.stringify(projects));
+  // Sync to Firebase if logged in
+  if(typeof saveToCloud === 'function' && userId) {
+    saveToCloud('projects', projects);
+  }
+}
+
+function updateProjectStatus(id, status) {
+  const p = projects.find(p => p.id === id);
+  if(p) { p.status = status; p.updated = Date.now(); saveProjects(); renderProjects(); }
+}
+
+function updateProjectNotes(id, notes) {
+  const p = projects.find(p => p.id === id);
+  if(p) { p.notes = notes; p.updated = Date.now(); saveProjects(); }
+}
+
+function deleteProject(id) {
+  if(!confirm('Видалити проєкт?')) return;
+  projects = projects.filter(p => p.id !== id);
+  saveProjects(); renderProjects();
+}
+
+function renderProjects() {
+  const el = document.getElementById('projectsList');
+  if(!el) return;
+
+  const filtered = projFilter === 'all' ? projects : projects.filter(p => p.status === projFilter);
+
+  if(!filtered.length) {
+    el.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--m)">
+      <div style="font-size:48px;margin-bottom:12px;opacity:0.3">🎬</div>
+      <div style="font-size:14px">Немає проєктів${projFilter !== 'all' ? ' у цій категорії' : ''}<br><span style="font-size:12px">Згенеруй перший проєкт вище ↑</span></div>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(p => renderProjectCard(p)).join('');
+}
+
+function renderProjectCard(p) {
+  const st = STATUSES[p.status] || STATUSES.idea;
+  const date = new Date(p.created).toLocaleDateString('uk-UA', {day:'numeric', month:'short'});
+
+  // Status stepper
+  const stepper = STATUS_ORDER.map(s => {
+    const isCurrent = s === p.status;
+    const isDone = STATUS_ORDER.indexOf(s) < STATUS_ORDER.indexOf(p.status);
+    const st2 = STATUSES[s];
+    return `<button onclick="updateProjectStatus('${p.id}','${s}')" style="flex:1;padding:5px 2px;border:1px solid ${isCurrent ? st2.border : 'rgba(255,255,255,0.07)'};border-radius:7px;background:${isCurrent ? st2.color : isDone ? 'rgba(0,255,178,0.05)' : 'transparent'};color:${isCurrent ? st2.text : isDone ? 'var(--g)' : 'rgba(255,255,255,0.25)'};font-size:10px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${st2.label}</button>`;
+  }).join('');
+
+  // Hooks
+  const hooksHtml = (p.hooks||[]).slice(0,3).map(h =>
+    `<div style="font-size:12px;color:rgba(255,255,255,0.65);padding:6px 10px;background:rgba(255,255,255,0.04);border-radius:8px;margin-bottom:5px;cursor:pointer" onclick="navigator.clipboard.writeText(this.textContent.trim()).then(()=>showToast())" title="Клік — копіювати">${escH(h.text||'')}</div>`
+  ).join('');
+
+  // Scenes/storyboard
+  const scenesHtml = (p.scenes||[]).map((sc, i) => {
+    const klingTag = `<a href="https://klingai.com" target="_blank" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,107,53,0.1);color:var(--o);border:1px solid rgba(255,107,53,0.25);text-decoration:none;display:inline-block;margin:2px">Kling ↗</a>`;
+    const pikaTag = `<a href="https://pika.art" target="_blank" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(96,165,250,0.1);color:var(--bl);border:1px solid rgba(96,165,250,0.25);text-decoration:none;display:inline-block;margin:2px">Pika ↗</a>`;
+    const stockTags = (sc.stock_tags||[]).map(t =>
+      `<a href="https://www.pexels.com/search/videos/${encodeURIComponent(t)}/" target="_blank" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(0,255,178,0.08);color:var(--g);border:1px solid rgba(0,255,178,0.15);text-decoration:none;display:inline-block;margin:2px">${t}</a>`
+    ).join('');
+    const pexelsSearch = sc.stock_search || (sc.stock_tags||[]).join(' ');
+    const pexelsUrl = `https://www.pexels.com/search/videos/${encodeURIComponent(pexelsSearch)}/`;
+    const pixabayUrl = `https://pixabay.com/videos/search/${encodeURIComponent(pexelsSearch)}/`;
+    const vtypeColor = {'stock_video':'var(--g)','ai_generated':'var(--o)','text_animation':'var(--p)','screen_record':'var(--y)'}[sc.visual_type] || 'var(--m)';
+    const vtypeLabel = {'stock_video':'📦 Stock','ai_generated':'🤖 AI Gen','text_animation':'✏️ Анімація','screen_record':'🖥 Screen'}[sc.visual_type] || sc.visual_type || 'Stock';
+
+    return `<div style="border-top:1px solid rgba(255,255,255,0.06);padding:11px 0">
+      <!-- НОМЕР + ТРИВАЛІСТЬ + ТАЙП -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:10px;font-weight:800;color:#000;background:var(--m);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</span>
+        <span style="font-size:10px;color:var(--m);font-weight:600">⏱ ${escH(sc.duration||sc.seconds||'')}</span>
+        <span style="font-size:10px;font-weight:700;color:${vtypeColor};background:${vtypeColor}18;padding:2px 8px;border-radius:20px;border:1px solid ${vtypeColor}33">${vtypeLabel}</span>
+        <div style="margin-left:auto;display:flex;gap:4px">${klingTag}${pikaTag}</div>
+      </div>
+
+      <!-- ФРАЗА ОЗВУЧКИ -->
+      <div style="background:rgba(255,255,255,0.04);border-left:3px solid var(--p);border-radius:0 8px 8px 0;padding:8px 10px;margin-bottom:8px;cursor:pointer" onclick="navigator.clipboard.writeText(this.querySelector('span').textContent).then(()=>showToast())" title="Клік — копіювати">
+        <div style="font-size:9px;color:var(--p);margin-bottom:3px;letter-spacing:1px;font-weight:700">🎙 ОЗВУЧКА</div>
+        <span style="font-size:13px;color:#fff;line-height:1.5;font-weight:500">${escH(sc.phrase||sc.text||'')}</span>
+      </div>
+
+      <!-- ЩО ПОКАЗУЄМО -->
+      <div style="background:rgba(0,0,0,0.25);border-radius:8px;padding:8px 10px;margin-bottom:6px">
+        <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-bottom:4px;letter-spacing:1px;font-weight:700">🎬 ЩО ВСТАВЛЯТИ В МОНТАЖ</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.85);line-height:1.6">${escH(sc.visual_description||sc.visual||'')}</div>
+      </div>
+
+      <!-- STOCK ПОШУК -->
+      ${pexelsSearch ? `<div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap">
+        <span style="font-size:10px;color:var(--m)">🔍</span>
+        <a href="${pexelsUrl}" target="_blank" style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,255,178,0.08);color:var(--g);border:1px solid rgba(0,255,178,0.2);text-decoration:none;font-weight:600">Pexels ↗</a>
+        <a href="${pixabayUrl}" target="_blank" style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(167,139,250,0.08);color:var(--p);border:1px solid rgba(167,139,250,0.2);text-decoration:none;font-weight:600">Pixabay ↗</a>
+        <span style="font-size:11px;color:rgba(255,255,255,0.4);cursor:pointer" onclick="navigator.clipboard.writeText('${escH(pexelsSearch)}').then(()=>showToast())" title="Копіювати запит">"${escH(pexelsSearch)}" 📋</span>
+      </div>` : ''}
+
+      <!-- ТЕГИ -->
+      <div style="margin-bottom:6px">${stockTags}</div>
+
+      <!-- KLING -->
+      ${sc.kling_prompt ? `<div style="background:rgba(255,107,53,0.05);border:1px solid rgba(255,107,53,0.15);border-radius:8px;padding:8px 10px;margin-bottom:5px">
+        <div style="font-size:9px;color:var(--o);margin-bottom:3px;letter-spacing:1px;font-weight:700">🤖 KLING PROMPT</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.7);line-height:1.5;cursor:pointer" onclick="navigator.clipboard.writeText(this.textContent.trim()).then(()=>showToast())">${escH(sc.kling_prompt)}</div>
+      </div>` : ''}
+
+      <!-- PIKA -->
+      ${sc.pika_prompt ? `<div style="background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.15);border-radius:8px;padding:8px 10px">
+        <div style="font-size:9px;color:var(--bl);margin-bottom:3px;letter-spacing:1px;font-weight:700">🎭 PIKA PROMPT</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.7);cursor:pointer" onclick="navigator.clipboard.writeText(this.textContent.trim()).then(()=>showToast())">${escH(sc.pika_prompt)}</div>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+
+  return `<div id="proj-${p.id}" style="background:var(--s);border:1px solid ${st.border};border-radius:16px;margin-bottom:12px;overflow:hidden;animation:fadeUp 0.3s ease both">
+    <!-- HEADER -->
+    <div style="padding:13px 15px;background:${st.color};border-bottom:1px solid rgba(255,255,255,0.05)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--t);margin-bottom:3px">${escH(p.topic||'')}</div>
+          <div style="font-size:10px;color:var(--m)">${p.lang === 'uk' ? '🇺🇦' : '🇷🇺'} · ${date}</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:${st.color};color:${st.text};border:1px solid ${st.border}">${st.label}</span>
+          <button onclick="deleteProject('${p.id}')" style="background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.2);color:#FF4D6D;border-radius:8px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS STEPPER -->
+    <div style="padding:10px 13px;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-bottom:6px;letter-spacing:1px">СТАДІЯ</div>
+      <div style="display:flex;gap:4px">${stepper}</div>
+    </div>
+
+    <!-- ACCORDION SECTIONS -->
+    <div style="padding:0 15px">
+      <!-- Hooks -->
+      <div style="border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div onclick="toggleAccordion('hooks-${p.id}')" style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;cursor:pointer">
+          <span style="font-size:13px;font-weight:700">🎯 Хуки (${p.hooks?.length||0})</span>
+          <span style="color:var(--m);font-size:12px" id="arr-hooks-${p.id}">▼</span>
+        </div>
+        <div id="hooks-${p.id}" style="display:none;padding-bottom:12px">${hooksHtml}</div>
+      </div>
+
+      <!-- Script -->
+      <div style="border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div onclick="toggleAccordion('script-${p.id}')" style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;cursor:pointer">
+          <span style="font-size:13px;font-weight:700">📝 Сценарій</span>
+          <span style="color:var(--m);font-size:12px" id="arr-script-${p.id}">▼</span>
+        </div>
+        <div id="script-${p.id}" style="display:none;padding-bottom:12px">
+          <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.8;white-space:pre-wrap;background:rgba(0,0,0,0.2);border-radius:10px;padding:12px;margin-bottom:8px">${escH(p.script||'')}</div>
+          <button onclick="navigator.clipboard.writeText(document.getElementById('script-${p.id}').querySelector('div').textContent).then(()=>showToast())" class="cbtn">Копіювати сценарій</button>
+        </div>
+      </div>
+
+      <!-- Storyboard -->
+      <div style="border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div onclick="toggleAccordion('sb-${p.id}')" style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;cursor:pointer">
+          <span style="font-size:13px;font-weight:700">🎬 Розкадровка (${p.scenes?.length||0} сцен)</span>
+          <span style="color:var(--m);font-size:12px" id="arr-sb-${p.id}">▼</span>
+        </div>
+        <div id="sb-${p.id}" style="display:none;padding-bottom:12px">${scenesHtml}</div>
+      </div>
+
+      <!-- Telegram posts -->
+      <div style="border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div onclick="toggleAccordion('tg-${p.id}')" style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;cursor:pointer">
+          <span style="font-size:13px;font-weight:700">✈️ Telegram пости</span>
+          <span style="color:var(--m);font-size:12px" id="arr-tg-${p.id}">▼</span>
+        </div>
+        <div id="tg-${p.id}" style="display:none;padding-bottom:12px">
+          <div style="font-size:11px;color:var(--m);margin-bottom:5px">🇺🇦 UA</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.8;white-space:pre-wrap;background:rgba(0,0,0,0.2);border-radius:10px;padding:12px;margin-bottom:6px;cursor:pointer" onclick="navigator.clipboard.writeText(this.textContent.trim()).then(()=>showToast())">${escH(p.tg_post||'')}</div>
+          <div style="font-size:11px;color:var(--m);margin-bottom:5px">🇷🇺 RU</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.8;white-space:pre-wrap;background:rgba(0,0,0,0.2);border-radius:10px;padding:12px;cursor:pointer" onclick="navigator.clipboard.writeText(this.textContent.trim()).then(()=>showToast())">${escH(p.tg_ru||'')}</div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div style="padding:11px 0">
+        <div style="font-size:12px;font-weight:700;margin-bottom:7px">📌 Нотатки</div>
+        <textarea onchange="updateProjectNotes('${p.id}',this.value)" placeholder="Додай нотатку..." style="width:100%;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:10px;font-size:12px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:60px;line-height:1.6">${escH(p.notes||'')}</textarea>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleAccordion(id) {
+  const el = document.getElementById(id);
+  const arr = document.getElementById('arr-' + id);
+  if(!el) return;
+  const isOpen = el.style.display !== 'none';
+  el.style.display = isOpen ? 'none' : 'block';
+  if(arr) arr.textContent = isOpen ? '▼' : '▲';
+}
+
+// Init projects
+renderProjects();
+
+// Load projects from Firebase on auth
+const origLoad = window.loadFromCloud;
+if(typeof loadFromCloud === 'function') {
+  // Will be patched by Firebase block
+}
+window._loadProjects = async function(uid) {
+  if(!uid) return;
+  try {
+    const doc = await window._db?.collection('users').doc(uid).collection('data').doc('projects').get();
+    if(doc?.exists) {
+      projects = JSON.parse(doc.data().value);
+      renderProjects();
+    }
+  } catch(e) { console.log('Projects load:', e); }
+};
 
 </script>
 </body>
